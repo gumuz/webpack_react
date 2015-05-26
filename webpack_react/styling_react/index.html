@@ -1,0 +1,412 @@
+<html><head><title>Styling React / SurviveJS - Survive the jungles of JavaScript</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="/assets/img/favicon.png"><link rel="stylesheet" href="/assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><a class="nav__link" href="/">Home</a><a class="nav__link" href="/webpack_react">Table of Contents</a></nav></div><main role="main"><div class="post"><h1 class="post__heading">Styling React</h1><div class="post__content"><div><p>Traditionally web pages have been split up in markup (ie. HTML), styling (ie. CSS) and logic (ie. JavaScript). Even though it looks like an simple abstraction, there are some interesting overlaps. You can push some logic to CSS but how much is too much? Is the separation actually useful for application development? These become big questions particularly in React context. As a result some interesting solutions have appeared although the scene is still in flux.</p>
+<h2>Old Skool Styling</h2>
+<p>So far our approach to styling has been simple. We have just sprinkled some classes around and hoped for the best.</p>
+<h3>Webpack Configuration for Vanilla CSS</h3>
+<p>Webpack configuration has been something minimal as well:</p>
+<p><strong>webpack.config.js</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> common = {
+  ...
+  <span class="hljs-built_in">module</span>: {
+    loaders: [
+      {
+        test: <span class="hljs-regexp">/\.css$/</span>,
+        loaders: [&apos;style&apos;, &apos;css&apos;],
+      }
+    ]
+  },
+};
+</code></pre>
+<p>To recap first <a href="https://www.npmjs.com/package/css-loader">css-loader</a> goes through possible <code>@import</code> and <code>url()</code> statements within the matched files and treats them as regular <code>require</code>. This allows us to rely on various other loaders such as <a href="https://www.npmjs.com/package/file-loader">file-loader</a> or <a href="https://www.npmjs.com/package/url-loader">url-loader</a>.</p>
+<p><code>file-loader</code> generates files while <code>url-loader</code> can create inline data urls for small resources. This can be useful for optimizing application loading as you avoid unnecessary requests while providing a slightly bigger payload. Small improvements such as this can yield large benefits especially if you are depending on a large amount of small resources within your style definitions.</p>
+<h3>Basic Style for Kanban</h3>
+<p>To give our application slightly nicer outlook, we can try some old skool CSS tricks:</p>
+<p><strong>app/stylesheets/main.css</strong></p>
+<pre><code class="language-css">body {
+  background: cornsilk;
+
+  font-family: sans-serif;
+}
+</code></pre>
+<p>First we make sure the font we are using doesn&apos;t have serifs. It&apos;s not a big tweak to make but improves things already.</p>
+<p><strong>app/stylesheets/lane.css</strong></p>
+<pre><code class="language-css">.lane {
+  margin: <span class="hljs-number">1</span>em;
+
+  border: <span class="hljs-number">1</span>px solid <span class="hljs-comment">#ccc;</span>
+  border-radius: <span class="hljs-number">0.5</span>em;
+
+  min-width: <span class="hljs-number">10</span>em;
+
+  display: inline-block;
+  vertical-align: top;
+
+  background-color: <span class="hljs-comment">#efefef;</span>
+}
+
+.lane-header {
+  padding: <span class="hljs-number">1</span>em;
+
+  border-top-left-radius: <span class="hljs-number">0.5</span>em;
+  border-top-right-radius: <span class="hljs-number">0.5</span>em;
+
+  overflow: auto;
+
+  color: <span class="hljs-comment">#efefef;</span>
+  background-color: <span class="hljs-comment">#333;</span>
+}
+
+.lane-name {
+  <span class="hljs-built_in">float</span>: left;
+}
+
+.lane-add-note {
+  <span class="hljs-built_in">float</span>: right;
+}
+</code></pre>
+<p>Next we orient our lanes in a row by utilizing <code>display: inline-block</code> property. We also make sure alignment, margin and padding work. There is also subtle rounding to give the lanes a less blockish look.</p>
+<p><strong>app/stylesheets/note.css</strong></p>
+<pre><code class="language-css">.notes {
+  margin: <span class="hljs-number">0.5</span>em;
+
+  padding-left: <span class="hljs-number">0</span>;
+
+  list-style: none;
+}
+
+.note {
+  margin-bottom: <span class="hljs-number">0.25</span>em;
+
+  padding: <span class="hljs-number">0.5</span>em;
+
+  border: <span class="hljs-number">1</span>px solid <span class="hljs-comment">#ddd;</span>
+
+  background-color: <span class="hljs-comment">#fdfdfd;</span>
+}
+</code></pre>
+<p>For notes it&apos;s enough just to replace some of that default list styling. We also make notes visually separate from the lanes by applying color and shape.</p>
+<p><strong>app/main.jsx</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> &apos;./stylesheets/main.css&apos;;
+<span class="hljs-keyword">import</span> &apos;./stylesheets/lane.css&apos;;
+<span class="hljs-keyword">import</span> &apos;./stylesheets/note.css&apos;;
+
+...
+</code></pre>
+<p>Finally we make sure our application takes the new declarations into account. You could argue that each component could deal with the import by itself but this is one way to go. It makes testing components easier as you don&apos;t have to worry about the import in other environments.</p>
+<p>If we use lazy loading for our components, it may make sense to move <code>require</code> on component level. The lazy loading machinery will be able to benefit from that. As a result the initial CSS your user has to load will be smaller.</p>
+<h3>Pros and Cons</h3>
+<p>This approach is simple and probably enough for our application. What happens when the application starts to grow and new concepts get added? Broad CSS selectors are like globals. The problem gets even worse if you have to deal with loading order. If selectors end up in a tie, the last declaration wins. Unless there&apos;s <code>!important</code> somewhere and so on. It gets complex very fast.</p>
+<p>We could battle this problem by making the selectors more specific, using some naming rules and so on but where to draw the line? There are various alternative approaches you can consider.</p>
+<h2>Generating a Separate Bundle for CSS</h2>
+<p>The current approach works well for simple cases. It simply inlines the CSS as a part of our JavaScript bundle. Although this can be performant (one less request), easy to set up and compiles fast, it may not be ideal always.</p>
+<p>We cannot for instance leverage caching for our CSS. If only JavaScript portion changes all CSS will be loaded still. As our CSS is injected through JavaScript, there is additional overhead. If the user isn&apos;t running JavaScript, no styling will be applied to the markup at all.</p>
+<p>There is a plugin that allows us to work around these problems. <a href="https://www.npmjs.com/package/extract-text-webpack-plugin">extract-text-webpack-plugin</a> generates a separate bundle for CSS. It comes with some overhead during compilation phase and won&apos;t work with hot module reloading (HMR). It also takes some additional setup.</p>
+<p>Hit <code>npm i extract-text-webpack-plugin --save-dev</code> and tweak configuration like this:</p>
+<p><strong>webpack.config.js</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> ExtractTextPlugin = <span class="hljs-built_in">require</span>(&apos;extract-text-webpack-plugin&apos;);
+...
+
+<span class="hljs-keyword">var</span> common = {
+  entry: [path.join(ROOT_PATH, &apos;app/main.jsx&apos;)],
+  resolve: {
+    extensions: [&apos;&apos;, &apos;.js&apos;, &apos;.jsx&apos;],
+  },
+  output: {
+    path: path.resolve(ROOT_PATH, &apos;build&apos;),
+    filename: &apos;bundle.js&apos;,
+  },
+};
+
+<span class="hljs-keyword">if</span>(TARGET === &apos;build&apos;) {
+  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+    <span class="hljs-built_in">module</span>: {
+      loaders: [
+        {
+          test: <span class="hljs-regexp">/\.css$/</span>,
+          loader: ExtractTextPlugin.extract(&apos;style&apos;, &apos;css&apos;)
+        },
+        ...
+      ]
+    },
+    plugins: [
+      <span class="hljs-keyword">new</span> ExtractTextPlugin(&apos;styles.css&apos;),
+      ...
+    ],
+  });
+}
+
+<span class="hljs-keyword">if</span>(TARGET === &apos;dev&apos;) {
+  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+    ...
+    <span class="hljs-built_in">module</span>: {
+      ...
+      loaders: [
+        {
+          test: <span class="hljs-regexp">/\.css$/</span>,
+          loaders: [&apos;style&apos;, &apos;css&apos;],
+        },
+        ...
+      ]
+    },
+    ...
+  });
+}
+</code></pre>
+<p>Using this set up we can still benefit from HMR during development. For production build we generate a separate CSS. <code>html-webpack-plugin</code> will pick it up automatically and inject into our <code>index.html</code>.</p>
+<h2>Linting CSS</h2>
+<p>As we saw earlier linting can be powerful. It points out potential problems before they escalate into real issues. <a href="https://www.npmjs.com/package/csslint">csslint</a> allows us to lint CSS. <a href="https://www.npmjs.com/package/csslint-loader">csslint-loader</a> makes it possible to integrate it into our project. To get started hit <code>npm i csslint csslint-loader --save-dev</code>.</p>
+<p>Next we&apos;ll need to integrate it with our configuration:</p>
+<p><strong>webpack.config.js</strong></p>
+<pre><code class="language-javascript">...
+
+<span class="hljs-keyword">if</span>(TARGET === &apos;dev&apos;) {
+  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+    entry: [&apos;webpack/hot/dev-server&apos;],
+    <span class="hljs-built_in">module</span>: {
+      preLoaders: [
+        {
+          test: <span class="hljs-regexp">/\.css$/</span>,
+          loader: &apos;csslint&apos;,
+        },
+        {
+          test: <span class="hljs-regexp">/\.jsx?$/</span>,
+          loader: &apos;eslint-loader&apos;,
+          include: path.join(ROOT_PATH, &apos;app&apos;),
+        }
+      ],
+      ...
+    },
+    ...
+  });
+}
+</code></pre>
+<p>To keep things nice and tidy I put it into the <code>preLoaders</code> section of configuration.</p>
+<p><strong>.csslintrc</strong></p>
+<pre><code class="language-json">{
+  &quot;adjoining-classes&quot;: <span class="hljs-literal">false</span>,
+  &quot;box-sizing&quot;: <span class="hljs-literal">false</span>,
+  &quot;box-model&quot;: <span class="hljs-literal">false</span>,
+  &quot;compatible-vendor-prefixes&quot;: <span class="hljs-literal">false</span>,
+  &quot;floats&quot;: <span class="hljs-literal">false</span>,
+  &quot;font-sizes&quot;: <span class="hljs-literal">false</span>,
+  &quot;gradients&quot;: <span class="hljs-literal">false</span>,
+  &quot;important&quot;: <span class="hljs-literal">false</span>,
+  &quot;known-properties&quot;: <span class="hljs-literal">false</span>,
+  &quot;outline-none&quot;: <span class="hljs-literal">false</span>,
+  &quot;qualified-headings&quot;: <span class="hljs-literal">false</span>,
+  &quot;regex-selectors&quot;: <span class="hljs-literal">false</span>,
+  &quot;shorthand&quot;: <span class="hljs-literal">false</span>,
+  &quot;text-indent&quot;: <span class="hljs-literal">false</span>,
+  &quot;unique-headings&quot;: <span class="hljs-literal">false</span>,
+  &quot;universal-selector&quot;: <span class="hljs-literal">false</span>,
+  &quot;unqualified-attributes&quot;: <span class="hljs-literal">false</span>
+}
+</code></pre>
+<p>I decided to use a set of rules from Twitter Bootstrap. These seem like a good starting point.</p>
+<p><strong>package.json</strong></p>
+<pre><code class="language-json">&quot;scripts&quot;: {
+  ...
+  &quot;lint&quot;: &quot;npm run lint-js &amp;&amp; npm run lint-css&quot;,
+  &quot;lint-js&quot;: &quot;eslint . --ext .js --ext .jsx&quot;,
+  &quot;lint-css&quot;: &quot;csslint app/stylesheets --quiet&quot;
+},
+</code></pre>
+<p>If you hit <code>npm run lint-css</code> now, you should see some output, hopefully without errors. That <code>--quiet</code> flag is there to keep the tool silent unless there are errors.</p>
+<p>Thanks to the Webpack configuration we did, you should get output during <code>npm start</code> process as well. In addition you should consider setting up csslint with your editor. That way you get more integrated development experience.</p>
+<h2>CSS Methodologies</h2>
+<p>Coming up with de facto rules for styling might work a while. Over the longer term as your codebase grows, you might start to experience challenges with that. As a result various methodologies have appeared in which people have taken these concerns into account.</p>
+<p>Particularly <a href="http://oocss.org/">OOCSS</a> (Object-Oriented CSS), <a href="https://smacss.com/">SMACSS</a> (Scalable and Modular Approach for CSS) and <a href="https://en.bem.info/method/">BEM</a> (Block Element Modifier) are well known. Each comes with its set of conventions. They can help to structure your CSS development.</p>
+<h3>BEM</h3>
+<p>Maintaining long class names BEM requires can be boring. Various libraries have appeared to make this easier. Examples of these are <a href="https://www.npmjs.com/package/react-bem-helper">react-bem-helper</a>, <a href="https://www.npmjs.com/package/react-bem-render">react-bem-render</a> and <a href="https://www.npmjs.com/package/bem-react">bem-react</a>.</p>
+<p>Note that <a href="https://www.npmjs.com/package/postcss-bem-linter">postcss-bem-linter</a> allows you to lint your CSS for BEM conformance.</p>
+<h3>OOCSS and SMACSS</h3>
+<p>As of writing no React specific helper libraries exist for OOCSS and SMACSS.</p>
+<p>csslint rules <code>Disallow qualified headings</code> and <code>Headings should only be defined once</code> allow you to check your CSS against OOCSS principles.</p>
+<h2>cssnext, Less, Sass</h2>
+<p>The problem with vanilla CSS is that it is missing some functionality that would improve maintainability. For instance from a programmer&apos;s perspective it could be nice to have basic features such as variables, math functions, color manipulation functions and so on. Better yet it would be nice if it was possible to forget about browser specific prefixes.</p>
+<h3>cssnext</h3>
+<p>As it happens these features are in the future. <a href="https://cssnext.github.io/">cssnext</a>, however, is a project that allows us to experience the future now. There are some restrictions but it may be worth a go. In Webpack it is simply a matter of installing <a href="https://www.npmjs.com/package/cssnext-loader">cssnext-loader</a> and attaching it to your CSS configuration. In our case you would end up with the following:</p>
+<pre><code class="language-javascript">{
+  <span class="hljs-built_in">test</span>: /\.css$/,
+  loaders: [&apos;style&apos;, &apos;css&apos;, &apos;cssnext&apos;],
+}
+</code></pre>
+<p>The advantage of this approach is that you will literally be coding in the future. As browsers get better and adopt the standards, you don&apos;t have to worry about porting.</p>
+<p>If that sounds a little much or you are just interested in a particular feature such as autoprefixing, you can check out <a href="https://www.npmjs.com/package/autoprefixer-loader">autoprefixer-loader</a> and <a href="https://www.npmjs.com/package/postcss-loader">postcss-loader</a>. cssnext relies on postcss. It provides you more granular level of control of CSS plugins. You can even implement your own using a bit of JavaScript.</p>
+<h3>Less</h3>
+<p>Less is a popular CSS preprocessor that implements functionality we talked about and comes with a syntax of its own. In Webpack using Less doesn&apos;t take a lot of effort. <a href="https://www.npmjs.com/package/less-loader">less-loader</a> deals with the heavy lifting:</p>
+<pre><code class="language-javascript">{
+  <span class="hljs-built_in">test</span>: /\.less$/,
+  loaders: [&apos;style&apos;, &apos;css&apos;, &apos;less&apos;],
+}
+</code></pre>
+<p>There is also support for Less plugins, sourcemaps and so on but to understand how those work you should check out the project itself.</p>
+<h3>Sass</h3>
+<p>Sass is a popular alternative to Less. You should use <a href="https://www.npmjs.com/package/sass-loader">sass-loader</a> with it. Remember to install <code>node-sass</code> to your project as the loader has a peer dependency on that. Webpack configuration is light again:</p>
+<pre><code class="language-javascript">{
+  <span class="hljs-built_in">test</span>: /\.scss$/,
+  loaders: [&apos;style&apos;, &apos;css&apos;, &apos;sass&apos;],
+}
+</code></pre>
+<p>Check out the loader for more advanced usage.</p>
+<h3>Pros and Cons</h3>
+<p>Compared to vanilla CSS preprocessors bring a lot to the table. They deal with certain annoyances (ie. autoprefixing) and provide useful features. Particularly cssnext and postcss seem future proof alternatives to me. That said, I can see value in other preprocessors as they are established and well understood projects.</p>
+<p>In our project we could benefit from cssnext even if we didn&apos;t make any changes to our CSS. Thanks to autoprefixing rounded corners of our lanes would look good even in legacy browsers. In addition we could parametrize styling thanks to variables.</p>
+<h2>React Based Approaches</h2>
+<p>With React we have some additional alternatives. What if the way we&apos;ve been thinking about styling has been misguided? CSS is powerful but it can become an unmaintainable mess without some discipline. Where to draw the line between CSS and JavaScript?</p>
+<p>There are various approaches for React that allow us to push styling to component level. It may sound heretical. React, being an iconoclast, may lead the way here.</p>
+<h3>Inline Styles to Rescue</h3>
+<p>Ironically the way solutions based on React solve this is through inline styles. Getting rid of inline styles was one of the main reasons for using separate CSS files in the first place. Now we are back there.</p>
+<p>This means that instead of something like</p>
+<pre><code class="language-javascript">render(props, context) {
+  var notes = this.props.notes;
+
+  <span class="hljs-built_in">return</span> (
+    <ul classname="notes">{notes.map((note, i) =&gt;
+      ...
+    )}</ul>
+  );
+}
+</code></pre>
+<p>and accompanying CSS, we&apos;ll do something like this:</p>
+<pre><code class="language-javascript">render(props, context) {
+  var notes = this.props.notes;
+  var style = {
+    margin: &apos;<span class="hljs-number">0.5</span>em&apos;,
+    paddingLeft: <span class="hljs-number">0</span>,
+    listStyle: &apos;none&apos;,
+  };
+
+  <span class="hljs-built_in">return</span> (
+    <ul style="{style}">{notes.map((note, i) =&gt;
+      ...
+    )}</ul>
+  );
+}
+</code></pre>
+<p>Just like with HTML attribute names, we are using the same camelcase convention for CSS properties.</p>
+<p>Note that now that we have styling at component level we can implement logic touching it easily. One classic way to do this has been to alter class name based on the outlook we want. Now we can adjust the properties we want directly.</p>
+<p>We have lost something in process. Now all of our styling is tied to our JavaScript code. It is going to be difficult to perform large, sweeping changes to our codebase as we need to tweak a lot of components to achieve that.</p>
+<p>We can try to work against this by injecting a part of styling through props. A component could provide patch its style based on provided one. This can be improved further by coming up with conventions that allow parts of style configuration mapped to some specific part. We just reinvented selectors on a small scale.</p>
+<p>How about things like media queries? This naive approach won&apos;t quite cut it. Fortunately people have come up with libraries to solve these tough problems for us.</p>
+<h3>Radium</h3>
+<p>As of writing <a href="http://projects.formidablelabs.com/radium/">Radium</a> doesn&apos;t support ES6 style classes yet because it injects certain key functionality through mixins. It does have certain valuable ideas that are worth covering, however. Most importantly it provides abstractions required to deal with media queries, browser states (ie. <code>:hover</code>) and modifiers (primary/secondary button and so on).</p>
+<p>It expands the basic syntax as follows:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> style = {
+  <span class="hljs-comment">// general styles</span>
+  padding: &apos;<span class="hljs-number">1</span>em&apos;,
+  <span class="hljs-comment">// :hover, :focus etc.</span>
+  states: [
+    {
+      hover: {
+        border: &apos;<span class="hljs-number">1</span>px solid black&apos;
+      }
+    },
+  ],
+  <span class="hljs-comment">// kind=&apos;<type>&apos; properties map to these</type></span>
+  modifiers: [
+    {
+      kind: {
+        primary: {
+          background: &apos;green&apos;
+        },
+        warning: {
+          background: &apos;yellow&apos;
+        }
+      }
+    }
+  ],
+  <span class="hljs-comment">// media queries</span>
+  &apos;@media (max-width: <span class="hljs-number">200</span>px)&apos;: {
+    width: &apos;<span class="hljs-number">100</span>%&apos;,
+
+    &apos;:hover&apos;: {
+      background: &apos;white&apos;
+    }
+  }
+};
+</code></pre>
+<h3>React Style</h3>
+<p><a href="https://github.com/js-next/react-style">React Style</a> uses the same syntax as React Native <a href="https://facebook.github.io/react-native/docs/stylesheet.html#content">StyleSheet</a>. It expands the basic definition by introducing additional keys for fragments.</p>
+<pre><code class="language-javascript">var StyleSheet = import &apos;react-style&apos;;
+
+var styles = StyleSheet.create({
+  primary: {
+    background: &apos;green&apos;
+  },
+  warning: {
+    background: &apos;yellow&apos;
+  },
+  button: {
+    padding: &apos;1em&apos;
+  },
+  // media queries
+  &apos;@media (max-width: 200px)&apos;: {
+      button: {
+        width: &apos;100%&apos;
+      }
+  }
+});
+
+...
+
+<button styles="{[styles.button," styles.primary]}="">Confirm</button>
+</code></pre>
+<p>As you can see we can use individual fragments to get the same effect as Radium modifiers. Also media queries are supported. React Style expects that you manipulate browser states (ie. <code>:hover</code> and such) through JavaScript. Also CSS animations won&apos;t work. Instead it&apos;s preferred to use some other solution for that.</p>
+<p>Interestingly there is a <a href="https://github.com/js-next/react-style-webpack-plugin">React Style plugin for Webpack</a>. It can extract CSS declarations into a separate bundle. Now we are closer to the world we&apos;re used to but without cascades. We also have our style declarations on component level.</p>
+<h3>smart-css</h3>
+<p><a href="https://github.com/hackhat/smart-css">smart-css</a> takes a similar approach except this time we are operating based on classes. To give you a better idea, consider the example below:</p>
+<pre><code class="language-javascript">var SmartCSS = require(&apos;smart-css&apos;);
+var css = new SmartCSS();
+
+css.setClass(&apos;.button&apos;, {
+    padding: &apos;<span class="hljs-number">1</span>em&apos;
+});
+css.setClass(&apos;.button&apos;, {
+    width: &apos;<span class="hljs-number">100</span>%&apos;
+}, {
+    media: &apos;max-width: <span class="hljs-number">200</span>px&apos;
+});
+css.setClass(&apos;.primary&apos;, {
+    background: &apos;green&apos;
+});
+css.setClass(&apos;.warning&apos;, {
+    background: &apos;yellow&apos;
+});
+
+...
+
+<button classname="{css.getClasses({button:" <span="" class="hljs-literal">true, primary: <span class="hljs-literal">true</span>})}&gt;Confirm</button>
+
+// <span class="hljs-keyword">in</span> addition you&apos;ll need to trigger at higher level after the elements you are using
+// have been injected to DOM
+SmartCSS.injectStyles();
+</code></pre>
+<p>The approach supports pseudoselectors. Ie. you could define a selector such as <code>.button:hover</code> and it would just work.</p>
+<p>There are plans to introduce autoprefixing, better ways to deal with measurements, better APIs for complex properties and for a Webpack plugin to extract the CSS into an external file.</p>
+<h3>React Inline</h3>
+<p><a href="https://github.com/martinandert/react-inline">React Inline</a> is an interesting twist on StyleSheet. It generates CSS based on <code>className</code> prop of elements where it is used. The example above could be adapted to React Inline like this:</p>
+<pre><code class="language-javascript">import cx from &apos;classnames&apos;;
+...
+
+class ConfirmButton extends React.Component {
+  <span class="hljs-function"><span class="hljs-title">render</span></span>() {
+    const {className} = this.props;
+    const classes = cx(styles.button, styles.primary, className);
+
+    <span class="hljs-built_in">return</span> <button classname="{classes}">Confirm</button>;
+  }
+}
+</code></pre>
+<p>Unlike React Style, the approach supports browser states (ie. <code>:hover</code> etc.). Unfortunately it relies on its own custom tooling to generate React code and CSS it needs to work. As of yet there&apos;s no Webpack loader available.</p>
+<h3>jsxstyle</h3>
+<p>Pete Hunt&apos;s <a href="https://github.com/petehunt/jsxstyle">jsxstyle</a> aims to mitigate some problems of React Style&apos;s approach. As you saw in previous examples we still have style definitions separate from the component markup. jsxstyle merges these two concepts. Consider the following example:</p>
+<pre><code class="language-javascript">// PrimaryButton component
+<button padding="1em" background="green">Confirm</button>
+</code></pre>
+<p>The approach is still in its early days. For instance support for media queries is missing. Instead of defining modifiers as above, you&apos;ll end up defining more components to support your use cases.</p>
+<p>Just like React Style, also jsxstyle comes with a Webpack loader that can extract CSS into a separate file.</p>
+<h2>Conclusion</h2>
+<p>It is simple to try out various styling approaches with Webpack. You can do it all ranging from vanilla CSS to more complex setups. React specific tooling even comes with loaders of their own. This makes it easy to try out different alternatives.</p>
+<p>React based styling approaches allow us to push styles to component level. This provides an interesting contrast to conventional approaches where CSS is kept separate. Dealing with component specific logic becomes easier. You will lose some power provided by CSS but in return you gain something that is simpler to understand and harder to break.</p>
+<p>It is likely possible to combine various approaches to some extent. Perhaps you could keep high level styling on old skool CSS while on component level you would do something more fitting. There are no best practices yet and we are still figuring out the best ways to do this in React.</p>
+</div></div></div><noscript></noscript><div class="prevnext-pages"><a href="/webpack_react/from_notes_to_kanban" class="previous-page">From Notes to Kanban</a><a href="/webpack_react/polishing_kanban" class="next-page">Polishing Kanban</a></div></main></div></body></html>

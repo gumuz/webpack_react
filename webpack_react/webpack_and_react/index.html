@@ -1,0 +1,225 @@
+<html><head><title>Webpack and React / SurviveJS - Survive the jungles of JavaScript</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="/assets/img/favicon.png"><link rel="stylesheet" href="/assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><a class="nav__link" href="/">Home</a><a class="nav__link" href="/webpack_react">Table of Contents</a></nav></div><main role="main"><div class="post"><h1 class="post__heading">Webpack and React</h1><div class="post__content"><div><p>Facebook&apos;s <a href="https://facebook.github.io/react/">React</a> is one of those projects that has changed the way we think about frontend development. Thanks to <a href="https://facebook.github.io/react-native/">React Native</a> the approach isn&apos;t limited just to web. Although simple to learn, React provides plenty of power.</p>
+<h2>What the React?</h2>
+<p>React isn&apos;t a framework like Angular.js or Ember. Instead it&apos;s just a library focusing on the view layer. It introduced a concept known as virtual DOM to web developers. This means that instead of manipulating DOM directly just like all the libraries and frameworks before it, React maintains a DOM of its own. As changes are made to virtual DOM, React will batch the changes to actual DOM as it sees best.</p>
+<p>This has meant that the developers of React have decoupled themselves from the limitations of DOM. As a result React is highly performant although this comes with a cost. The library isn&apos;t as small as you might expect. You can expect bundle sizes for small applications to be around 150-200k, React included. That is considerably less when gzipped over wire but it&apos;s still something.</p>
+<p>Even if React isn&apos;t the smallest library out there it does manage to solve some serious problems. It is a pleasure to develop with thanks to its relative simplicity and powerful API. You will need to complement with a set of tools but you can pick these based on actual need. It&apos;s far from a &quot;one size fits all&quot; type of solution which frameworks tend to be.</p>
+<p>The approach used by React allowed Facebook to develop React Native on top of the same ideas. This time instead of DOM, we are operating on mobile platform rendering. React Native provides abstraction over components and layout system while providing you the setup you already know from the web. It can be seen as a gateway for web developers wanting to develop performant mobile applications.</p>
+<p>Webpack and React work well together. By now we understand how to set up a simple project. We can extend it to work with React easily. Before we get to implement anything serious, it&apos;s a good idea to make sure we have a decent development environment. That will make everything so much easier.</p>
+<h2>Installing React</h2>
+<p>To get started install React to your project. Just hit <code>npm i react --save</code> and you should be set. As a next step we could port our <strong>app/component.js</strong> to React. Provided we use ES6 module and class syntax and JSX, we can go with a solution like this:</p>
+<p><strong>app/components/App.jsx</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> &apos;react&apos;;
+<span class="hljs-keyword">import</span> Note <span class="hljs-keyword">from</span> &apos;./Note&apos;;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">return</span> <note>;
+  }
+}
+</note></code></pre>
+<p><code>App</code> will work as an entry point to our application. Later on it will orchestrate logic etc.</p>
+<p>We also need to define that <code>Note</code> component:</p>
+<p><strong>app/components/Note.jsx</strong></p>
+<pre><code class="language-javascript">import React from &apos;react&apos;;
+
+<span class="hljs-built_in">export</span> default class Note extends React.Component {
+  <span class="hljs-function"><span class="hljs-title">render</span></span>() {
+    <span class="hljs-built_in">return</span> <div>Learn Webpack</div>;
+  }
+}
+</code></pre>
+<p>T&gt; Note that we&apos;re using <em>jsx</em> extension here to tell modules using JSX syntax apart from regular ones. This is a good convention to have.</p>
+<p>In addition we&apos;ll need to adjust our <code>main.js</code> to render the component correctly. Note that I&apos;ve renamed it as <code>main.jsx</code> given we have JSX content there. Here&apos;s one solution:</p>
+<p><strong>app/main.jsx</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> &apos;./stylesheets/main.css&apos;;
+
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> &apos;react&apos;;
+<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> &apos;./components/App&apos;;
+
+main();
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
+    React.render(<app>, <span class="hljs-built_in">document</span>.getElementById(&apos;app&apos;));
+}
+</app></code></pre>
+<p>This change needs to be taken in count at configuration. Change entry path like this:</p>
+<p><strong>webpack.config.js</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> common = {
+  entry: [path.join(ROOT_PATH, &apos;app/main.jsx&apos;)]
+  ...
+}
+</code></pre>
+<p>W&gt; Avoid rendering directly to <code>document.body</code>. This can cause strange problems with relying on it. Instead give React a little sandbox of its own.</p>
+<h2>Setting Up Webpack</h2>
+<p>In order to make everything work again, we&apos;ll need to tweak our configuration a little. In order to deal with ES6 and JSX, we&apos;ll use <a href="https://www.npmjs.com/package/babel-loader">babel-loader</a>. Install it using <code>npm i babel-loader --save-dev</code>. In addition add the following loader declaration to the <em>loaders</em> section of your configuration:</p>
+<p><strong>webpack.config.js</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> common = {
+  ...
+  <span class="hljs-built_in">module</span>: {
+    loaders: [
+      {
+        <span class="hljs-comment">// test for both js and jsx</span>
+        test: <span class="hljs-regexp">/\.jsx?$/</span>,
+
+        <span class="hljs-comment">// use babel loader</span>
+        loader: &apos;babel&apos;,
+
+        <span class="hljs-comment">// operate only on our app directory</span>
+        include: path.join(ROOT_PATH, &apos;app&apos;),
+      },
+      ...
+    ]
+  },
+  ...
+};
+</code></pre>
+<p>We will specifically include our <code>app</code> source to our loader. This way Webpack doesn&apos;t have to traverse whole source. Particularly going through <code>node_modules</code> can take a while. You can try taking <code>include</code> statement out to see how that affects the performance.</p>
+<p>Webpack traverses <code>[&apos;&apos;, &apos;.webpack.js&apos;, &apos;.web.js&apos;, &apos;.js&apos;]</code> files by default. This will get problematic with our <code>import Note from &apos;./Note&apos;;</code> statement. In order to make it find JSX, we&apos;ll need to add another piece of configuration like this:</p>
+<p><strong>webpack.config.js</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> common = {
+  entry: [path.join(ROOT_PATH, &apos;app/main.jsx&apos;)],
+  resolve: {
+    extensions: [&apos;&apos;, &apos;.js&apos;, &apos;.jsx&apos;],
+  },
+  ...
+};
+</code></pre>
+<p>If you hit <code>npm run build</code> now, you should get some output after a while. Here&apos;s a sample:</p>
+<pre><code class="language-bash">&gt; TARGET=build webpack
+
+Hash: e528fefc32654263da5f
+Version: webpack 1.9.6
+Time: 2008ms
+     Asset       Size  Chunks             Chunk Names
+ bundle.js     650 kB       0  [emitted]  main
+index.html  204 bytes          [emitted]
+   [0] multi main 28 bytes {0} [built]
+    + 163 hidden modules
+</code></pre>
+<p>As you can see, the output is quite chunky!</p>
+<h2>Optimizing Build Size</h2>
+<p>We can resolve this issue by minifying our build. As easy way to do this is to pass <code>-p</code> parameter to <code>webpack</code>. It will give a bunch of warnings especially in React environment by default, however, so we&apos;ll enable minification using other way. Add the following section to your Webpack configuration:</p>
+<p><strong>webpack.config.js</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(&apos;webpack&apos;);
+
+...
+
+<span class="hljs-keyword">if</span>(TARGET === &apos;build&apos;) {
+  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+    ...
+    plugins: [
+      <span class="hljs-keyword">new</span> webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: <span class="hljs-literal">false</span>
+        },
+      }),
+      ...
+    ],
+  });
+}
+</code></pre>
+<p>If you hit <code>npm run build</code> now, you should see better results:</p>
+<pre><code class="language-bash">&gt; TARGET=build webpack
+
+Hash: d2df9c8478b9894d8d5e
+Version: webpack 1.9.6
+Time: 5517ms
+     Asset       Size  Chunks             Chunk Names
+ bundle.js     172 kB       0  [emitted]  main
+index.html  204 bytes          [emitted]
+   [0] multi main 28 bytes {0} [built]
+    + 163 hidden modules
+</code></pre>
+<p>Given it needs to do more work, it took longer. But on the plus side the build is much smaller now.</p>
+<p>We can perform one more step to decrease build size further. React relies on <code>process.env.NODE_ENV</code> based optimizations. If we force it to <code>production</code>, React will get in an optimized manner. This will disable some checks (ie. property type checks) but it will give you a smaller build and improved performance.</p>
+<p>In Webpack terms you can add the following snippet to the <code>plugins</code> section of your configuration like this:</p>
+<p><strong>webpack.config.js</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">if</span>(TARGET === &apos;build&apos;) {
+  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+    ...
+    plugins: [
+      <span class="hljs-keyword">new</span> webpack.DefinePlugin({
+        &apos;process.env&apos;: {
+          <span class="hljs-comment">// This has effect on the react lib size</span>
+          &apos;NODE_ENV&apos;: <span class="hljs-built_in">JSON</span>.stringify(&apos;production&apos;),
+        }
+      }),
+      ...
+    ],
+  });
+}
+</code></pre>
+<p>T&gt; That <code>JSON.stringify</code> is needed as Webpack will perform string replace &quot;as is&quot;. In this case we&apos;ll want to end up with strings as that&apos;s what various comparisons expect, not just <code>production</code>. Latter would just cause an error.</p>
+<p>Hit <code>npm run build</code> again and you should see improved results:</p>
+<pre><code class="language-bash">&gt; TARGET=build webpack
+
+Hash: <span class="hljs-number">6</span><span class="hljs-built_in">fc</span>5ea486a0560f13c59
+Version: webpack <span class="hljs-number">1.9</span>.<span class="hljs-number">6</span>
+Time: <span class="hljs-number">4709</span>ms
+     Asset       Size  Chunks             Chunk Names
+ bundle.js     <span class="hljs-number">123</span> kB       <span class="hljs-number">0</span>  [emitted]  main
+index.html  <span class="hljs-number">204</span> bytes          [emitted]
+   [<span class="hljs-number">0</span>] multi main <span class="hljs-number">28</span> bytes {<span class="hljs-number">0</span>} [built]
+    + <span class="hljs-number">158</span> hidden modules
+</code></pre>
+<p>So we went from 650k to 172k and finally to 123k. The final build is a little faster than the previous one. As that 123k can be served gzipped, it is very reasonable. Things will get more problematic as we continue to add dependencies to our project. In that case we will have to apply some other strategies and be smarter about loading.</p>
+<h2>Activating Hot Loading for Development</h2>
+<p>If you hit <code>npm start</code>, hit <em>localhost:8080</em> and try to modify our component (make it output <code>Learn React</code> or something), you&apos;ll see it actually works. After a flash. That&apos;s a little unfortunate especially if our application is more complex has state. It is annoying to manipulate the user interface back to the state in which it was in order to test something.</p>
+<p>We can work around this problem using hot loading. This is enabled by <a href="https://gaearon.github.io/react-hot-loader/">react-hot-loader</a>. It will swap React components one by one as they change without forcing a full refresh. There will be times when that will be necessary but it will help a lot. Once you get used to hot loading, it is hard to live without.</p>
+<p>To enable hot loading for React, you should perform <code>npm i react-hot-loader --save-dev</code> and tweak the configuration as follows:</p>
+<p><strong>webpack.config.js</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> common = {
+  ...
+  <span class="hljs-built_in">module</span>: {
+    loaders: [
+      {
+        test: <span class="hljs-regexp">/\.css$/</span>,
+        loaders: [&apos;style&apos;, &apos;css&apos;],
+      }
+    ]
+  },
+};
+
+...
+
+<span class="hljs-keyword">if</span>(TARGET === &apos;build&apos;) {
+  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+    <span class="hljs-built_in">module</span>: {
+      loaders: [
+        {
+          test: <span class="hljs-regexp">/\.jsx?$/</span>,
+          loader: &apos;babel&apos;,
+          include: path.join(ROOT_PATH, &apos;app&apos;),
+        }
+      ]
+    },
+    plugins: [
+      ...
+    ]
+  });
+}
+
+<span class="hljs-keyword">if</span>(TARGET === &apos;dev&apos;) {
+  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+    entry: [
+      &apos;webpack-dev-server/client?http:<span class="hljs-comment">//&apos; + IP + &apos;:&apos; + PORT,</span>
+      &apos;webpack/hot/only-dev-server&apos;, <span class="hljs-comment">// only-dev-server!</span>
+    ],
+    <span class="hljs-built_in">module</span>: {
+      ...
+      loaders: [
+        {
+          test: <span class="hljs-regexp">/\.jsx?$/</span>,
+          loaders: [&apos;react-hot&apos;, &apos;babel&apos;],
+          include: path.join(ROOT_PATH, &apos;app&apos;),
+        }
+      ]
+    },
+  });
+}
+</code></pre>
+<p>Try hitting <code>npm start</code> again and modifying the component. Note what doesn&apos;t happen this time. There&apos;s no flash! It might take a while to sink in but in practice this is a powerful feature. Small things such as this add up and make you more effective.</p>
+<h2>Conclusion</h2>
+<p>You should understand how to set up React with Webpack now. In the process we saw how to develop Webpack configuration and learned a few new concepts. This is the way you work with Webpack. You&apos;ll find loaders as you require them and integrate them to your project.</p>
+<p>Now that we have a good development environment, we can focus on React development more fully. In the next chapter you will see how to implement a little Todo application. That will be improved in the subsequent chapters into a full blown Kanban table.</p>
+</div></div></div><noscript></noscript><div class="prevnext-pages"><a href="/webpack_react/linting_in_webpack" class="previous-page">Linting in Webpack</a><a href="/webpack_react/implementing_notes" class="next-page">Implementing a Basic Note App</a></div></main></div></body></html>

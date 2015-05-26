@@ -1,0 +1,183 @@
+<html><head><title>Asset Management / SurviveJS - Survive the jungles of JavaScript</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="/assets/img/favicon.png"><link rel="stylesheet" href="/assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><a class="nav__link" href="/">Home</a><a class="nav__link" href="/webpack_react">Table of Contents</a></nav></div><main role="main"><div class="post"><h1 class="post__heading">Asset Management</h1><div class="post__content"><div><p>Loading assets, ie. stylesheets, JavaScript and such, is one of the challenges you will encounter at some point. Nobody likes to load megabytes of JavaScript. Until HTTP/2 is here, you will want to avoid performing too many HTTP requests while loading. That is a certain way to make your application feel slow.</p>
+<p>There are multiple ways to work against this problem. We can for instance inline various assets and load them as a part of others. In case of small images, we can serve those as a part of CSS. The same goes for fonts. Or we can inline CSS as a part of markup. That is an approach that is becoming popular with React.</p>
+<p>In isomorphic applications the server can provide basic markup and initial data within HTML. That will help us to avoid JavaScript processing and several roundtrips as the data is already there.</p>
+<p>Unfortunately there is no single solution that fits all cases. Instead we&apos;ll show you several strategies you can try to apply based on the situation. Webpack is quite versatile in this regard. With a bit of configuration you can get complex setups done.</p>
+<h2>Inlining Images</h2>
+<p>If you load a lot of images in your CSS it is possible to automatically inline these images as Base64 strings to lower the number of requests required. This can be based on the size of the image. There is a balance of size of download and number of downloads that you have to figure out for your project, and Webpack makes that balance easy to adjust.</p>
+<h2>Installing the url-loader</h2>
+<p><code>npm install url-loader --save-dev</code> will install the loader that can convert resolved paths as Base64 strings. As mentioned in other sections of this cookbook Webpack will resolve &quot;url()&quot; statements in your CSS as any other require or import statements. This means that if we test on image file extensions for this loader we can run them through it.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
+
+<span class="hljs-keyword">var</span> config = {
+  entry: path.resolve(__dirname, &apos;app/main.js&apos;)
+  output: {
+    path: path.resolve(__dirname, &apos;build&apos;),
+    filename: &apos;bundle.js&apos;
+  },
+  <span class="hljs-built_in">module</span>: {
+    loaders: [{
+      test: <span class="hljs-regexp">/\.jsx$/</span>,
+      loader: &apos;jsx&apos;
+    }, {
+      test: <span class="hljs-regexp">/\.(png|jpg)$/</span>,
+      loader: &apos;url?limit=<span class="hljs-number">25000</span>&apos;
+    }]
+  }
+};
+</code></pre>
+<p>The limit is an argument passed to the url-loader. It tells it that images that er 25KB or smaller in size will be converted to a Base64 string and included in the CSS file where it is defined.</p>
+<h2>Inlining Fonts</h2>
+<p>Fonts can be really difficult to get right. First of all we have typically 4 different formats, but only one of them will be used by the respective browser. You do not want to inline all 4 formats, as that will just bloat your CSS file and in no way be an optimization.</p>
+<h3>Choose one format</h3>
+<p>Depending on your project you might be able to get away with one font format. If you exclude Opera Mini, all browsers support the .woff and .svg format. The thing is that fonts can look a little bit different in the different formats, on the different browsers. So try out .woff and .svg and choose the one that looks the best in all browsers.</p>
+<p>There are probably other strategies here too, so please share by creating an issue or pull request.</p>
+<h2>Doing the actual inlining</h2>
+<p>You do this exactly like you do when inlining images.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
+
+<span class="hljs-keyword">var</span> config = {
+  entry: path.resolve(__dirname, &apos;app/main.js&apos;)
+  output: {
+    path: path.resolve(__dirname, &apos;build&apos;),
+    filename: &apos;bundle.js&apos;
+  },
+  <span class="hljs-built_in">module</span>: {
+    loaders: [{
+      test: <span class="hljs-regexp">/\.jsx$/</span>,
+      loader: &apos;jsx&apos;
+    }, {
+      test: <span class="hljs-regexp">/\.woff$/</span>,
+      loader: &apos;url?limit=<span class="hljs-number">100000</span>&apos;
+    }]
+  }
+};
+</code></pre>
+<p>Just make sure you have a limit above the size of the fonts, or they will of course not be inlined.</p>
+<blockquote>
+<p>TBD: is there anything else that can/should be inlined?</p>
+</blockquote>
+<h3>CSS loading strategies</h3>
+<p>Depending on your application you might consider three main strategies. In addition to this you should consider including some of your basic CSS inlined with the initial payload (index.html). This will set the structure and maybe a loader while the rest of your application is downloading and executing.</p>
+<h3>All in one</h3>
+<p>In your main entry point, e.g. <code>app/main.js</code> you can load up your entire CSS for the whole project:</p>
+<p><em>app/main.js</em></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> &apos;./project-styles.css&apos;;
+<span class="hljs-comment">// Other JS code</span>
+</code></pre>
+<p>The CSS is included in the application bundle and does not need to download.</p>
+<h3>Lazy loading</h3>
+<p>If you take advantage of lazy loading by having multiple entry points to your application, you can include specific CSS for each of those entry points:</p>
+<p><em>app/main.js</em></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> &apos;./style.css&apos;;
+<span class="hljs-comment">// Other JS code</span>
+</code></pre>
+<p><em>app/entryA/main.js</em></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> &apos;./style.css&apos;;
+<span class="hljs-comment">// Other JS code</span>
+</code></pre>
+<p><em>app/entryB/main.js</em></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> &apos;./style.css&apos;;
+<span class="hljs-comment">// Other JS code</span>
+</code></pre>
+<p>You divide your modules by folders and include both CSS and JavaScript files in those folders. Again, the imported CSS is included in each entry bundle when running in production.</p>
+<h3>Component specific</h3>
+<p>With this strategy you create a CSS file for each component. It is common to namespace the CSS classes with the component name, thus avoiding some class of one component interfering with the class of an other.</p>
+<p>*app/components/MyComponent.css</p>
+<pre><code class="language-css">.MyComponent-wrapper {
+  background-color: <span class="hljs-comment">#EEE;</span>
+}
+</code></pre>
+<p><em>app/components/MyComponent.jsx</em></p>
+<pre><code>import &apos;./MyComponent.css&apos;;
+import React from &apos;react&apos;;
+
+<span class="hljs-built_in">export</span> default React.createClass({
+  render: <span class="hljs-function"><span class="hljs-title">function</span></span> () {
+    <span class="hljs-built_in">return</span> (
+      <div classname="MyComponent-wrapper">
+        <h1>Hello world</h1>
+      </div>
+    )
+  }
+});
+</code></pre>
+<h2>Using inline styles instead of stylesheets</h2>
+<p>With native React.js you do not use stylesheets at all, you only use the <em>style-attribute</em>. By defining your CSS as objects. Depending on your project, you might consider this as your CSS strategy.</p>
+<p><em>app/components/MyComponent.jsx</em></p>
+<pre><code class="language-javascript">import React from &apos;react&apos;;
+
+var style = {
+  backgroundColor: &apos;<span class="hljs-comment">#EEE&apos;</span>
+};
+
+<span class="hljs-built_in">export</span> default React.createClass({
+  render: <span class="hljs-function"><span class="hljs-title">function</span></span> () {
+    <span class="hljs-built_in">return</span> (
+      <div style="{style}">
+        <h1>Hello world</h1>
+      </div>
+    )
+  }
+});
+</code></pre>
+<h2>Loading LESS or SASS</h2>
+<p>If you want to use compiled CSS, there are two loaders available for you. The <strong>less-loader</strong> and the <strong>sass-loader</strong>. Depending on your preference, this is how you set it up.</p>
+<h2>Installing and configuring the loader</h2>
+<p><code>npm install less-loader</code> or <code>npm install sass-loader</code>.</p>
+<p><em>webpack.config.js</em></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
+<span class="hljs-keyword">var</span> config = {
+  entry: path.resolve(__dirname, &apos;app/main.js&apos;)
+  output: {
+    path: path.resolve(__dirname, &apos;build&apos;),
+    filename: &apos;bundle.js&apos;
+  },
+  <span class="hljs-built_in">module</span>: {
+    loaders: [{
+      test: <span class="hljs-regexp">/\.jsx$/</span>,
+      loader: &apos;jsx&apos;
+    },
+
+    <span class="hljs-comment">// LESS</span>
+    {
+      test: <span class="hljs-regexp">/\.less$/</span>,
+      loader: &apos;style!css!less&apos;
+    },
+
+    <span class="hljs-comment">// SASS</span>
+    {
+      test: <span class="hljs-regexp">/\.scss$/</span>,
+      loader: &apos;style!css!sass&apos;
+    }]
+  }
+};
+</code></pre>
+<h2>What about imports in LESS and SASS?</h2>
+<p>If you import one LESS/SASS file from an other, use the exact same pattern as anywhere else. Webpack will dig into these files and figure out the dependencies.</p>
+<pre><code class="language-less">@<span class="hljs-keyword">import</span> &quot;./variables.less&quot;;
+</code></pre>
+<p>You can also load LESS files directly from your node_modules directory.</p>
+<pre><code class="language-less">$<span class="hljs-keyword">import</span> &quot;~bootstrap/less/bootstrap&quot;;
+</code></pre>
+<p><strong>Note!</strong> Webpack is currently unable to resolve SASS import statements, but it will very soon: <a href="https://github.com/jtangelder/sass-loader/issues/31">issue 31</a></p>
+<blockquote>
+<p>TBD: hopefully this will be resolved before publication</p>
+</blockquote>
+<blockquote>
+<p>TBD: remember to mention that loaders operate on regex input</p>
+</blockquote>
+<h2>Optimizing Caching</h2>
+<p>When users hit the URL of your application they will need to download different assets. CSS, JavaScript, HTML, images and fonts. The great thing about Webpack is that you can stop thinking how you should download all these assets. You can do it through JavaScript.</p>
+<blockquote>
+<p>OccurenceOrderPlugin</p>
+</blockquote>
+<h2>Lazy Loading Entry Points</h2>
+<p>TBD</p>
+<h2>Creating a Common Bundle</h2>
+<p>TBD</p>
+<h2>Understanding Chunks</h2>
+<ul>
+<li>TBD: Explain how webpack thinks chunks and not files</li>
+<li>TBD: What are files to load? And what does webpack create for you? And how?</li>
+</ul>
+</div></div></div><noscript></noscript><div class="prevnext-pages"><a href="/webpack_react/polishing_kanban" class="previous-page">Polishing Kanban</a><a href="/webpack_react/deploying_applications" class="next-page">Deploying Applications</a></div></main></div></body></html>

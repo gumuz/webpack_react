@@ -1,0 +1,231 @@
+<html><head><title>Deploying Applications / SurviveJS - Survive the jungles of JavaScript</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="/assets/img/favicon.png"><link rel="stylesheet" href="/assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><a class="nav__link" href="/">Home</a><a class="nav__link" href="/webpack_react">Table of Contents</a></nav></div><main role="main"><div class="post"><h1 class="post__heading">Deploying Applications</h1><div class="post__content"><div><p>If you were developing a native application you would probably bundle everything into one file and deploy it to some application store. Deploying to the web requires more considerations. Though Webpack lets you bundle your application into one file, including CSS, images, fonts etc., Webpack can also help you optimize how the browser grabs the assets of your application to give the best possible user experience.</p>
+<p>As there is no single right way to do this, we will cover a few different strategies you can use to approach this vital part. The strategy you&#x2019;ll want to use depends entirely on your goals. With Webpack you can end up with something very highly optimized. This incurs some extra complexity to the configuration but your users will be very glad you gave that extra effort.</p>
+<p>We&#x2019;ll start with the simplest case possible, a single production bundle. We&#x2019;ll just minify the assets and hope for the best. This approach is simple but doesn&#x2019;t scale that well. Your users will probably meet the infamous &#x201C;white screen of bad user experience&#x201D;, if only for a few hundred milliseconds, waiting for your application to load.</p>
+<p>This can be improved by splitting the bundles. The external dependencies of your application, like React, Underscore, Bootstrap etc. will likely require less updates than the core logic. We can separate them into a bundle separate from the one containing your logic and benefit from caching using hashing. Now you can deploy updates to the application logic and your users do not have to download the bundle containing the external dependencies . This isn&#x2019;t ideal but it is better.</p>
+<p>If we are dealing with an app that has multiple pages, we can move onto using a bundle per page. Why eat the whole pie when you only want a piece? This translates to a more concrete example where you only load assets needed to show the &#x201C;profile&#x201D; page. When the user clicks &#x201C;admin&#x201D; new assets will be loaded to display that page. This gives you a faster initial load of your application, but gives some latency when moving to pages that needs to download more assets. Webpack handles all this for you and we will show you how.</p>
+<p>There is one more thing we can do. We can turn our application into an isomorphic one. Back in the day we just served HTML and sprinkled a bit of logic on top of it using JavaScript. Then at some point we started generating the HTML on the client using JavaScript and templates. Single Page Apps were born. This simplified model of app development came with a cost.</p>
+<p>Having server rendered HTML available is beneficial because the users will not get a blank page while the JavaScript is loading. Web crawlers can benefit from this and as a result your SEO rankings are improved. The app is more performant and easier to consume. In addition we can preload some data to avoid queries. We will demonstrate this approach using React.</p>
+<h2>Creating a Production Configuration</h2>
+<p>Creating a production configuration is not that much different from creating configuration for development. We&apos;ll use different paths for the output and avoid development workflow specific configuration. It is also common to add caching configuration to your production configuration.</p>
+<p>To run the configuration and create a distribution for deployment we create a script. In addition to our existing <code>npm start</code> we will add <code>npm run prod</code>. What differs with our new production script is that it does not use the <code>webpack-dev-server</code>. We will only use webpack to produce a distribution. To make this work, we&#x2019;ll need to tweak our <code>package.json</code> like this:</p>
+<pre><code>&quot;scripts&quot;: {
+  &quot;dev&quot;: &quot;webpack-dev-server --devtool <span class="hljs-built_in">eval</span> --progress --colors --hot --content-base build&quot;,
+  &quot;prod&quot;: &quot;NODE_ENV=production webpack -p --config webpack.production.js&quot;
+}
+</code></pre>
+<p>In <code>prod</code> we&#x2019;ll make sure <code>NODE_ENV</code> PATH variable is set to production. This way the libraries we are using can use whatever optimizations they might have in store. For instance in case of React this would disable certain checks and improve performance. The <code>-p</code> argument puts Webpack in production mode where it does its optimizations, like minification.</p>
+<p>We can achieve the same effect in our production configuration like this in case we want to simplify our <code>scripts</code> configuration:</p>
+<pre><code class="language-javascript">...
+plugins: [
+  <span class="hljs-keyword">new</span> webpack.DefinePlugin({
+    &apos;process.env&apos;: {
+       &apos;NODE_ENV&apos;: <span class="hljs-built_in">JSON</span>.stringify(&apos;production&apos;),
+    }
+  }),
+  ...
+]
+</code></pre>
+<p>It is more verbose but on the other hand at least now it&#x2019;s a part of the configuration itself.</p>
+<h2>Single Bundle</h2>
+<p>If you are developing a simple application, or a demo, you can get away with a single bundle. It will contain all the JavaScript your app needs to run. In addition it will contain assets needed by your app including CSS, fonts and even images. As a result the loading time will be higher. Sometimes simple is beautiful, though.</p>
+<p>The gotcha with this approach is that the generated bundle can be quite big. In addition if you make any changes to it, you will force your users to download everything again. We cannot leverage any form of caching effectively. That said, it&#x2019;s a viable approach in the simplest of cases.</p>
+<p>Given the following project file structure:</p>
+<ul>
+<li>app/main.js</li>
+<li>dist/</li>
+<li>package.json</li>
+<li>webpack.production.js</li>
+</ul>
+<p>You can create a single bundle with the following configuration:</p>
+<p><em>webpack.production.js</em></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
+
+<span class="hljs-built_in">module</span>.exports = {
+  entry: path.resolve(__dirname, &apos;app/main.js&apos;),
+  output: {
+    path: path.resolve(__dirname, &apos;dist&apos;),
+    filename: &apos;bundle.js&apos;,
+  }
+};
+</code></pre>
+<p>Run <code>npm run prod</code> in the root of the project and a <code>bundle.js</code> file will be available in the <code>./dist</code> folder.</p>
+<h2>Splitting App and Vendors</h2>
+<p>You will want to split app and vendors when your project consists of relatively large dependencies, compared to the project itself. This is beneficial when you do bug fixes or other changes to the application, as users do not need to download the vendors bundle again. The initial loading time of your application is not optimized compared to a single bundle, actually it is a bit slower because now you have to set up two HTTP requests to get the required assets. As with everything, it is about balance.</p>
+<blockquote>
+<p>Generally the more HTTP requests you have to fire, the slower things will get. Even though request payload itself might be small, each request comes with overhead. The overhead adds up quickly. This is the reason why clever bundling approaches are required. The situation is likely to change as HTTP/2 gets adopted. The situation is quite opposite there.</p>
+</blockquote>
+<p>Given the following project file structure:</p>
+<ul>
+<li>app/main.js</li>
+<li>dist/</li>
+<li>node_modules/react</li>
+<li>package.json</li>
+<li>webpack.production.js</li>
+</ul>
+<p>You can create a configuration like this:</p>
+<p><strong>webpack.production.js</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
+<span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(&apos;webpack&apos;);
+<span class="hljs-keyword">var</span> nodeModulesDir = path.resolve(__dirname, &apos;node_modules&apos;);
+
+<span class="hljs-built_in">module</span>.exports = {
+  entry: {
+    app: [path.resolve(__dirname, &apos;app/main.js&apos;)],
+    vendors: [&apos;react&apos;]
+  },
+  output: {
+    path: path.resolve(__dirname, &apos;dist&apos;),
+    filename: &apos;app.js&apos;
+  },
+  plugins: [
+    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(&apos;vendors&apos;, &apos;vendors.js&apos;)
+  ]
+};
+</code></pre>
+<p>This configuration will create two files in the <code>dist/</code> folder. <strong>app.js</strong> and <strong>vendors.js</strong>.</p>
+<blockquote>
+<p>Remember to add both files to your HTML file, or you will get the error: <code>Uncaught ReferenceError: webpackJsonp is not defined</code>.</p>
+</blockquote>
+<p>Before we explain how the CommonsChunkPlugin works we should briefly look back to &quot;Understanding Webpack&quot;. In the configuration above we have two <strong>entry point chunks</strong>, app and vendors. App consists of only one chunk and its children. That is our <em>main.js</em> file. The vendors entry point chunk also consists of only one chunk and its children. This is React itself. So an entry point chunk can be a merge of multiple chunks, but in this case it is only one each.</p>
+<p>These two entry chunks and their individual children chunks will be bundled into two different JavaScript files, <strong>app.js</strong> and <strong>vendors.js</strong>. Both of the bundles has <code>react</code> as either part of the entry chunk itself, like vendors, or it is required with a <code>var React = require(&apos;react&apos;)</code> statement, like in app.</p>
+<p>Understanding this, you can understand how the CommonsChunkPlugin works. In the example above, if we did not configure a plugin at all React would be included in both entry chunks, app and vendors, and bundled into both the <em>app.js</em> file and <em>vendors.js</em> file. By using a plugin we can tell Webpack that the chunks included in vendors are common.</p>
+<p>That means when an other entry chunk, like app in this example, tries to require react it will first check  entry chunks defined as common. In our example, using the CommonsChunkPlugin, we say that the vendors entry chunk is common and when it is bundled, call that file <em>vendors.js</em>. The result of this is that we will now get two bundles, app.js and vendors.js, where app.js grabs react from vendors.js.</p>
+<h2>Multiple Bundles</h2>
+<p>Let&apos;s say you are working on a big project and you have a family of applications. These applications have different functionality, but they still share a lot of code. With Webpack you can create completely separate bundles that share a single common bundle. How much should be shared is something Webpack can optimize for you.</p>
+<p>Given the following project file structure:</p>
+<ul>
+<li>appA/main.js</li>
+<li>appB/main.js</li>
+<li>dist/</li>
+<li>node_modules/react</li>
+<li>package.json</li>
+<li>webpack.production.js</li>
+</ul>
+<p><strong>webpack.production.js</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
+<span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(&apos;webpack&apos;);
+<span class="hljs-keyword">var</span> nodeModulesDir = path.resolve(__dirname, &apos;node_modules&apos;);
+
+<span class="hljs-built_in">module</span>.exports = {
+  entry: {
+    appA: path.resolve(__dirname, &apos;appA/main.js&apos;),
+    appB: path.resolve(__dirname, &apos;appB/main.js&apos;)
+  },
+  output: {
+    path: path.resolve(__dirname, &apos;dist&apos;),
+    filename: &apos;[name].js&apos; <span class="hljs-comment">// Notice we use a variable</span>
+  },
+  plugins: [
+    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(&apos;common&apos;, &apos;common.js&apos;)
+  ]
+};
+</code></pre>
+<p>This configuration will create three files in the <code>dist/</code> folder. <strong>appA.js</strong>, <strong>appB.js</strong> and <strong>common.js</strong>. There are two things you should notice here:</p>
+<ol>
+<li>
+<p>We are using a variable in our output configuration. Since we have multiple entries we want to produce one file for each of them, using the name of the entry as the name of the file.</p>
+</li>
+<li>
+<p>The CommonsChunkPlugin is now used a bit differently than in the previous strategy. Instead of pointing to an existing entry chunk, we create a brand new chunk called <em>common</em>. Its file name will be <em>common.js</em>. By default Webpack will make sure that if one entry chunk or its children require a chunk that also the other entry chunk or its children require, it will be moved over to the common chunk. This effectively moves vendors and shared chunks to the common bundle.</p>
+</li>
+</ol>
+<h2>Lazy Loaded Chunks</h2>
+<p>It is also possible to lazy load chunks. This means that you load parts of your application as they are requested. A typical scenario for this would be that your users only visits specific parts of the application. And an example of that would be twitter.com. You do not always visit your profile page, so why load the code for that? Here is a summary of requirements.</p>
+<p>Given the following project file structure:</p>
+<ul>
+<li>app/main.js</li>
+<li>app/Profile.js</li>
+<li>dist/</li>
+<li>node_modules/react</li>
+<li>package.json</li>
+<li>webpack.production.js</li>
+</ul>
+<p><strong>webpack.production.js</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
+<span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(&apos;webpack&apos;);
+<span class="hljs-keyword">var</span> nodeModulesDir = path.resolve(__dirname, &apos;node_modules&apos;);
+
+<span class="hljs-built_in">module</span>.exports = {
+  entry: {
+    app: path.resolve(__dirname, &apos;app/main.js&apos;),
+    vendors: [&apos;react&apos;]
+  },
+  output: {
+    path: path.resolve(__dirname, &apos;dist&apos;),
+    filename: &apos;app.js&apos;
+  },
+  <span class="hljs-built_in">module</span>: {
+    loaders: [{
+      test: <span class="hljs-regexp">/\.js$/</span>,
+      exclude: [nodeModulesDir],
+      loader: &apos;babel&apos;
+    }]
+  },
+  plugins: [
+    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(&apos;vendors&apos;, &apos;vendors.js&apos;)
+  ]
+};
+</code></pre>
+<p>So we are pretty much back where we started with a split application and vendors bundle. You do not really define your lazy dependencies in a configuration, Webpack automatically understands them when analyzing your code. So let us see how we would lazy load a <strong>profile page</strong>:</p>
+<p><strong>main.js (Using ES6 syntax)</strong></p>
+<pre><code class="language-javascript">import React from &apos;react&apos;;
+import Feed from &apos;./Feed.js&apos;;
+
+class App extends React.Component {
+  <span class="hljs-function"><span class="hljs-title">constructor</span></span>() {
+    this.state = { currentComponent: Feed };
+  }
+  <span class="hljs-function"><span class="hljs-title">openProfile</span></span>() {
+    require.ensure([], () =&gt; {
+      var Profile = require(&apos;./Profile.js&apos;);
+      this.setState({
+        currentComponent: Profile
+      });
+    });
+  }
+  <span class="hljs-function"><span class="hljs-title">render</span></span>() {
+   <span class="hljs-built_in">return</span> (
+      <span class="hljs-built_in">return</span> <div>{this.state.currentComponent()}</div>
+    );
+  }
+}
+React.render(<app>, document.body);
+</app></code></pre>
+<p>So this is just an example. You would probably hook this up to a router, but the important part is using <code>require.ensure</code>. When Webpack finds that statement it will automatically create a chunk that can be lazy loaded.</p>
+<p><strong>What is the array on the first argument?</strong>: If you try to lazy load a chunk that depends on an other lazy loaded chunk you can set it as a dependency in the array. Just type in the path to the chunk; e.g. <code>[&apos;./FunnyButton.js&apos;]</code></p>
+<h2>Isomorphic App</h2>
+<p>So the great thing about React is that it runs on the server too. But that does not mean you can just create any app and run it on the server. You have to make some decisions on the architecture. The reason is that even though React and the components run on the server, you might have dependencies in those components that does not run on the server.</p>
+<h3>Injecting state</h3>
+<p>One of the most important decisions you make is to inject the state of your application through the top component. This basically means that your components does not have any external dependencies at all. All they need to know comes through this injected state.</p>
+<p>This cookbook is not about isomorphic apps, but let us take a look at an example. We will not use ES6 syntax here because Node JS does not support it yet.</p>
+<p><strong>main.js (client)</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">var</span> React = <span class="hljs-built_in">require</span>(&apos;react&apos;);
+<span class="hljs-keyword">var</span> AppState = <span class="hljs-built_in">require</span>(&apos;./client/AppState.js&apos;);
+<span class="hljs-keyword">var</span> App = <span class="hljs-built_in">require</span>(&apos;./App.js&apos;);
+
+React.render(<app state="{AppState}/">, <span class="hljs-built_in">document</span>.body);
+</app></code></pre>
+<p><strong>router.js (server)</strong></p>
+<pre><code class="language-javascript">var React = require(&apos;react&apos;);
+var App = require(&apos;./App.js&apos;);
+var AppState = require(&apos;./server/AppState.js&apos;);
+var index = &apos;<!DOCTYPE html><html><head></head><body>{{component}}</body></html>&apos;;
+
+app.get(&apos;/&apos;, <span class="hljs-keyword">function</span> (req, res) {
+  var componentHtml = React.renderToString(App({state: AppState}));
+  var html = index.replace(&apos;{{component}}&apos;, componentHtml);
+  res.type(&apos;html&apos;);
+  res.send(html);
+});
+</code></pre>
+<p>So this was a very naive and simple way of showing it, but what you should notice here is that we use the same <strong>App.js</strong> file on the client and server, but we have two different ways of producing the state.</p>
+<h3>How can I attach hashes to my production output?</h3>
+<p>TODO: explain hashing in this chapter</p>
+<ul>
+<li>Use <code>[hash]</code>. Example: <code>&apos;assets/bundle.[hash].js&apos;</code></li>
+</ul>
+<p>The benefit of this is that this will force the client to reload the file. There is more information about <code>[hash]</code> at <a href="http://webpack.github.io/docs/long-term-caching.html">the long term caching</a> section of the official documentation.</p>
+<blockquote>
+<p>Is it possible to change the hash only if bundle changed?</p>
+</blockquote>
+</div></div></div><noscript></noscript><div class="prevnext-pages"><a href="/webpack_react/asset_management" class="previous-page">Asset Management</a><a href="/webpack_react/debugging_webpack" class="next-page">Debugging Webpack</a></div></main></div></body></html>
