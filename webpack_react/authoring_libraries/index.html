@@ -27,10 +27,10 @@
 <pre><code class="language-json">{
   &quot;name&quot;: &quot;react-component-boilerplate&quot;, -- Name <span class="hljs-keyword">of</span> the project
   &quot;description&quot;: &quot;Boilerplate <span class="hljs-keyword">for</span> React.js components&quot;, -- Brief description
-  &quot;author&quot;: &quot;Juho Vepsalainen <email goes="" here="">&quot;, -- Who is the author + optional email
+  &quot;author&quot;: &quot;Juho Vepsalainen &lt;email goes here&gt;&quot;, -- Who is the author + optional email
   &quot;user&quot;: &quot;bebraw&quot;, -- This is boilerplate specific (not used by npm)
   &quot;version&quot;: &quot;<span class="hljs-number">0.0</span>.0&quot;, -- Version <span class="hljs-keyword">of</span> the package
-  &quot;scripts&quot;: { -- <span class="hljs-string">`npm run <name>`</name></span>
+  &quot;scripts&quot;: { -- <span class="hljs-string">`npm run &lt;name&gt;`</span>
     &quot;start&quot;: &quot;TARGET=dev node dev-server/server.js&quot;,
     &quot;test&quot;: &quot;jest &amp;&amp; npm run check-style &amp;&amp; npm run lint&quot;,
     &quot;gh-pages&quot;: &quot;TARGET=gh-pages webpack --config ./config&quot;,
@@ -42,7 +42,7 @@
     &quot;prepublish&quot;: &quot;babel ./lib --out-dir ./dist-modules&quot;,
     &quot;version&quot;: &quot;npm run test &amp;&amp; npm run dist &amp;&amp; npm version \&quot;$@\&quot; &amp;&amp; npm run gh-pages &amp;&amp; npm run deploy-gh-pages&quot;
   },
-  -- Entry point <span class="hljs-keyword">for</span> terminal (ie. <package name="">)
+  -- Entry point <span class="hljs-keyword">for</span> terminal (ie. &lt;package name&gt;)
   -- Don&apos;t set <span class="hljs-keyword">this</span> unless you intend to allow cli usage
   &quot;bin&quot;: &quot;./index.js&quot;,
   -- Entry point (defaults to index.js)
@@ -94,7 +94,7 @@
     ]
   }
 }
-</package></email></code></pre>
+</code></pre>
 <p>As you can see <code>package.json</code> can contain a lot of information. You can attach non-npm specific metadata there that can be used by tooling.</p>
 <h2>npm Workflow</h2>
 <p>Working with npm is surprisingly simple. Provided you have created an account on the service and logged in once using <a href="https://docs.npmjs.com/cli/adduser">npm adduser</a>, all you need to do is to hit <code>npm publish</code>. Given that the package name is still available, you should have something out there!</p>

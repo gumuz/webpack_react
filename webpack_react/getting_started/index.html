@@ -75,17 +75,17 @@ bundle.js  1.74 kB       0  [emitted]  main
 <h2>Setting Up Entry Point</h2>
 <p>In order to actually use our bundle, we&apos;ll need to define the last missing bit, <em>index.html</em>. Here&apos;s a starting point:</p>
 <p><strong>build/index.html</strong></p>
-<pre><code class="language-html"><!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-  </head>
-  <body>
-    <div id="app"></div>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;/&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
 
-    <script src="bundle.js"></script>
-  </body>
-</html>
+    &lt;script src=&quot;bundle.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
 </code></pre>
 <p>We simply just point at the bundle via <em>script</em> <code>src</code>, nothing more than that. Generally this is the way you work with Webpack. You figure out what you want to load, find a loader and hook it up. Sometimes you&apos;ll need to implement loaders yourself but we&apos;ll cover that later.</p>
 <h2>Running the Application</h2>

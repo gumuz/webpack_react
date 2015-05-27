@@ -110,14 +110,14 @@ import tree from &apos;./tree&apos;;
   }
   <span class="hljs-function"><span class="hljs-title">render</span></span>() {
     <span class="hljs-built_in">return</span> (
-      <div classname="app">
-        <div classname="controls">
-          <button onclick="{this.laneActions.create.bind(null," 'new="" lane')}="">
+      &lt;div className=&apos;app&apos;&gt;
+        &lt;div className=&apos;controls&apos;&gt;
+          &lt;button onClick={this.laneActions.create.bind(null, &apos;New lane&apos;)}&gt;
             Add lane
-          </button>
-        </div>
-        <lanes>
-      </lanes></div>
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;Lanes /&gt;
+      &lt;/div&gt;
     );
   }
 }
@@ -189,11 +189,11 @@ import {branch} from &apos;baobab-react/decorators&apos;;
     var lanes = this.props.lanes;
 
     <span class="hljs-built_in">return</span> (
-      <div classname="lanes">
+      &lt;div className=&apos;lanes&apos;&gt;
         {lanes.map((lane, i) =&gt;
-          <lane key="{&apos;lane&apos;" +="" i}="" lanecursor="{[&apos;lanes&apos;," i]}="">
+          &lt;Lane key={&apos;lane&apos; + i} laneCursor={[&apos;lanes&apos;, i]} /&gt;
         )}
-      </lane></div>
+      &lt;/div&gt;
     );
   }
 }
@@ -229,15 +229,16 @@ import noteActions from &apos;../actions/NoteActions&apos;;
     var lane = this.props.lane;
 
     <span class="hljs-built_in">return</span> (
-      <div classname="lane">
-        <div classname="lane-header">
-          <div classname="lane-name">{lane.name}</div>
-          <div classname="lane-controls">
-            <button classname="lane-add-note" onclick="{this.laneActions.create.bind(null," 'new="" task')}="">+</button>
-          </div>
-        </div>
-        <notes notescursor="{laneCursor.concat([&apos;notes&apos;])}">
-      </notes></div>
+      &lt;div className=&apos;lane&apos;&gt;
+        &lt;div className=&apos;lane-header&apos;&gt;
+          &lt;div className=&apos;lane-name&apos;&gt;{lane.name}&lt;/div&gt;
+          &lt;div className=&apos;lane-controls&apos;&gt;
+            &lt;button className=&apos;lane-add-note&apos;
+              onClick={this.laneActions.create.bind(null, &apos;New task&apos;)}&gt;+&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;Notes notesCursor={laneCursor.concat([&apos;notes&apos;])} /&gt;
+      &lt;/div&gt;
     );
   }
 }
@@ -274,11 +275,13 @@ import noteActions from &apos;../actions/NoteActions&apos;;
     var notes = this.props.notes;
 
     <span class="hljs-built_in">return</span> (
-      <ul classname="notes">{notes.map((note, i) =&gt;
-        <li key="{&apos;note&apos;" +="" i}="">
-          <note task="{note.task}" onedit="{this.itemEdited.bind(this," i)}="">
-        </note></li>
-      )}</ul>
+      &lt;ul className=&apos;notes&apos;&gt;{notes.map((note, i) =&gt;
+        &lt;li key={&apos;note&apos; + i}&gt;
+          &lt;Note
+            task={note.task}
+            onEdit={this.itemEdited.bind(this, i)} /&gt;
+        &lt;/li&gt;
+      )}&lt;/ul&gt;
     );
   }
   itemEdited(id, task) {
@@ -351,7 +354,7 @@ import noteActions from &apos;../actions/NoteActions&apos;;
       }, <span class="hljs-literal">false</span>);
     }
     render() {
-      <span class="hljs-keyword">return</span> <component {...this.props}="" {...this.state}="">;
+      <span class="hljs-keyword">return</span> &lt;Component {...this.props} {...this.state} /&gt;;
     }
   };
 };
@@ -363,7 +366,7 @@ import noteActions from &apos;../actions/NoteActions&apos;;
   <span class="hljs-keyword">return</span> (target) =&gt; root(target, tree, storage, storageName);
 };
 
-</component></code></pre>
+</code></pre>
 <p>The nice thing about our implementation is that you can apply the decorator in any part of your tree, not just the root as we are doing here. So in case you wanted to persist just certain view within a more complex application, this could do it.</p>
 <h2>Removing Lanes</h2>
 <p>TODO</p>

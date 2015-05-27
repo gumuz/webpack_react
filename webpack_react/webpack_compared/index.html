@@ -16,7 +16,7 @@
       }
     },
     watch: {
-      files: [&apos;<%= jshint.files="" %="">&apos;],
+      files: [&apos;&lt;%= jshint.files %&gt;&apos;],
       tasks: [&apos;jshint&apos;]
     }
   });
@@ -26,7 +26,7 @@
 
   grunt.registerTask(&apos;<span class="hljs-keyword">default</span>&apos;, [&apos;jshint&apos;]);
 };
-</%=></code></pre>
+</code></pre>
 <p>In this sample we define two basic tasks related to <code>jshint</code>, a linting tool that helps you spot possible problem spots at your source. We have a standalone task for running the tool against our source. In addition we have a watcher based task. If we run it, we&apos;ll get warnings interactively at our terminal as we edit.</p>
 <p>In practice you would have a lot of small tasks such as these for various purposes such as building the project. The example shows well how these tasks are constructed. An important part of the power of Grunt is that it hides a lot of the wiring from you. Taken too far this can get problematic though as you don&apos;t understand well enough what&apos;s going on under the hood.</p>
 <p>T&gt; Note that <a href="https://www.npmjs.com/package/grunt-webpack">grunt-webpack</a> plugin allows you to use Webpack in Grunt environment. You can leave the heavy lifting to Webpack while utilizing the Grunt plugins you are familiar with.</p>

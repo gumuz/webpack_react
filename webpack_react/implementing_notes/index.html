@@ -13,13 +13,13 @@
   }];
 
   <span class="hljs-built_in">return</span> (
-    <div>
-      <ul>{notes.map((note, i) =&gt;
-        <li key="{&apos;note&apos;" +="" i}="">
-          <note task="{note.task}">
-        </note></li>
-      )}</ul>
-    </div>
+    &lt;div&gt;
+      &lt;ul&gt;{notes.map((note, i) =&gt;
+        &lt;li key={&apos;note&apos; + i}&gt;
+          &lt;Note task={note.task} /&gt;
+        &lt;/li&gt;
+      )}&lt;/ul&gt;
+    &lt;/div&gt;
   );
 }
 </code></pre>
@@ -28,7 +28,7 @@
 <p>If everything went correctly, you should see a list with three <code>Learn Webpack</code> items on it. That&apos;s almost nice. The problem is that we haven&apos;t taken <code>task</code> property in count at <code>Note</code>. We&apos;ll need to tweak its implementation like this:</p>
 <p><strong>app/components/Note.jsx</strong></p>
 <pre><code class="language-javascript"><span class="hljs-function"><span class="hljs-title">render</span></span>() {
-  <span class="hljs-built_in">return</span> <div>{this.props.task}</div>;
+  <span class="hljs-built_in">return</span> &lt;div&gt;{this.props.task}&lt;/div&gt;;
 }
 </code></pre>
 <p>As you can see the property we passed to our component gets mapped to <code>this.props</code>. After that it is just a matter of showing it wherever we like.</p>
@@ -45,11 +45,11 @@ import Note from &apos;./Note&apos;;
     var notes = this.props.items;
 
     <span class="hljs-built_in">return</span> (
-      <ul classname="notes">{notes.map((note, i) =&gt;
-        <li classname="note" key="{&apos;note&apos;" +="" i}="">
-          <note task="{note.task}">
-        </note></li>
-      )}</ul>
+      &lt;ul className=&apos;notes&apos;&gt;{notes.map((note, i) =&gt;
+        &lt;li className=&apos;note&apos; key={&apos;note&apos; + i}&gt;
+          &lt;Note task={note.task} /&gt;
+        &lt;/li&gt;
+      )}&lt;/ul&gt;
     );
   }
 }
@@ -64,9 +64,9 @@ import Note from &apos;./Note&apos;;
   ...
 
   <span class="hljs-built_in">return</span> (
-    <div>
-      <notes items="{notes}">
-    </notes></div>
+    &lt;div&gt;
+      &lt;Notes items={notes} /&gt;
+    &lt;/div&gt;
   );
 }
 ...
@@ -80,10 +80,10 @@ import Note from &apos;./Note&apos;;
   ...
 
   <span class="hljs-built_in">return</span> (
-    <div>
-      <button onclick="{this.addItem.bind(this)}">+</button>
-      <notes items="{notes}">
-    </notes></div>
+    &lt;div&gt;
+      &lt;button onClick={this.addItem.bind(this)}&gt;+&lt;/button&gt;
+      &lt;Notes items={notes} /&gt;
+    &lt;/div&gt;
   );
 }
 <span class="hljs-function"><span class="hljs-title">addItem</span></span>() {
@@ -143,14 +143,14 @@ render() {
     var task = this.props.task;
 
     <span class="hljs-built_in">return</span> (
-      <div>{
+      &lt;div&gt;{
         edited
-        ? <input <span="" class="hljs-built_in">type=&apos;text&apos;
+        ? &lt;input <span class="hljs-built_in">type</span>=&apos;text&apos;
           defaultValue={task}
           onBlur={this.finishEdit.bind(this)}
           onKeyPress={this.checkEnter.bind(this)}/&gt;
-        : <div onclick="{this.edit.bind(this)}">{task}</div>
-      }</div>
+        : &lt;div onClick={this.edit.bind(this)}&gt;{task}&lt;/div&gt;
+      }&lt;/div&gt;
     );
   }
   <span class="hljs-function"><span class="hljs-title">edit</span></span>() {
@@ -177,7 +177,9 @@ render() {
 <p><strong>app/components/App.jsx</strong></p>
 <pre><code class="language-javascript">render() {
   ...
-  <notes items="{notes}" onedit="{&lt;span" class="hljs-keyword">this.itemEdited.bind(<span class="hljs-keyword">this</span>)} /&gt;
+  &lt;Notes
+    items={notes}
+    onEdit={<span class="hljs-keyword">this</span>.itemEdited.bind(<span class="hljs-keyword">this</span>)} /&gt;
   ...
 }
 itemEdited(i, task) {
@@ -189,13 +191,15 @@ itemEdited(i, task) {
     notes: notes
   });
 }
-</notes></code></pre>
+</code></pre>
 <p>We also need to tweak <code>Notes</code> like this:</p>
 <p><strong>app/components/Notes.jsx</strong></p>
 <pre><code class="language-javascript">...
-<note task="{note.task}" onedit="{&lt;span" class="hljs-keyword">this.props.onEdit.bind(<span class="hljs-keyword">this</span>, i)} /&gt;
+&lt;Note
+  task={note.task}
+  onEdit={<span class="hljs-keyword">this</span>.props.onEdit.bind(<span class="hljs-keyword">this</span>, i)} /&gt;
 ...
-</note></code></pre>
+</code></pre>
 <p>As you can see the nested hierarchy is starting to cause some subtle problems. We&apos;ll fix these later. Now we just want to get something to work. You should be able to edit todos now.</p>
 <h2>Removing Notes</h2>
 <p>We are still missing one vital functionality. It would be nice to be able to remove notes. We can achieve this easily by extending edit.</p>

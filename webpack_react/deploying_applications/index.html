@@ -185,12 +185,12 @@ class App extends React.Component {
   }
   <span class="hljs-function"><span class="hljs-title">render</span></span>() {
    <span class="hljs-built_in">return</span> (
-      <span class="hljs-built_in">return</span> <div>{this.state.currentComponent()}</div>
+      <span class="hljs-built_in">return</span> &lt;div&gt;{this.state.currentComponent()}&lt;/div&gt;
     );
   }
 }
-React.render(<app>, document.body);
-</app></code></pre>
+React.render(&lt;App/&gt;, document.body);
+</code></pre>
 <p>So this is just an example. You would probably hook this up to a router, but the important part is using <code>require.ensure</code>. When Webpack finds that statement it will automatically create a chunk that can be lazy loaded.</p>
 <p><strong>What is the array on the first argument?</strong>: If you try to lazy load a chunk that depends on an other lazy loaded chunk you can set it as a dependency in the array. Just type in the path to the chunk; e.g. <code>[&apos;./FunnyButton.js&apos;]</code></p>
 <h2>Isomorphic App</h2>
@@ -203,13 +203,13 @@ React.render(<app>, document.body);
 <span class="hljs-keyword">var</span> AppState = <span class="hljs-built_in">require</span>(&apos;./client/AppState.js&apos;);
 <span class="hljs-keyword">var</span> App = <span class="hljs-built_in">require</span>(&apos;./App.js&apos;);
 
-React.render(<app state="{AppState}/">, <span class="hljs-built_in">document</span>.body);
-</app></code></pre>
+React.render(&lt;App state={AppState}/&gt;, <span class="hljs-built_in">document</span>.body);
+</code></pre>
 <p><strong>router.js (server)</strong></p>
 <pre><code class="language-javascript">var React = require(&apos;react&apos;);
 var App = require(&apos;./App.js&apos;);
 var AppState = require(&apos;./server/AppState.js&apos;);
-var index = &apos;<!DOCTYPE html><html><head></head><body>{{component}}</body></html>&apos;;
+var index = &apos;&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;{{component}}&lt;/body&gt;&lt;/html&gt;&apos;;
 
 app.get(&apos;/&apos;, <span class="hljs-keyword">function</span> (req, res) {
   var componentHtml = React.renderToString(App({state: AppState}));

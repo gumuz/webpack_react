@@ -261,9 +261,9 @@
   var notes = this.props.notes;
 
   <span class="hljs-built_in">return</span> (
-    <ul classname="notes">{notes.map((note, i) =&gt;
+    &lt;ul className=&apos;notes&apos;&gt;{notes.map((note, i) =&gt;
       ...
-    )}</ul>
+    )}&lt;/ul&gt;
   );
 }
 </code></pre>
@@ -277,9 +277,9 @@
   };
 
   <span class="hljs-built_in">return</span> (
-    <ul style="{style}">{notes.map((note, i) =&gt;
+    &lt;ul style={style}&gt;{notes.map((note, i) =&gt;
       ...
-    )}</ul>
+    )}&lt;/ul&gt;
   );
 }
 </code></pre>
@@ -302,7 +302,7 @@
       }
     },
   ],
-  <span class="hljs-comment">// kind=&apos;<type>&apos; properties map to these</type></span>
+  <span class="hljs-comment">// kind=&apos;&lt;type&gt;&apos; properties map to these</span>
   modifiers: [
     {
       kind: {
@@ -349,7 +349,7 @@ var styles = StyleSheet.create({
 
 ...
 
-<button styles="{[styles.button," styles.primary]}="">Confirm</button>
+&lt;button styles={[styles.button, styles.primary]}&gt;Confirm&lt;/button&gt;
 </code></pre>
 <p>As you can see we can use individual fragments to get the same effect as Radium modifiers. Also media queries are supported. React Style expects that you manipulate browser states (ie. <code>:hover</code> and such) through JavaScript. Also CSS animations won&apos;t work. Instead it&apos;s preferred to use some other solution for that.</p>
 <p>Interestingly there is a <a href="https://github.com/js-next/react-style-webpack-plugin">React Style plugin for Webpack</a>. It can extract CSS declarations into a separate bundle. Now we are closer to the world we&apos;re used to but without cascades. We also have our style declarations on component level.</p>
@@ -375,7 +375,7 @@ css.setClass(&apos;.warning&apos;, {
 
 ...
 
-<button classname="{css.getClasses({button:" <span="" class="hljs-literal">true, primary: <span class="hljs-literal">true</span>})}&gt;Confirm</button>
+&lt;button className={css.getClasses({button: <span class="hljs-literal">true</span>, primary: <span class="hljs-literal">true</span>})}&gt;Confirm&lt;/button&gt;
 
 // <span class="hljs-keyword">in</span> addition you&apos;ll need to trigger at higher level after the elements you are using
 // have been injected to DOM
@@ -393,7 +393,7 @@ class ConfirmButton extends React.Component {
     const {className} = this.props;
     const classes = cx(styles.button, styles.primary, className);
 
-    <span class="hljs-built_in">return</span> <button classname="{classes}">Confirm</button>;
+    <span class="hljs-built_in">return</span> &lt;button className={classes}&gt;Confirm&lt;/button&gt;;
   }
 }
 </code></pre>
@@ -401,7 +401,10 @@ class ConfirmButton extends React.Component {
 <h3>jsxstyle</h3>
 <p>Pete Hunt&apos;s <a href="https://github.com/petehunt/jsxstyle">jsxstyle</a> aims to mitigate some problems of React Style&apos;s approach. As you saw in previous examples we still have style definitions separate from the component markup. jsxstyle merges these two concepts. Consider the following example:</p>
 <pre><code class="language-javascript">// PrimaryButton component
-<button padding="1em" background="green">Confirm</button>
+&lt;button
+  padding=&apos;1em&apos;
+  background=&apos;green&apos;
+&gt;Confirm&lt;/button&gt;
 </code></pre>
 <p>The approach is still in its early days. For instance support for media queries is missing. Instead of defining modifiers as above, you&apos;ll end up defining more components to support your use cases.</p>
 <p>Just like React Style, also jsxstyle comes with a Webpack loader that can extract CSS into a separate file.</p>

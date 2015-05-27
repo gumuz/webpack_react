@@ -13,10 +13,10 @@
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   render() {
-    <span class="hljs-keyword">return</span> <note>;
+    <span class="hljs-keyword">return</span> &lt;Note /&gt;;
   }
 }
-</note></code></pre>
+</code></pre>
 <p><code>App</code> will work as an entry point to our application. Later on it will orchestrate logic etc.</p>
 <p>We also need to define that <code>Note</code> component:</p>
 <p><strong>app/components/Note.jsx</strong></p>
@@ -24,7 +24,7 @@
 
 <span class="hljs-built_in">export</span> default class Note extends React.Component {
   <span class="hljs-function"><span class="hljs-title">render</span></span>() {
-    <span class="hljs-built_in">return</span> <div>Learn Webpack</div>;
+    <span class="hljs-built_in">return</span> &lt;div&gt;Learn Webpack&lt;/div&gt;;
   }
 }
 </code></pre>
@@ -39,9 +39,9 @@
 main();
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
-    React.render(<app>, <span class="hljs-built_in">document</span>.getElementById(&apos;app&apos;));
+    React.render(&lt;App /&gt;, <span class="hljs-built_in">document</span>.getElementById(&apos;app&apos;));
 }
-</app></code></pre>
+</code></pre>
 <p>This change needs to be taken in count at configuration. Change entry path like this:</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="language-javascript"><span class="hljs-keyword">var</span> common = {
