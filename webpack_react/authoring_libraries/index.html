@@ -40,7 +40,8 @@
     &quot;check-style&quot;: &quot;jscs .&quot;,
     &quot;replace-meta&quot;: &quot;node scripts/replace_meta.js&quot;,
     &quot;prepublish&quot;: &quot;babel ./lib --out-dir ./dist-modules&quot;,
-    &quot;version&quot;: &quot;npm run test &amp;&amp; npm run dist &amp;&amp; npm version \&quot;$@\&quot; &amp;&amp; npm run gh-pages &amp;&amp; npm run deploy-gh-pages&quot;
+    &quot;postpublish&quot;: &quot;npm run gh-pages &amp;&amp; npm run deploy-gh-pages&quot;,
+    &quot;preversion&quot;: &quot;npm run test &amp;&amp; npm run dist&quot;,
   },
   -- Entry point <span class="hljs-keyword">for</span> terminal (ie. &lt;package name&gt;)
   -- Don&apos;t set <span class="hljs-keyword">this</span> unless you intend to allow cli usage
@@ -101,6 +102,7 @@
 <p>T&gt; Before starting to develop it can be a good idea to spend a little bit of time on that naming issue. It&apos;s not very fun to write an awesome package just to notice the name has been taken. Save some time and nerves by doing a little bit of research. With some luck you could find something fitting your purposes and avoid the chore of writing a library.</p>
 <p>T&gt; As of npm 2.7.0 it is possible to create <a href="https://docs.npmjs.com/getting-started/scoped-packages">scoped packages</a>. They follow format <code>@username/project-name</code>. Simply follow that format when naming your project.</p>
 <p>Bumping a version is simple too. You&apos;ll just need to invoke <code>npm version <x.y.z></x.y.z></code>. That will update <code>package.json</code> and create a version commit automatically. If you hit <code>npm publish</code>, you should have something new out there.</p>
+<p>Note that in the example above I&apos;ve set up <code>version</code> related hooks to make sure a version will contain a fresh version of a distribution build and it will get tested just in case.</p>
 <p>T&gt; It can be useful to use <code>npm link</code> during development. That will allow you to use a development version of your library from some other context. Node will resolve to the linked version unless local <code>node_modules</code> happens to contain a version.</p>
 <p>Sometimes you might want to publish something preliminary for other people to test. In that case you can hit <code>npm publish <x.y.z> --tag beta</x.y.z></code>. After that your users can install the tagged version using <code>npm i <your package="" name="">@beta</your></code>.</p>
 <p>An alternative way to consume a library is to point at it directly at <code>package.json</code>. In that case you can do <code>&quot;depName&quot;: &quot;<github user="">/<project>#<reference>&quot;</reference></project></github></code> where <code><reference></reference></code> can be either commit hash, tag or branch. This can be useful especially if you need to hack around something and cannot wait for a fix.</p>

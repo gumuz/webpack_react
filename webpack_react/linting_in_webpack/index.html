@@ -135,7 +135,9 @@
 <p>We are using <code>preLoaders</code> section here as we want to play it safe. This section is executed before possible <code>loaders</code> get triggered.</p>
 <p>If you execute <code>npm start</code> now and break some linting rule while developing, you should see that in terminal output.</p>
 <h2>Customizing ESlint</h2>
-<p>Sometimes you&apos;ll want to skip certain rules per file or per line. Consider the following examples:</p>
+<p>Even though you can get very far with vanilla ESlint there are several techniques you should be aware of. For instance sometimes you might want to skip some particular rules per file or you might want to implement rules of your own. We&apos;ll cover these cases briefly next.</p>
+<h3>Skipping ESlint Rules</h3>
+<p>Sometimes you&apos;ll want to skip certain rules per file or per line. This can be useful when you happen to have some exceptional case in your code where some particular rule doesn&apos;t make sense. As usual exception confirms the rule. Consider the following examples:</p>
 <pre><code class="language-javascript"><span class="hljs-comment">// everything</span>
 <span class="hljs-comment">/* eslint-disable */</span>
 ...
@@ -155,7 +157,7 @@ alert(&apos;foo&apos;); <span class="hljs-comment">// eslint-disable-line no-ale
 <p>Note that the rule specific examples assume you have the rules in your configuration in the first place! You cannot specify new rules here. Instead you can modify the behavior of existing rules.</p>
 <h3>Writing Your Own Rules</h3>
 <p>ESlint rules rely on Abstract Syntax Tree (AST) definition of JavaScript. It is a data structure that describes JavaScript code after it has been lexically analyzed. There are tools such as <a href="https://github.com/benjamn/recast">recast</a> that allow you perform transformations on JavaScript code by using AST transformations. The idea is that you match some structure, then transform it somehow and convert AST back to JavaScript.</p>
-<p>To get a better idea of how AST works and what it looks like you can check <a href="http://esprima.org/demo/parse.html">Esprima online JavaScript AST visualization</a>. Alternatively you can install <code>recast</code> and examine the output it gives. That is the structure we&apos;ll be working with at ESlint rules.</p>
+<p>To get a better idea of how AST works and what it looks like you can check <a href="http://esprima.org/demo/parse.html">Esprima online JavaScript AST visualization</a> or <a href="http://felix-kling.de/esprima_ast_explorer/">JS AST Explorer by Felix Kling</a>. Alternatively you can install <code>recast</code> and examine the output it gives. That is the structure we&apos;ll be working with at ESlint rules.</p>
 <p>In ESlint&apos;s case we just want to check the structure and report in case something is wrong. Getting a simple rule done is surprisingly simple:</p>
 <ol>
 <li>Set up a new project named <code>eslint-plugin-custom</code>. You can replace <code>custom</code> with whatever you want. ESLint follows this naming convention.</li>

@@ -251,16 +251,19 @@
 <span class="hljs-keyword">var</span> config = <span class="hljs-built_in">require</span>(&apos;../webpack.config&apos;);
 
 <span class="hljs-keyword">new</span> WebpackDevServer(webpack(config), {
-    contentBase: __dirname,
-    publicPath: config.output.publicPath,
-    hot: <span class="hljs-literal">true</span>,
-    historyApiFallback: <span class="hljs-literal">true</span>,
+  contentBase: __dirname,
+  publicPath: config.output.publicPath,
+  hot: <span class="hljs-literal">true</span>,
+  historyApiFallback: <span class="hljs-literal">true</span>,
+  stats: {
+    colors: <span class="hljs-literal">true</span>,
+  },
 }).listen(config.port, config.ip, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
-    <span class="hljs-keyword">if</span> (err) {
-        <span class="hljs-keyword">return</span> <span class="hljs-built_in">console</span>.log(err);
-    }
+  <span class="hljs-keyword">if</span> (err) {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">console</span>.log(err);
+  }
 
-    <span class="hljs-built_in">console</span>.log(&apos;Listening at &apos; + config.ip + &apos;:&apos; + config.port);
+  <span class="hljs-built_in">console</span>.log(&apos;Listening at &apos; + config.ip + &apos;:&apos; + config.port);
 });
 </code></pre>
 <p>The server has been configured in <code>hot</code> mode and it has <code>historyApiFallback</code> enabled. We&apos;ll get back to that <code>hot</code> setting in the React chapter. <code>historyApiFallback</code> will come in handy if/when our application has History API routing. It will allow us to access the application directly from the routes we have defined for it instead of having to go through root always.</p>

@@ -128,10 +128,7 @@ render() {
 <p>We can achieve these goals using a callback and a ternary expression. Here&apos;s a sample implementation of the idea:</p>
 <p><strong>app/components/Note.jsx</strong></p>
 <pre><code class="language-javascript"><span class="hljs-built_in">export</span> default class Note extends React.Component {
-  constructor(props: {
-    task: string;
-    onEdit: Function;
-  }) {
+  constructor(props) {
     super(props);
 
     this.state = {
