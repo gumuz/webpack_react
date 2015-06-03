@@ -1,11 +1,11 @@
-<html><head><title>Webpack Compared / SurviveJS - Survive the jungles of JavaScript</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="../..//assets/img/favicon.png"><link rel="stylesheet" href="../..//assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><a class="nav__link" href="/">Home</a><a class="nav__link" href="/webpack_react">Table of Contents</a></nav></div><main role="main"><div class="post"><h1 class="post__heading">Webpack Compared</h1><div class="post__content"><div><p>To understand Webpack, it will help to look at the history. That will put the tool in context and show you why the approach is powerful. Back in the day we were happy just to concat some scripts together but that won&apos;t do anymore. JavaScript libraries can be very large these days and nobody likes to wait for it all to load for the application show up.</p>
+<html><head><title>Webpack Compared / SurviveJS - Survive the jungles of JavaScript</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="../..//assets/img/favicon.png"><link rel="stylesheet" href="../..//assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><div class="nav__link"><a href="../../">Home</a></div><div class="nav__link"><a href="../../webpack_react">Table of Contents</a></div></nav></div><main role="main"><div class="post"><h1 class="post__heading">Webpack Compared</h1><div class="post__content"><div><p>To understand Webpack, it will help to look at the history. That will put the tool in context and show you why the approach is powerful. Back in the day we were happy just to concat some scripts together but that won&apos;t do anymore. JavaScript libraries can be very large these days and nobody likes to wait for it all to load for the application show up.</p>
 <p>This problem has been escalated by the rise of Single Page Applications. They tend to rely on various quite heavy libraries and be complex by nature. Ideally you would just load the assets you need per page.</p>
 <p>The popularity of Node.js and <a href="https://www.npmjs.com/">npm</a>, the Node.js package manager, provides more context. Before these developments, it was difficult to consume dependencies. Now that npm is used increasingly for frontend development, the situation has changed dramatically. Thanks to modern tooling we have nice ways to manage the dependencies of our frontend projects.</p>
-<p>Historically speaking there have been many build systems. <a href="https://en.wikipedia.org/wiki/Make_(software)">Make</a> is perhaps the most known one and still a viable option in many cases. In the world of frontend development particularly <a href="http://gruntjs.com/">Grunt</a> and <a href="http://gulpjs.com/">Gulp</a> have gained popularity. Both are made powerful by plugins available via npm.</p>
-<h2>Grunt</h2>
+<p>Historically speaking there have been many build systems. <a href="https://en.wikipedia.org/wiki/Make_%28software%29">Make</a> is perhaps the most known one and still a viable option in many cases. In the world of frontend development particularly <a href="http://gruntjs.com/">Grunt</a> and <a href="http://gulpjs.com/">Gulp</a> have gained popularity. Both are made powerful by plugins available via npm.</p>
+<h2 id="grunt">Grunt</h2>
 <p><img src="/images/grunt.png" alt="Grunt"></p>
 <p>Grunt went mainstream before Gulp. It was made popular particularly due to its plugin architecture. At the same time this is the Achilles&apos; heel of Grunt. You <em>don&apos;t</em> want to end up having to maintain a 300 line <code>Gruntfile</code>. Grunt scales up to a point. Just in case you are curious what the configuration looks like, here&apos;s an example from <a href="http://gruntjs.com/sample-gruntfile">Grunt documentation</a>:</p>
-<pre><code class="language-javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">grunt</span>) </span>{
+<pre><code class="lang-javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">grunt</span>) </span>{
   grunt.initConfig({
     jshint: {
       files: [&apos;Gruntfile.js&apos;, &apos;src<span class="hljs-comment">/**/</span>*.js&apos;, &apos;test<span class="hljs-comment">/**/</span>*.js&apos;],
@@ -29,13 +29,12 @@
 </code></pre>
 <p>In this sample we define two basic tasks related to <code>jshint</code>, a linting tool that helps you spot possible problem spots at your source. We have a standalone task for running the tool against our source. In addition we have a watcher based task. If we run it, we&apos;ll get warnings interactively at our terminal as we edit.</p>
 <p>In practice you would have a lot of small tasks such as these for various purposes such as building the project. The example shows well how these tasks are constructed. An important part of the power of Grunt is that it hides a lot of the wiring from you. Taken too far this can get problematic though as you don&apos;t understand well enough what&apos;s going on under the hood.</p>
-<p>T&gt; Note that <a href="https://www.npmjs.com/package/grunt-webpack">grunt-webpack</a> plugin allows you to use Webpack in Grunt environment. You can leave the heavy lifting to Webpack while utilizing the Grunt plugins you are familiar with.</p>
-<h2>Gulp</h2>
+<blockquote class="tip">Note that <a href="https://www.npmjs.com/package/grunt-webpack">grunt-webpack</a> plugin allows you to use Webpack in Grunt environment. You can leave the heavy lifting to Webpack while utilizing the Grunt plugins you are familiar with.</blockquote><h2 id="gulp">Gulp</h2>
 <p><img src="/images/gulp.png" alt="Gulp"></p>
 <p>Gulp takes a different approach. Instead of relying on configuration per plugin you deal with actual code. Gulp builds on top of the tried and true concept of piping. If you are familiar with Unix, it&apos;s the same here.</p>
 <p>You simply have sources, filters and sinks. In this case sources happen to match to some files, filters perform some operations on those (ie. convert to JavaScript) and then output to sinks (your build directory etc.).</p>
 <p>Here&apos;s a sample <code>Gulpfile</code> to give you a better idea of the approach taken from the project README and abbreviated a bit:</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(&apos;gulp&apos;);
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(&apos;gulp&apos;);
 <span class="hljs-keyword">var</span> coffee = <span class="hljs-built_in">require</span>(&apos;gulp-coffee&apos;);
 <span class="hljs-keyword">var</span> concat = <span class="hljs-built_in">require</span>(&apos;gulp-concat&apos;);
 <span class="hljs-keyword">var</span> uglify = <span class="hljs-built_in">require</span>(&apos;gulp-uglify&apos;);
@@ -74,19 +73,18 @@ gulp.task(&apos;watch&apos;, <span class="hljs-function"><span class="hljs-keywo
 gulp.task(&apos;<span class="hljs-keyword">default</span>&apos;, [&apos;watch&apos;, &apos;scripts&apos;]);
 </code></pre>
 <p>Given the configuration is code you can always just hack it if you run into troubles. You can wrap existing Node.js modules as Gulp plugins and so on. Compared to Grunt you have a clearer idea of what&apos;s going on. You still end up writing a lot of boilerplate for casual tasks, though. That is where some newer approaches come in.</p>
-<p>T&gt; <a href="https://www.npmjs.com/package/gulp-webpack">gulp-webpack</a> allows you to use Webpack in Gulp environment.</p>
-<h2>Browserify</h2>
+<blockquote class="tip"><a href="https://www.npmjs.com/package/gulp-webpack">gulp-webpack</a> allows you to use Webpack in Gulp environment.</blockquote><h2 id="browserify">Browserify</h2>
 <p><img src="/images/browserify.png" alt="Browserify"></p>
 <p>Dealing with JavaScript modules has always been a bit of a problem given the language actually doesn&apos;t have a concept of module till ES6. Ergo we are stuck with the 90s when it comes to browser environment. Various solutions, including <a href="http://browserify.org/">AMD</a>, have been proposed.</p>
 <p>In practice it can be useful just to use CommonJS, the Node.js format, and let tooling deal with the rest. The advantage is that you can often hook into npm and avoid reinventing the wheel.</p>
 <p><a href="http://browserify.org/">Browserify</a> solves this problem. It provides a way to bundle CommonJS modules together. You can hook it up with Gulp. In addition there are tons of smaller transformation tools that allow you to move beyond the basic usage (ie. <a href="https://www.npmjs.com/package/watchify">watchify</a> provides a file watcher that creates bundles for you during development automatically). This will save some effort and no doubt is a good solution up to a point.</p>
 <p>Browserify ecosystem is composed from a lot of small modules. This way they remind of the Unix philosophy. It is a little easier to adopt than Webpack and in fact it is a good alternative to it.</p>
-<h2>Webpack</h2>
+<h2 id="webpack">Webpack</h2>
 <p><img src="/images/webpack.png" alt="Webpack"></p>
 <p>You could say Webpack takes more monolithic approach than Browserify. You simply get more out of the box. It is extended using loaders and relies on configuration. As we saw in the previous chapter it took some effort to get a build done. But after the initial curve it eases out considerably.</p>
 <p>Webpack expands on the idea of hooking into CommonJS <code>require</code>. What if you could just <code>require</code> whatever you needed in your code, be it CoffeeScript, Sass, Markdown or something? Well, Webpack does just this.</p>
 <p>It takes your dependencies, puts them through loaders and outputs browser compatible static assets. All of this is based on configuration. Here is a sample configuration from <a href="http://webpack.github.io/docs/tutorials/getting-started/">the official Webpack tutorial</a>:</p>
-<pre><code class="language-javascript"><span class="hljs-built_in">module</span>.exports = {
+<pre><code class="lang-javascript"><span class="hljs-built_in">module</span>.exports = {
   entry: &apos;./entry.js&apos;,
   output: {
     path: __dirname,
@@ -102,11 +100,11 @@ gulp.task(&apos;<span class="hljs-keyword">default</span>&apos;, [&apos;watch&ap
   }
 };
 </code></pre>
-<h3>Supported Module Formats</h3>
+<h3 id="supported-module-formats">Supported Module Formats</h3>
 <p>Webpack allows you to use different module formats, but under the hood they all work the same way. All of them also work straight out of the box.</p>
 <p><strong>CommonJS</strong></p>
 <p>If you have used Node.js, you are likely familiar with CommonJS already. Here&apos;s a brief example:</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">var</span> MyModule = <span class="hljs-built_in">require</span>(&apos;./MyModule&apos;);
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> MyModule = <span class="hljs-built_in">require</span>(&apos;./MyModule&apos;);
 
 <span class="hljs-comment">// export at module root</span>
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{ ... };
@@ -116,7 +114,7 @@ exports.hello = <span class="hljs-function"><span class="hljs-keyword">function<
 </code></pre>
 <p><strong>ES6</strong></p>
 <p>ES6 is probably the format we all have been waiting for since 1995. As you can see it resembles CommonJS a little bit and is quite clear!</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">import</span> MyModule <span class="hljs-keyword">from</span> &apos;./MyModule.js&apos;;
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> MyModule <span class="hljs-keyword">from</span> &apos;./MyModule.js&apos;;
 
 <span class="hljs-comment">// export at module root</span>
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{ ... };
@@ -126,7 +124,7 @@ exports.hello = <span class="hljs-function"><span class="hljs-keyword">function<
 </code></pre>
 <p><strong>AMD</strong></p>
 <p>AMD, or Asynchronous Module Definition, is a solution that was invented to work around the pain of a world without modules. It introduces a <code>define</code> wrapper.</p>
-<pre><code class="language-javascript">define([&apos;./MyModule.js&apos;], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">MyModule</span>) </span>{
+<pre><code class="lang-javascript">define([&apos;./MyModule.js&apos;], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">MyModule</span>) </span>{
   <span class="hljs-comment">// export at module root</span>
   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{};
 });
@@ -140,7 +138,7 @@ define([&apos;./MyModule.js&apos;], <span class="hljs-function"><span class="hlj
 });
 </code></pre>
 <p>Incidentally it is possible to use <code>require</code> within the wrapper like this:</p>
-<pre><code class="language-javascript">define([&apos;<span class="hljs-built_in">require</span>&apos;], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">require</span>) </span>{
+<pre><code class="lang-javascript">define([&apos;<span class="hljs-built_in">require</span>&apos;], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">require</span>) </span>{
   <span class="hljs-keyword">var</span> MyModule = <span class="hljs-built_in">require</span>(&apos;./MyModule.js&apos;);
 
   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{...};
@@ -150,6 +148,6 @@ define([&apos;./MyModule.js&apos;], <span class="hljs-function"><span class="hlj
 <p><strong>UMD</strong></p>
 <p>UMD, Universal Module Definition, is a monster of a format that aims to make the aforementioned formats compatible with each other. I will spare your eyes from it. Never write it yourself, leave it to the tools. If that didn&apos;t scare you off, check out <a href="https://github.com/umdjs/umd">the official definitions</a>.</p>
 <p>Webpack can generate UMD wrapper for you (<code>output.libraryTarget: &apos;umd&apos;</code>). This is particularly useful for library authors. We&apos;ll get back to this later.</p>
-<h2>Conclusion</h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>In the following chapters we&apos;ll build on top of this idea and show how powerful it is. You can, and probably should, use Webpack with some other tools. It won&apos;t solve everything. It does solve the difficult problem of bundling, however, and that&apos;s one worry less during development.</p>
 </div></div></div><noscript></noscript><div class="prevnext-pages"><a href="../introduction" class="previous-page">Introduction</a><a href="../getting_started" class="next-page">Getting Started</a></div></main></div></body></html>
