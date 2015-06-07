@@ -36,12 +36,12 @@
     &quot;gh-pages&quot;: &quot;TARGET=gh-pages webpack --config ./config&quot;,
     &quot;deploy-gh-pages&quot;: &quot;TARGET=gh-pages node ./config/deploy-gh-pages.js&quot;,
     &quot;dist&quot;: &quot;TARGET=dist webpack &amp;&amp; TARGET=dist-min webpack&quot;,
+    &quot;dist-modules&quot;: &quot;babel ./src --out-dir ./dist-modules&quot;,
     &quot;lint&quot;: &quot;eslint . --ext .js --ext .jsx&quot;,
     &quot;check-style&quot;: &quot;jscs .&quot;,
     &quot;replace-meta&quot;: &quot;node scripts/replace_meta.js&quot;,
-    &quot;prepublish&quot;: &quot;babel ./src --out-dir ./dist-modules&quot;,
-    &quot;postpublish&quot;: &quot;npm run gh-pages &amp;&amp; npm run deploy-gh-pages&quot;,
-    &quot;preversion&quot;: &quot;npm run test &amp;&amp; npm run dist&quot;,
+    &quot;preversion&quot;: &quot;npm run test &amp;&amp; npm run dist &amp;&amp; npm run dist-modules &amp;&amp; git commit -am \&quot;Update dist\&quot;&quot;,
+    &quot;postpublish&quot;: &quot;npm run gh-pages &amp;&amp; npm run deploy-gh-pages&quot;
   },
   -- Entry point <span class="hljs-keyword">for</span> terminal (ie. &lt;package name&gt;)
   -- Don&apos;t set <span class="hljs-keyword">this</span> unless you intend to allow cli usage

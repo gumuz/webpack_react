@@ -52,8 +52,9 @@ npm init
 </code></pre>
 <p><strong>app/main.js</strong></p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">var</span> component = <span class="hljs-built_in">require</span>(&apos;./component.js&apos;);
-<span class="hljs-keyword">var</span> app = <span class="hljs-built_in">document</span>.getElementById(&apos;app&apos;);
+<span class="hljs-keyword">var</span> app = <span class="hljs-built_in">document</span>.createElement(&apos;div&apos;);
 
+<span class="hljs-built_in">document</span>.body.appendChild(app);
 app.appendChild(component());
 </code></pre>
 <p>Now run <code>node_modules/.bin/webpack</code> in your terminal and your application will be built. A <em>bundle.js</em> file will appear in your <code>/build</code> folder. You should see something along this at your terminal:</p>
@@ -77,8 +78,6 @@ bundle.js  1.74 kB       0  [emitted]  main
     &lt;meta charset=&quot;UTF-8&quot;/&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
-
     &lt;script src=&quot;bundle.js&quot;&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;

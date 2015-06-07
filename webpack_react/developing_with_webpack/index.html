@@ -31,8 +31,6 @@
     &lt;meta charset=&quot;UTF-8&quot;/&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
-
     &lt;script src=&quot;http://localhost:8080/webpack-dev-server.js&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;bundle.js&quot;&gt;&lt;/script&gt;
   &lt;/body&gt;
@@ -194,29 +192,8 @@
   });
 }
 </code></pre>
-<p>As we rely on a custom div we will need to define a custom template:</p>
-<p><strong>app/index.tpl</strong></p>
-<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
-&lt;html{% <span class="hljs-keyword">if</span>(o.htmlWebpackPlugin.files.manifest) { %} manifest=&quot;{%= o.htmlWebpackPlugin.files.manifest %}&quot;{% } %}&gt;
-  &lt;head&gt;
-    &lt;meta charset=&quot;UTF-<span class="hljs-number">8</span>&quot;&gt;
-    &lt;title&gt;{%=o.htmlWebpackPlugin.options.title || &apos;Webpack App&apos;%}&lt;/title&gt;
-    {% <span class="hljs-keyword">for</span> (var css <span class="hljs-keyword">in</span> o.htmlWebpackPlugin.files.css) { %}
-    &lt;link href=&quot;{%=o.htmlWebpackPlugin.files.css[css] %}&quot; rel=&quot;stylesheet&quot;&gt;
-    {% } %}
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
-
-    {% <span class="hljs-keyword">for</span> (var chunk <span class="hljs-keyword">in</span> o.htmlWebpackPlugin.files.chunks) { %}
-    &lt;script src=&quot;{%=o.htmlWebpackPlugin.files.chunks[chunk].entry %}&quot;&gt;&lt;/script&gt;
-    {% } %}
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<p>This is just the default template of the project with our div included. Note that <code>html-webpack-plugin</code> supports other templating languages. It defaults to <a href="https://www.npmjs.com/package/blueimp-tmpl">blueimp</a>.</p>
 <p>If you hit <code>npm run build</code> now, you should get output that&apos;s roughly equal to what we had earlier. We still need to make our development server work to get back where we started.</p>
-<blockquote class="tip">Alternatively we could use the default template provided by <code>html-webpack-plugin</code> and just append the div we need at application initialization stage. On the plus side at least you now know how to set up a custom template! This will come in handy in more complex scenarios.</blockquote><h3 id="setting-up-webpackdevserver">Setting Up WebpackDevServer</h3>
+<blockquote class="tip">Note that you can pass a custom template to <code>html-webpack-plugin</code>. In our case the default template it uses is just fine for our purposes.</blockquote><h3 id="setting-up-webpackdevserver">Setting Up WebpackDevServer</h3>
 <p>We&apos;ll write a custom little server of ours for dealing with development. This will give us a bit more control and helps us to keep <code>package.json</code> neater.</p>
 <p>Set up a file structure like this within <code>kanban-app</code>:</p>
 <ul>
@@ -231,8 +208,6 @@
     &lt;title&gt;Demo&lt;/title&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
-
     &lt;script src=&quot;/dev-server/bundle.js&quot;&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;

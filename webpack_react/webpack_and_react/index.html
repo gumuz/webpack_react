@@ -38,7 +38,10 @@
 main();
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
-    React.render(&lt;App /&gt;, <span class="hljs-built_in">document</span>.getElementById(&apos;app&apos;));
+    <span class="hljs-keyword">var</span> app = <span class="hljs-built_in">document</span>.createElement(&apos;div&apos;);
+    <span class="hljs-built_in">document</span>.body.appendChild(app);
+
+    React.render(&lt;App /&gt;, app);
 }
 </code></pre>
 <p>This change needs to be taken in count at configuration. Change entry path like this:</p>
