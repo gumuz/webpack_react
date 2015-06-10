@@ -351,7 +351,7 @@ import NoteStore from &apos;../stores/NoteStore&apos;;
 </code></pre>
 <p>In effect we&apos;re letting Babel process everything except Flow parts before passing the output to Flowcheck. After the check has completed, we&apos;ll deal with the rest. This is bit of a hack that will hopefully go away sometime in the future as technology becomes more robust.</p>
 <p>Note that I&apos;m enabling Stage 0 functionality as I&apos;ll be relying on some of that in the next chapter (primarily <a href="https://gist.github.com/jeffmo/054df782c05639da2adb">class properties</a>).</p>
-<blockquote class="tip">Another way to deal with Babel configuration would be to define a <a href="https://babeljs.io/docs/usage/babelrc/">.babelrc</a> file in the project root. It would contain default settings used by Babel. It&apos;s the same idea as for ESlint.</blockquote><h3 id="adding-decorator-wrappers">Adding Decorator Wrappers</h3>
+<blockquote class="tip">Another way to deal with Babel configuration would be to define a <a href="https://babeljs.io/docs/usage/babelrc/">.babelrc</a> file in the project root. It would contain default settings used by Babel. It&apos;s the same idea as for ESLint.</blockquote><h3 id="adding-decorator-wrappers">Adding Decorator Wrappers</h3>
 <p>In order to port our HOCs to be able to use decorator syntax, we&apos;ll need to tweak our current implementation a little bit.</p>
 <p><strong>app/decorators/connect.js</strong></p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> &apos;react&apos;;
