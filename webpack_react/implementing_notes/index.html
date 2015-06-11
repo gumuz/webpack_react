@@ -5,11 +5,11 @@
 <p><strong>app/components/App.jsx</strong></p>
 <pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-title">render</span></span>() {
   var notes = [{
-    task: &apos;Learn Webpack&apos;
+    task: &apos;Learn Webpack&apos;,
   }, {
-    task: &apos;Learn React&apos;
+    task: &apos;Learn React&apos;,
   }, {
-    task: &apos;Do laundry&apos;
+    task: &apos;Do laundry&apos;,
   }];
 
   <span class="hljs-built_in">return</span> (
@@ -97,12 +97,12 @@ import Note from &apos;./Note&apos;;
 
   <span class="hljs-keyword">this</span>.state = {
     notes: [{
-      task: &apos;Learn Webpack&apos;
+      task: &apos;Learn Webpack&apos;,
     }, {
-      task: &apos;Learn React&apos;
+      task: &apos;Learn React&apos;,
     }, {
-      task: &apos;Do laundry&apos;
-    }]
+      task: &apos;Do laundry&apos;,
+    }],
   };
 }
 render() {
@@ -114,7 +114,7 @@ render() {
 <pre><code class="lang-javascript">addItem() {
   <span class="hljs-keyword">this</span>.setState({
     notes: <span class="hljs-keyword">this</span>.state.notes.concat([{
-      task: &apos;New task&apos;
+      task: &apos;New task&apos;,
     }])
   });
 }
@@ -131,7 +131,7 @@ render() {
     super(props);
 
     this.state = {
-      edited: <span class="hljs-literal">false</span>
+      edited: <span class="hljs-literal">false</span>,
     };
   }
   <span class="hljs-function"><span class="hljs-title">render</span></span>() {
@@ -151,7 +151,7 @@ render() {
   }
   <span class="hljs-function"><span class="hljs-title">edit</span></span>() {
     this.setState({
-        edited: <span class="hljs-literal">true</span>
+        edited: <span class="hljs-literal">true</span>,
     });
   }
   checkEnter(e) {
@@ -163,7 +163,7 @@ render() {
     this.props.onEdit(e.target.value);
 
     this.setState({
-      edited: <span class="hljs-literal">false</span>
+      edited: <span class="hljs-literal">false</span>,
     });
   }
 }
@@ -184,7 +184,7 @@ itemEdited(i, task) {
   notes[i].task = task;
 
   <span class="hljs-keyword">this</span>.setState({
-    notes: notes
+    notes: notes,
   });
 }
 </code></pre>
@@ -211,7 +211,7 @@ itemEdited(i, task) {
   }
 
   <span class="hljs-keyword">this</span>.setState({
-    notes: notes
+    notes: notes,
   });
 }
 </code></pre>
@@ -229,8 +229,8 @@ itemEdited(i, task) {
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
           loaders: [&apos;react-hot&apos;, &apos;babel&apos;, &apos;flowcheck&apos;],
           include: path.join(ROOT_PATH, &apos;app&apos;),
-        }
-      }
+        },
+      },
     },
     ...
   });

@@ -128,8 +128,7 @@ import NoteStore from &apos;../stores/NoteStore&apos;;
 <p>One alternative would be to factor <code>Notes</code> like this:</p>
 <pre><code class="lang-javascript">&lt;Notes
   items={notes}
-  item={(note, i) =&gt; &lt;span onClick={...}&gt;{item.task}&lt;/span&gt;}
-/&gt;
+  item={(note, i) =&gt; &lt;span onClick={...}&gt;{item.task}&lt;<span class="hljs-regexp">/span&gt;} /</span>&gt;
 </code></pre>
 <p>Now we give the consumer absolute control over how list items are rendered. This approach is more generic than our <code>onEdit</code> property and allows you to customize components significantly more.</p>
 <p>More specific components can be developed on top of generic ones. You could have a set of generic components you use from project to project and share as libraries. These would be then wrapped by more specific ones based on need.</p>
@@ -213,9 +212,13 @@ import NoteStore from &apos;../stores/NoteStore&apos;;
 <span class="hljs-keyword">import</span> persist <span class="hljs-keyword">from</span> &apos;../decorators/persist&apos;;
 <span class="hljs-keyword">import</span> storage <span class="hljs-keyword">from</span> &apos;../libs/storage&apos;;
 
+<span class="hljs-keyword">const</span> noteStorageName = &apos;notes&apos;;
+
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   constructor(props) {
     <span class="hljs-keyword">super</span>(props);
+
+    NoteActions.init(storage.get(noteStorageName));
 
     <span class="hljs-keyword">this</span>.state = NoteStore.getState();
   }
@@ -226,22 +229,20 @@ import NoteStore from &apos;../stores/NoteStore&apos;;
   ...
 }
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> persist(App, NoteActions.init, NoteStore, storage, &apos;notes&apos;);
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> persist(App, storage, noteStorageName, () =&gt; NoteStore.getState());
 </code></pre>
 <p><strong>app/decorators/persist.js</strong></p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> &apos;react&apos;;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> (Component, initAction, store, storage, storageName) =&gt; {
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> (Component, storage, storageName, getData) =&gt; {
   <span class="hljs-keyword">return</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Persist</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
     constructor(props) {
       <span class="hljs-keyword">super</span>(props);
 
-      initAction(storage.get(storageName));
-
       <span class="hljs-built_in">window</span>.addEventListener(&apos;beforeunload&apos;, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
         <span class="hljs-comment">// escape hatch for debugging</span>
         <span class="hljs-keyword">if</span>(!storage.get(&apos;debug&apos;)) {
-          storage.set(storageName, store.getState());
+          storage.set(storageName, getData());
         }
       }, <span class="hljs-literal">false</span>);
     }
@@ -302,10 +303,9 @@ import NoteStore from &apos;../stores/NoteStore&apos;;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> persist(
   connect(App, NoteStore),
-  NoteActions.init,
-  NoteStore,
   storage,
-  &apos;notes&apos;
+  noteStorageName,
+  () =&gt; NoteStore.getState()
 );
 </code></pre>
 <p>Now the implementation of our <code>App</code> is quite clean. We have managed to separate various concerns into separate aspects. We can take the approach further by converting our HOCs into decorators.</p>
@@ -367,19 +367,19 @@ import NoteStore from &apos;../stores/NoteStore&apos;;
 <p><strong>app/decorators/persist.js</strong></p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> &apos;react&apos;;
 
-<span class="hljs-keyword">const</span> persist = (Component, initAction, store, storage, storageName) =&gt; {
+<span class="hljs-keyword">const</span> persist = (Component, storage, storageName, getData) =&gt; {
   ...
 }
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> (initAction, store, storage, storageName) =&gt; {
-  <span class="hljs-keyword">return</span> (target) =&gt; persist(target, initAction, store, storage, storageName);
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> (storage, storageName, getData) =&gt; {
+  <span class="hljs-keyword">return</span> (target) =&gt; persist(target, storage, storageName, getData);
 };
 </code></pre>
 <p>As you can see the HOCs have been wrapped within functions that return functions. That&apos;s how decorators work by definition.</p>
 <p><strong>app/components/App.jsx</strong></p>
 <pre><code class="lang-javascript">...
 
-@persist(NoteActions.init, NoteStore, storage, &apos;notes&apos;)
+@persist(noteStorageName, () =&gt; NoteStore.getState())
 @connect(NoteStore)
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   ...
@@ -398,8 +398,15 @@ import NoteStore from &apos;../stores/NoteStore&apos;;
 import persist from &apos;../decorators/persist&apos;;
 import storage from &apos;../libs/storage&apos;;
 
-@persist(NoteActions.init, NoteStore, storage, &apos;notes&apos;)
+const noteStorageName = &apos;notes&apos;;
+
+@persist(storage, noteStorageName, () =&gt; NoteStore.getState())
 <span class="hljs-built_in">export</span> default class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    NoteActions.init(storage.get(noteStorageName));
+  }
   <span class="hljs-function"><span class="hljs-title">render</span></span>() {
     <span class="hljs-built_in">return</span> (
       &lt;div&gt;

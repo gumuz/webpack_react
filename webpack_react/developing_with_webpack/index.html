@@ -16,7 +16,7 @@
 <span class="hljs-built_in">module</span>.exports = {
   entry: [
     &apos;webpack/hot/dev-server&apos;,
-    path.resolve(__dirname, &apos;app/main.js&apos;)
+    path.resolve(__dirname, &apos;app/main.js&apos;),
   ],
   output: {
     path: path.resolve(__dirname, &apos;build&apos;),
@@ -60,7 +60,7 @@
 <span class="hljs-built_in">module</span>.exports = {
   entry: [
     &apos;webpack/hot/dev-server&apos;,
-    path.resolve(__dirname, &apos;app/main.js&apos;)
+    path.resolve(__dirname, &apos;app/main.js&apos;),
   ],
   output: {
     path: path.resolve(__dirname, &apos;build&apos;),
@@ -70,9 +70,9 @@
     loaders: [
       {
         test: <span class="hljs-regexp">/\.css$/</span>,
-        loaders: [&apos;style&apos;, &apos;css&apos;]
-      }
-    ]
+        loaders: [&apos;style&apos;, &apos;css&apos;],
+      },
+    ],
   }
 };
 </code></pre>
@@ -120,9 +120,9 @@
     loaders: [
       {
         test: <span class="hljs-regexp">/\.css$/</span>,
-        loaders: [&apos;style&apos;, &apos;css&apos;]
-      }
-    ]
+        loaders: [&apos;style&apos;, &apos;css&apos;],
+      },
+    ],
   },
 };
 
@@ -236,13 +236,13 @@
     output: {
       path: __dirname,
       filename: &apos;bundle.js&apos;,
-      publicPath: &apos;/&apos;
+      publicPath: &apos;/&apos;,
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin(),
       new HtmlWebpackPlugin(),
-    ]
+    ],
   });
 }
 </code></pre>
