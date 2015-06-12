@@ -1,16 +1,16 @@
 <html><head><title>Getting Started / SurviveJS - Survive the jungles of JavaScript</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="../../assets/img/favicon.png"><link rel="stylesheet" href="../../assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><div class="nav__link"><a href="../../">Home</a></div><div class="nav__link"><a href="../../webpack_react">Table of Contents</a></div></nav></div><main role="main"><div class="post"><h1 class="post__heading">Getting Started</h1><div class="post__content"><div><p>If you are not one of those guys that likes to skip introduction, you might have some clue what Webpack is. In its simplicity it is a module bundler. It takes a bunch of assets in and outputs assets you can give to your client.</p>
 <p>This sounds very simple but in practice it can be a very complicated and messy process. You definitely don&apos;t want to deal with all the details yourself. This is where Webpack fits in. Next we&apos;ll get Webpack set up and your first project running.</p>
-<h2 id="setting-up-your-first-project">Setting Up Your First Project</h2>
-<p>Webpack is one of those tools that depends on Node.js. Head to <a href="http://nodejs.org/">http://nodejs.org/</a> and get it installed unless you have done so already. You should have <code>npm</code> available at your terminal. Once you are done, continue.</p>
+<h2 id="undefinedsetting-up-your-first-project">Setting Up Your First Project</h2>
+<p>Webpack is one of those tools that depends on Node.js. Head to http://nodejs.org/ and get it installed unless you have done so already. You should have <code>npm</code> available at your terminal. Once you are done, continue.</p>
 <p>Next you should set a directory for your project, navigate there, hit <code>npm init</code> and fill in some details. Here are the commands in detail:</p>
-<pre><code class="lang-bash">mkdir kanban_app
+<pre><code class="undefinedbash">mkdir kanban_app
 <span class="hljs-built_in">cd</span> kanban_app
 npm init
 </code></pre>
 <p>As a result you should have <code>package.json</code>. If you are into version control, as you should, this would be a good time to up your repository. You can create commits as you progress with the chapter.</p>
-<h2 id="installing-webpack">Installing Webpack</h2>
+<h2 id="undefinedinstalling-webpack">Installing Webpack</h2>
 <p>Next you should get Webpack installed. We&apos;ll do a local install and save it as a project dependency. This way you can invoke the build anywhere (build server, whatnot). Run <code>npm i webpack node-libs-browser --save-dev</code>. If you want to run the tool, hit <code>node_modules/.bin/webpack</code>.</p>
-<blockquote class="tip">We are using <code>--save-dev</code> here instead of <code>--save</code> as we want to use Webpack as a development dependency. Use <code>--save-dev</code> for parts you need to generate your distribution version. Otherwise <code>--save</code> is a good pick.</blockquote><blockquote class="tip"><code>node-libs-browser</code> is installed as it is a peer dependency of Webpack. Starting from npm 3 it won&apos;t get installed automatically so it&apos;s a good idea to have it installed in order to be future-proof.</blockquote><blockquote class="tip">Webpack works using a global install as well (<code>-g</code> flag) but it is preferred to keep it as a project dependency like this. The arrangement helps to keep your life simpler as you have direct control over the version you are running.</blockquote><h2 id="directory-structure">Directory Structure</h2>
+<blockquote class="tip">We are using <code>--save-dev</code> here instead of <code>--save</code> as we want to use Webpack as a development dependency. Use <code>--save-dev</code> for parts you need to generate your distribution version. Otherwise <code>--save</code> is a good pick.</blockquote><blockquote class="tip"><code>node-libs-browser</code> is installed as it is a peer dependency of Webpack. Starting from npm 3 it won&apos;t get installed automatically so it&apos;s a good idea to have it installed in order to be future-proof.</blockquote><blockquote class="tip">Webpack works using a global install as well (<code>-g</code> flag) but it is preferred to keep it as a project dependency like this. The arrangement helps to keep your life simpler as you have direct control over the version you are running.</blockquote><h2 id="undefineddirectory-structure">Directory Structure</h2>
 <p>As projects with just <code>package.json</code> are very boring, we should set up something more concrete. Let&apos;s do a little web site that loads some JavaScript which we build using Webpack. Here&apos;s a structure that works:</p>
 <ul>
 <li>/app<ul>
@@ -27,10 +27,10 @@ npm init
 <li>webpack.config.js</li>
 </ul>
 <p>In this case we&apos;ll generate <code>bundle.js</code> using Webpack based on our <code>/app</code>. To make this possible, let&apos;s set up <code>webpack.config.js</code>.</p>
-<h3 id="creating-webpack-configuration">Creating Webpack Configuration</h3>
+<h3 id="undefinedcreating-webpack-configuration">Creating Webpack Configuration</h3>
 <p>In our case a basic configuration could look like this:</p>
 <p><strong>webpack.config.js</strong></p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
 
 <span class="hljs-built_in">module</span>.exports = {
   entry: path.resolve(__dirname, &apos;app/main.js&apos;),
@@ -41,24 +41,24 @@ npm init
 };
 </code></pre>
 <p>We use <code>path.resolve</code> here as it is preferred to use absolute paths with Webpack. If you move your configuration below some directory, you&apos;ll need to take this in count.</p>
-<h2 id="running-your-first-build">Running Your First Build</h2>
+<h2 id="undefinedrunning-your-first-build">Running Your First Build</h2>
 <p>Now that we have basic configuration in place, we&apos;ll need something to build. Let&apos;s start with a classic <code>Hello World</code> type of app. Set up <code>/app</code> like this:</p>
 <p><strong>app/component.js</strong></p>
-<pre><code class="lang-javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+<pre><code class="undefinedjavascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
   <span class="hljs-keyword">var</span> element = <span class="hljs-built_in">document</span>.createElement(&apos;h1&apos;);
   element.innerHTML = &apos;Hello world&apos;;
   <span class="hljs-keyword">return</span> element;
 };
 </code></pre>
 <p><strong>app/main.js</strong></p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> component = <span class="hljs-built_in">require</span>(&apos;./component.js&apos;);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> component = <span class="hljs-built_in">require</span>(&apos;./component.js&apos;);
 <span class="hljs-keyword">var</span> app = <span class="hljs-built_in">document</span>.createElement(&apos;div&apos;);
 
 <span class="hljs-built_in">document</span>.body.appendChild(app);
 app.appendChild(component());
 </code></pre>
 <p>Now run <code>node_modules/.bin/webpack</code> in your terminal and your application will be built. A <em>bundle.js</em> file will appear in your <code>/build</code> folder. You should see something along this at your terminal:</p>
-<pre><code class="lang-bash">&gt; webpack_demo@1.0.0 build /Users/something/projects/webpack_demo
+<pre><code class="undefinedbash">&gt; webpack_demo@1.0.0 build /Users/something/projects/webpack_demo
 &gt; webpack
 
 Hash: e02f97146a15a8a5c3a9
@@ -69,10 +69,10 @@ bundle.js  1.74 kB       0  [emitted]  main
    [0] ./app/main.js 115 bytes {0} [built]
    [1] ./app/component.js 134 bytes {0} [built]
 </code></pre>
-<h2 id="setting-up-entry-point">Setting Up Entry Point</h2>
+<h2 id="undefinedsetting-up-entry-point">Setting Up Entry Point</h2>
 <p>In order to actually use our bundle, we&apos;ll need to define the last missing bit, <em>index.html</em>. Here&apos;s a starting point:</p>
 <p><strong>build/index.html</strong></p>
-<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+<pre><code class="undefinedhtml">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;/&gt;
@@ -83,19 +83,19 @@ bundle.js  1.74 kB       0  [emitted]  main
 &lt;/html&gt;
 </code></pre>
 <p>We simply just point at the bundle via <em>script</em> <code>src</code>, nothing more than that. Generally this is the way you work with Webpack. You figure out what you want to load, find a loader and hook it up. Sometimes you&apos;ll need to implement loaders yourself but we&apos;ll cover that later.</p>
-<h2 id="running-the-application">Running the Application</h2>
+<h2 id="undefinedrunning-the-application">Running the Application</h2>
 <p>Just double-click the <em>index.html</em> file or set up a web server pointing to the <code>build/</code> folder. One easy way to achieve this is to install <code>serve</code> (<code>npm i serve -g</code>) and hit <code>serve</code> within the <code>build</code> directory.</p>
-<h2 id="setting-up-package-json-scripts-">Setting Up <code>package.json</code> <em>scripts</em></h2>
+<h2 id="undefinedsetting-up-package-json-scripts-">Setting Up <code>package.json</code> <em>scripts</em></h2>
 <p>It can be useful to run build, serve and such commands through <code>npm</code>. That way you don&apos;t have to worry about the technology used in the project. You just invoke the commands. This can be achieved easily by setting up a <code>scripts</code> section to <code>package.json</code>.</p>
 <p>In this case we can move the build step behind <code>npm run build</code> by adding the following section at <code>package.json</code>:</p>
-<pre><code class="lang-json">&quot;scripts&quot;: {
+<pre><code class="undefinedjson">&quot;scripts&quot;: {
   &quot;build&quot;: &quot;webpack&quot;
 }
 </code></pre>
 <p>You can either replace the current <code>scripts</code> section with the above or just add that <code>build</code> line there. To invoke a build, you can hit <code>npm run build</code> now. npm will find it as <code>npm run</code> adds Webpack to the <code>PATH</code> temporarily.</p>
 <p>Later on this approach will become more powerful as project complexity grows. You can hide the complexity within <code>scripts</code> while keeping the interface simple.</p>
 <p>The potential problem with this approach is that it can tie you to a Unix environment in case you use environment specific commands. If so, you may want to consider using something environment agnostic, such as <a href="https://www.npmjs.com/package/gulp-webpack">gulp-webpack</a>.</p>
-<h2 id="conclusion">Conclusion</h2>
+<h2 id="undefinedconclusion">Conclusion</h2>
 <p>Getting a simple build like this isn&apos;t very complex. In the end you&apos;ll end up with a little bit configuration. Webpack deals with the nasty details for you after that. We are close to unleashing the power of Webpack here as you will soon see.</p>
 <p>Next we&apos;ll discuss Webpack compared to some other solutions. After that we&apos;ll get back to this example as hitting <code>npm run build</code> all the time and refreshing browser during development doesn&apos;t sound that efficient. We can do something about that.</p>
 </div></div></div><noscript></noscript><div class="prevnext-pages"><a href="../webpack_compared" class="previous-page">Webpack Compared</a><a href="../developing_with_webpack" class="next-page">Developing with Webpack</a></div></main></div></body></html>
