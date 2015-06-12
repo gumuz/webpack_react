@@ -167,11 +167,17 @@ import NoteStore from &apos;../stores/NoteStore&apos;;
     NoteActions.init();
   }
   <span class="hljs-function"><span class="hljs-title">render</span></span>() {
+    /* eslint-disable no-unused-vars */
+    const {i, name, ...props} = this.props;
+    /* eslint-enable no-unused-vars */
+
     <span class="hljs-built_in">return</span> (
-      &lt;div {...this.props}&gt;
-        &lt;div className=&apos;header&apos;&gt;
-          &lt;div className=&apos;name&apos;&gt;{name}&lt;/div&gt;
-          &lt;button onClick={this.addNote.bind(this)}&gt;+&lt;/button&gt;
+      &lt;div {...props}&gt;
+        &lt;div className=&apos;lane-header&apos;&gt;
+          &lt;div className=&apos;lane-name&apos;&gt;{name}&lt;/div&gt;
+          &lt;div className=&apos;lane-add-note&apos;&gt;
+            &lt;button onClick={this.addNote.bind(this)}&gt;+&lt;/button&gt;
+          &lt;/div&gt;
         &lt;/div&gt;
         &lt;AltContainer
           stores={[NoteStore]}
