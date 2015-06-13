@@ -1033,7 +1033,7 @@ main {
           align-items: flex-start; }
   @media only screen and (min-width: 1150px) {
     .docs-nav {
-      max-width: 200px;
+      max-width: 225px;
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
       -webkit-flex-direction: column;
@@ -1121,6 +1121,9 @@ main {
     font-size: 16px;
     font-size: 0.88889rem;
     line-height: 1.6875; } }
+.post__content .inline-img {
+  width: 100%;
+  left: auto; }
 
 .header-image {
   width: 100vw;
@@ -1315,6 +1318,14 @@ main {
         margin-left: 0;
         margin-right: 0; } }
 
+.front__latestpost {
+  margin-top: 27px;
+  font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+  font-weight: 600;
+  color: #fff; }
+  .front__latestpost:hover {
+    color: #cff9fd; }
+
 .vertical-margin {
   margin-top: 27px;
   margin-bottom: 27px; }
@@ -1426,6 +1437,17 @@ input[type="date"], .input {
 .post__content img {
   position: inherit;
   width: 100%; }
+
+.header-extra {
+  font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: calc(95vh);
+  margin-left: calc(5vh);
+  z-index: 400;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden; }
 
 .previous-page, .next-page {
   font-family: "Avenir Next", "Helvetica Neue", sans-serif;
