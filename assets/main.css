@@ -862,8 +862,8 @@ main {
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
-  background: -webkit-linear-gradient(bottom, #fff 0%, #fff 25%, rgba(255, 255, 255, 0) 100%);
-  background: linear-gradient(to top, #fff 0%, #fff 25%, rgba(255, 255, 255, 0) 100%);
+  background: -webkit-linear-gradient(bottom, #fff 0%, #fff 35%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to top, #fff 0%, #fff 35%, rgba(255, 255, 255, 0) 100%);
   z-index: 5;
   width: 100%;
   -webkit-box-pack: center;
