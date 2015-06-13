@@ -862,15 +862,15 @@ main {
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
-  background: -webkit-linear-gradient(bottom, #fff 0%, #fff 20%, rgba(255, 255, 255, 0) 100%);
-  background: linear-gradient(to top, #fff 0%, #fff 20%, rgba(255, 255, 255, 0) 100%);
+  background: -webkit-linear-gradient(bottom, #fff 0%, #fff 25%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to top, #fff 0%, #fff 25%, rgba(255, 255, 255, 0) 100%);
   z-index: 5;
   width: 100%;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  padding-top: 27px;
+  padding-top: 54px;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden; }
   @media only screen and (max-width: 549px) {
@@ -927,10 +927,6 @@ main {
     .nav__link {
       text-align: center;
       width: 100%; } }
-  .nav__link a {
-    background-color: #09b5c4;
-    color: white;
-    padding: 0.2em; }
 
 .nav__toggle {
   display: none; }
