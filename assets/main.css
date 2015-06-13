@@ -862,8 +862,8 @@ main {
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
-  background: -webkit-linear-gradient(bottom, #fff, rgba(255, 255, 255, 0));
-  background: linear-gradient(to top, #fff, rgba(255, 255, 255, 0));
+  background: -webkit-linear-gradient(bottom, #fff 0%, #fff 20%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to top, #fff 0%, #fff 20%, rgba(255, 255, 255, 0) 100%);
   z-index: 5;
   width: 100%;
   -webkit-box-pack: center;
@@ -911,7 +911,7 @@ main {
 
 .nav__link {
   display: inline-block;
-  padding: 13.5px 27px;
+  padding: 6.75px 27px;
   -webkit-transition: color cubic-bezier(.23, 1, .32, 1) 0.3s;
           transition: color cubic-bezier(.23, 1, .32, 1) 0.3s;
   font-size: 15px;
@@ -927,6 +927,10 @@ main {
     .nav__link {
       text-align: center;
       width: 100%; } }
+  .nav__link a {
+    background-color: #09b5c4;
+    color: white;
+    padding: 0.2em; }
 
 .nav__toggle {
   display: none; }
@@ -1439,6 +1443,7 @@ input[type="date"], .input {
   width: 100%; }
 
 .header-extra {
+  font-size: small;
   font-family: "Avenir Next", "Helvetica Neue", sans-serif;
   position: absolute;
   top: 0;
@@ -1448,6 +1453,9 @@ input[type="date"], .input {
   z-index: 400;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden; }
+
+.header-extra a {
+  color: #ddd; }
 
 .previous-page, .next-page {
   font-family: "Avenir Next", "Helvetica Neue", sans-serif;
