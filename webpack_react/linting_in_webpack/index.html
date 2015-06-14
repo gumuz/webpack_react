@@ -4,7 +4,7 @@
 <p>Besides linting for issues it can be useful to manage code style on some level. Nothing is more annoying than having to work with source that has mixed tabs or spaces and all kinds of shenanigans. Stylistically consistent code reads better and is easier to work with particularly in a team environment.</p>
 <p><a href="http://jscs.info/">JSCS</a> is a tool that makes it possible to define a style guide of your own for JavaScript code. It is easy to integrate into your project through Webpack.</p>
 <p>In this chapter I&apos;ll go through these tools briefly. We&apos;ll integrate just ESLint into our project. Of course if you want, you can give the other tools a go. Just don&apos;t be surprised that they aren&apos;t included in the demonstration code.</p>
-<h2 id="webpack-and-jshint">Webpack and JSHint</h2>
+<h2 id="webpack-and-jshint">Webpack and JSHint<a class="header-anchor" href="#webpack-and-jshint">#</a></h2>
 <p>Interestingly no JSLint loader seems to exist for Webpack yet. Fortunately there&apos;s one for JSHint. If you already using it, setting it up with Webpack is easy. You will need to install <a href="https://www.npmjs.com/package/jshint-loader">jshint-loader</a> to your project (<code>npm i jshint-loader --save-dev</code>). In addition you will need a little bit of configuration.</p>
 <pre><code class="undefinedjavascript"><span class="hljs-built_in">module</span>: {
   preLoaders: [
@@ -41,9 +41,9 @@
 }
 </code></pre>
 <p>Besides setting it up with Webpack it can be highly beneficial to look into an integration with your editor or IDE. Having warnings and errors inline makes a world of difference. Webpack will still complain but an integrated approach has its benefits.</p>
-<h2 id="setting-up-eslint">Setting Up ESLint</h2>
+<h2 id="setting-up-eslint">Setting Up ESLint<a class="header-anchor" href="#setting-up-eslint">#</a></h2>
 <p><a href="http://eslint.org/">ESLint</a> is a recent linting solution for JavaScript. It builds on top of ideas presented by JSLint and JSHint. Most importantly it allows you to develop custom rules. As a result a nice set of rules have been developed for React in form of <a href="https://www.npmjs.com/package/eslint-plugin-react">eslint-plugin-react</a>.</p>
-<h3 id="connecting-eslint-with-package-json-">Connecting ESlint with <code>package.json</code></h3>
+<h3 id="connecting-eslint-with-package-json-">Connecting ESlint with <code>package.json</code><a class="header-anchor" href="#connecting-eslint-with-package-json-">#</a></h3>
 <p>In order to integrate ESLint with our project, we&apos;ll need to do a couple of little tweaks. To get it installed, invoke <code>npm i babel-eslint eslint eslint-plugin-react --save-dev</code>. That will add ESLint and the plugin we want to use as our project development dependency. Next we&apos;ll need to do some configuration to make linting work in our project.</p>
 <p><strong>package.json</strong></p>
 <pre><code class="undefinedjson">&quot;scripts&quot;: {
@@ -95,7 +95,7 @@
 </code></pre>
 <p>Note how we can define severity of an individual rule by passing it a number. Zero or &#xB4;false` would mean a rule is set off. One would mark it as a warning. Two would yield an error. In some cases you can pass additional parameters to a rule by using an array notation.</p>
 <p>If you hit <code>npm run lint</code> now, you should get some errors and warnings to fix depending on the rules you have set up. Go ahead and fix them if there are any. You can check <a href="https://github.com/survivejs/webpack">the book site</a> for potential fixes if you get stuck.</p>
-<blockquote class="tip">Note that like some other tools, such as JSCS and JSHint, ESLint supports <code>package.json</code> based configuration. Simply add a <code>eslintConfig</code> field to it and write the configuration there.</blockquote><blockquote class="tip">It is possible to generate a sample <code>.eslintrc</code> using <code>eslint --init</code> (or <code>node_modules/.bin/eslint --init</code> for local install). This can be useful on new projects.</blockquote><h3 id="dealing-with-elifecycle-error">Dealing with <code>ELIFECYCLE</code> Error</h3>
+<blockquote class="tip">Note that like some other tools, such as JSCS and JSHint, ESLint supports <code>package.json</code> based configuration. Simply add a <code>eslintConfig</code> field to it and write the configuration there.</blockquote><blockquote class="tip">It is possible to generate a sample <code>.eslintrc</code> using <code>eslint --init</code> (or <code>node_modules/.bin/eslint --init</code> for local install). This can be useful on new projects.</blockquote><h3 id="dealing-with-elifecycle-error">Dealing with <code>ELIFECYCLE</code> Error<a class="header-anchor" href="#dealing-with-elifecycle-error">#</a></h3>
 <p>In case the linting process fails, <code>npm</code> will give you a nasty looking <code>ELIFECYCLE</code> error.A good way to achieve a tidier output is to invoke <code>npm run lint --silent</code>. That will hide the <code>ELIFECYCLE</code> bit. You can define an alias for this purpose. At Unix you would do <code>alias run=&apos;npm run --silent&apos;</code> and then <code>run &lt;script&gt;</code>.</p>
 <p>Alternatively you could pipe output to <code>true</code> like this:</p>
 <p><strong>package.json</strong></p>
@@ -106,7 +106,7 @@
 ...
 </code></pre>
 <p>The potential problem with this approach is that in case you invoke <code>lint</code> through some other command, it will pass the test even if there are failures! In other words if you have another script that does something like <code>npm run lint &amp;&amp; npm run build</code>, it will build regardless of the output of the first command.</p>
-<h3 id="connecting-eslint-with-webpack">Connecting ESLint with Webpack</h3>
+<h3 id="connecting-eslint-with-webpack">Connecting ESLint with Webpack<a class="header-anchor" href="#connecting-eslint-with-webpack">#</a></h3>
 <p>We can make Webpack emit ESLint messages for us by using <a href="https://www.npmjs.com/package/eslint-loader">eslint-loader</a>. As the first step hit <code>npm i eslint-loader --save-dev</code> to add it to the project.</p>
 <p>Next we need to tweak our development configuration to include it. Add the following section to it:</p>
 <p><strong>webpack.config.js</strong></p>
@@ -132,9 +132,9 @@
 </code></pre>
 <p>We are using <code>preLoaders</code> section here as we want to play it safe. This section is executed before possible <code>loaders</code> get triggered.</p>
 <p>If you execute <code>npm start</code> now and break some linting rule while developing, you should see that in terminal output.</p>
-<h2 id="customizing-eslint">Customizing ESLint</h2>
+<h2 id="customizing-eslint">Customizing ESLint<a class="header-anchor" href="#customizing-eslint">#</a></h2>
 <p>Even though you can get very far with vanilla ESLint there are several techniques you should be aware of. For instance sometimes you might want to skip some particular rules per file or you might want to implement rules of your own. We&apos;ll cover these cases briefly next.</p>
-<h3 id="skipping-eslint-rules">Skipping ESLint Rules</h3>
+<h3 id="skipping-eslint-rules">Skipping ESLint Rules<a class="header-anchor" href="#skipping-eslint-rules">#</a></h3>
 <p>Sometimes you&apos;ll want to skip certain rules per file or per line. This can be useful when you happen to have some exceptional case in your code where some particular rule doesn&apos;t make sense. As usual exception confirms the rule. Consider the following examples:</p>
 <pre><code class="undefinedjavascript"><span class="hljs-comment">// everything</span>
 <span class="hljs-comment">/* eslint-disable */</span>
@@ -153,7 +153,7 @@
 alert(&apos;foo&apos;); <span class="hljs-comment">// eslint-disable-line no-alert</span>
 </code></pre>
 <p>Note that the rule specific examples assume you have the rules in your configuration in the first place! You cannot specify new rules here. Instead you can modify the behavior of existing rules.</p>
-<h3 id="writing-your-own-rules">Writing Your Own Rules</h3>
+<h3 id="writing-your-own-rules">Writing Your Own Rules<a class="header-anchor" href="#writing-your-own-rules">#</a></h3>
 <p>ESLint rules rely on Abstract Syntax Tree (AST) definition of JavaScript. It is a data structure that describes JavaScript code after it has been lexically analyzed. There are tools such as <a href="https://github.com/benjamn/recast">recast</a> that allow you perform transformations on JavaScript code by using AST transformations. The idea is that you match some structure, then transform it somehow and convert AST back to JavaScript.</p>
 <p>To get a better idea of how AST works and what it looks like you can check <a href="http://esprima.org/demo/parse.html">Esprima online JavaScript AST visualization</a> or <a href="http://felix-kling.de/esprima_ast_explorer/">JS AST Explorer by Felix Kling</a>. Alternatively you can install <code>recast</code> and examine the output it gives. That is the structure we&apos;ll be working with at ESLint rules.</p>
 <p>In ESLint&apos;s case we just want to check the structure and report in case something is wrong. Getting a simple rule done is surprisingly simple:</p>
@@ -189,7 +189,7 @@ alert(&apos;foo&apos;); <span class="hljs-comment">// eslint-disable-line no-ale
 </code></pre>
 <p>If you invoke ESLint now, you should see a bunch of warnings. Mission accomplished!</p>
 <p>Of course the rule doesn&apos;t do anything useful yet. To get forward I recommend checking out the official documentation about <a href="http://eslint.org/docs/developer-guide/working-with-plugins.html">plugins</a> and <a href="http://eslint.org/docs/developer-guide/working-with-rules.html">rules</a>. You can also check out some of the existing rules and plugins for inspiration to see how they achieve certain things.</p>
-<h3 id="eslint-resources">ESLint Resources</h3>
+<h3 id="eslint-resources">ESLint Resources<a class="header-anchor" href="#eslint-resources">#</a></h3>
 <p>Besides the official documentation available at <a href="http://eslint.org/">eslint.org</a>, you should check out the following blog posts:</p>
 <ul>
 <li><a href="https://medium.com/@dan_abramov/lint-like-it-s-2015-6987d44c5b48">Lint Like It&apos;s 2015</a> - This post by Dan Abramov shows how to get ESLint work well with Sublime Text.</li>
@@ -198,7 +198,7 @@ alert(&apos;foo&apos;); <span class="hljs-comment">// eslint-disable-line no-ale
 <li><a href="https://github.com/elijahmanor/eslint-plugin-smells">eslint-plugin-smells</a> - This plugin by Elijah Manor allows you to lint against various JavaScript smells. Recommended.</li>
 </ul>
 <p>If you just want some starting point quickly, you can pick one of <a href="https://www.npmjs.com/search?q=eslint-config">eslint-config- packages</a> or go with <a href="https://www.npmjs.com/package/standard">standard</a> style. By the looks of it <code>standard</code> has <a href="https://github.com/feross/standard/issues/138">some issues with JSX</a> so be careful with that.</p>
-<h2 id="checking-javascript-style-with-jscs">Checking JavaScript Style with JSCS</h2>
+<h2 id="checking-javascript-style-with-jscs">Checking JavaScript Style with JSCS<a class="header-anchor" href="#checking-javascript-style-with-jscs">#</a></h2>
 <p>Especially in a team environment it can be annoying if one guy uses tabs and other spaces. There can also be discrepancies between space usage. Some like to use two, some like four for indentation. In short it can get pretty messy without any discipline. Fortunately there is a tool known as JSCS. It will allow you to define a style guide for your project.</p>
 <p><a href="https://github.com/unindented/jscs-loader">jscs-loader</a> provides Webpack hooks to the tool. Integration is similar as in the case of ESLint. You would define <code>.jscsrc</code> with your style guide rules and use configuration like this:</p>
 <pre><code class="undefinedjavascript"><span class="hljs-built_in">module</span>: {
@@ -239,6 +239,6 @@ alert(&apos;foo&apos;); <span class="hljs-comment">// eslint-disable-line no-ale
 }
 </span></span></code></pre>
 <p>We won&apos;t use the tool in this project but it&apos;s good to be aware of it.</p>
-<blockquote class="tip">Note that like some other tools, such as ESLint and JSHint, JSCS supports <code>package.json</code> based configuration. Simply add a <code>jscsConfig</code> field to it and write the configuration there.</blockquote><h2 id="conclusion">Conclusion</h2>
+<blockquote class="tip">Note that like some other tools, such as ESLint and JSHint, JSCS supports <code>package.json</code> based configuration. Simply add a <code>jscsConfig</code> field to it and write the configuration there.</blockquote><h2 id="conclusion">Conclusion<a class="header-anchor" href="#conclusion">#</a></h2>
 <p>In this chapter you learned how to lint your code using Webpack in various ways. It is one of those techniques that yields benefits over longer term as you get to fix possible problems before they become actual issues. Next we&apos;ll delve deeper as we discuss hot module reloading and React in the next chapter.</p>
 </div></div><div class="header-extra"><a href="https://www.flickr.com/photos/16324044@N00/10833734686">Eva the Weaver (CC BY-NC-SA)</a></div><div class="prevnext"><div class="prevnext__prev"><div class="prevnext__bg" style="background-image:url(/images/oscillo.jpg);"></div><span class="prevnext__info">Previous chapter</span><a class="prevnext__link" href="/webpack_react/developing_with_webpack">Developing with Webpack</a></div><div class="prevnext__next"><div class="prevnext__bg" style="background-image:url(/images/mainframe.jpg);"></div><span class="prevnext__info">Next chapter</span><a class="prevnext__link" href="/webpack_react/webpack_and_react">Webpack and React</a></div></div></div><noscript></noscript><div class="prevnext-pages"><a href="../developing_with_webpack" class="previous-page">Developing with Webpack</a><a href="../webpack_and_react" class="next-page">Webpack and React</a></div></main></div></body></html>
