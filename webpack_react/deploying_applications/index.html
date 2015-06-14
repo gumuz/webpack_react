@@ -5,7 +5,7 @@
 <p>If we are dealing with an app that has multiple pages, we can move onto using a bundle per page. Why eat the whole pie when you only want a piece? This translates to a more concrete example where you only load assets needed to show the &#x201C;profile&#x201D; page. When the user clicks &#x201C;admin&#x201D; new assets will be loaded to display that page. This gives you a faster initial load of your application, but gives some latency when moving to pages that needs to download more assets. Webpack handles all this for you and we will show you how.</p>
 <p>There is one more thing we can do. We can turn our application into an isomorphic one. Back in the day we just served HTML and sprinkled a bit of logic on top of it using JavaScript. Then at some point we started generating the HTML on the client using JavaScript and templates. Single Page Apps were born. This simplified model of app development came with a cost.</p>
 <p>Having server rendered HTML available is beneficial because the users will not get a blank page while the JavaScript is loading. Web crawlers can benefit from this and as a result your SEO rankings are improved. The app is more performant and easier to consume. In addition we can preload some data to avoid queries. We will demonstrate this approach using React.</p>
-<h2 id="undefinedcreating-a-production-configuration">Creating a Production Configuration</h2>
+<h2 id="creating-a-production-configuration">Creating a Production Configuration</h2>
 <p>Creating a production configuration is not that much different from creating configuration for development. We&apos;ll use different paths for the output and avoid development workflow specific configuration. It is also common to add caching configuration to your production configuration.</p>
 <p>To run the configuration and create a distribution for deployment we create a script. In addition to our existing <code>npm start</code> we will add <code>npm run prod</code>. What differs with our new production script is that it does not use the <code>webpack-dev-server</code>. We will only use webpack to produce a distribution. To make this work, we&#x2019;ll need to tweak our <code>package.json</code> like this:</p>
 <pre><code>&quot;scripts&quot;: {
@@ -25,7 +25,7 @@ plugins: [
 ]
 </code></pre>
 <p>It is more verbose but on the other hand at least now it&#x2019;s a part of the configuration itself.</p>
-<h2 id="undefinedsingle-bundle">Single Bundle</h2>
+<h2 id="single-bundle">Single Bundle</h2>
 <p>If you are developing a simple application, or a demo, you can get away with a single bundle. It will contain all the JavaScript your app needs to run. In addition it will contain assets needed by your app including CSS, fonts and even images. As a result the loading time will be higher. Sometimes simple is beautiful, though.</p>
 <p>The gotcha with this approach is that the generated bundle can be quite big. In addition if you make any changes to it, you will force your users to download everything again. We cannot leverage any form of caching effectively. That said, it&#x2019;s a viable approach in the simplest of cases.</p>
 <p>Given the following project file structure:</p>
@@ -48,7 +48,7 @@ plugins: [
 };
 </code></pre>
 <p>Run <code>npm run prod</code> in the root of the project and a <code>bundle.js</code> file will be available in the <code>./dist</code> folder.</p>
-<h2 id="undefinedsplitting-app-and-vendors">Splitting App and Vendors</h2>
+<h2 id="splitting-app-and-vendors">Splitting App and Vendors</h2>
 <p>You will want to split app and vendors when your project consists of relatively large dependencies, compared to the project itself. This is beneficial when you do bug fixes or other changes to the application, as users do not need to download the vendors bundle again. The initial loading time of your application is not optimized compared to a single bundle, actually it is a bit slower because now you have to set up two HTTP requests to get the required assets. As with everything, it is about balance.</p>
 <blockquote>
 <p>Generally the more HTTP requests you have to fire, the slower things will get. Even though request payload itself might be small, each request comes with overhead. The overhead adds up quickly. This is the reason why clever bundling approaches are required. The situation is likely to change as HTTP/2 gets adopted. The situation is quite opposite there.</p>
@@ -89,7 +89,7 @@ plugins: [
 <p>These two entry chunks and their individual children chunks will be bundled into two different JavaScript files, <strong>app.js</strong> and <strong>vendors.js</strong>. Both of the bundles has <code>react</code> as either part of the entry chunk itself, like vendors, or it is required with a <code>var React = require(&apos;react&apos;)</code> statement, like in app.</p>
 <p>Understanding this, you can understand how the CommonsChunkPlugin works. In the example above, if we did not configure a plugin at all React would be included in both entry chunks, app and vendors, and bundled into both the <em>app.js</em> file and <em>vendors.js</em> file. By using a plugin we can tell Webpack that the chunks included in vendors are common.</p>
 <p>That means when an other entry chunk, like app in this example, tries to require react it will first check  entry chunks defined as common. In our example, using the CommonsChunkPlugin, we say that the vendors entry chunk is common and when it is bundled, call that file <em>vendors.js</em>. The result of this is that we will now get two bundles, app.js and vendors.js, where app.js grabs react from vendors.js.</p>
-<h2 id="undefinedmultiple-bundles">Multiple Bundles</h2>
+<h2 id="multiple-bundles">Multiple Bundles</h2>
 <p>Let&apos;s say you are working on a big project and you have a family of applications. These applications have different functionality, but they still share a lot of code. With Webpack you can create completely separate bundles that share a single common bundle. How much should be shared is something Webpack can optimize for you.</p>
 <p>Given the following project file structure:</p>
 <ul>
@@ -126,7 +126,7 @@ plugins: [
 <li><p>The CommonsChunkPlugin is now used a bit differently than in the previous strategy. Instead of pointing to an existing entry chunk, we create a brand new chunk called <em>common</em>. Its file name will be <em>common.js</em>. By default Webpack will make sure that if one entry chunk or its children require a chunk that also the other entry chunk or its children require, it will be moved over to the common chunk. This effectively moves vendors and shared chunks to the common bundle.</p>
 </li>
 </ol>
-<h2 id="undefinedlazy-loaded-chunks">Lazy Loaded Chunks</h2>
+<h2 id="lazy-loaded-chunks">Lazy Loaded Chunks</h2>
 <p>It is also possible to lazy load chunks. This means that you load parts of your application as they are requested. A typical scenario for this would be that your users only visits specific parts of the application. And an example of that would be twitter.com. You do not always visit your profile page, so why load the code for that? Here is a summary of requirements.</p>
 <p>Given the following project file structure:</p>
 <ul>
@@ -190,9 +190,9 @@ React.render(&lt;App/&gt;, document.body);
 </code></pre>
 <p>So this is just an example. You would probably hook this up to a router, but the important part is using <code>require.ensure</code>. When Webpack finds that statement it will automatically create a chunk that can be lazy loaded.</p>
 <p><strong>What is the array on the first argument?</strong>: If you try to lazy load a chunk that depends on an other lazy loaded chunk you can set it as a dependency in the array. Just type in the path to the chunk; e.g. <code>[&apos;./FunnyButton.js&apos;]</code></p>
-<h2 id="undefinedisomorphic-app">Isomorphic App</h2>
+<h2 id="isomorphic-app">Isomorphic App</h2>
 <p>So the great thing about React is that it runs on the server too. But that does not mean you can just create any app and run it on the server. You have to make some decisions on the architecture. The reason is that even though React and the components run on the server, you might have dependencies in those components that does not run on the server.</p>
-<h3 id="undefinedinjecting-state">Injecting state</h3>
+<h3 id="injecting-state">Injecting state</h3>
 <p>One of the most important decisions you make is to inject the state of your application through the top component. This basically means that your components does not have any external dependencies at all. All they need to know comes through this injected state.</p>
 <p>This cookbook is not about isomorphic apps, but let us take a look at an example. We will not use ES6 syntax here because Node JS does not support it yet.</p>
 <p><strong>main.js (client)</strong></p>
@@ -216,7 +216,7 @@ app.get(&apos;/&apos;, <span class="hljs-keyword">function</span> (req, res) {
 });
 </code></pre>
 <p>So this was a very naive and simple way of showing it, but what you should notice here is that we use the same <strong>App.js</strong> file on the client and server, but we have two different ways of producing the state.</p>
-<h3 id="undefinedhow-can-i-attach-hashes-to-my-production-output-">How can I attach hashes to my production output?</h3>
+<h3 id="how-can-i-attach-hashes-to-my-production-output-">How can I attach hashes to my production output?</h3>
 <p>TODO: explain hashing in this chapter</p>
 <ul>
 <li>Use <code>[hash]</code>. Example: <code>&apos;assets/bundle.[hash].js&apos;</code></li>

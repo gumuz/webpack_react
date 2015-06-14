@@ -1,8 +1,8 @@
 <html><head><title>Styling React / SurviveJS - Survive the jungles of JavaScript</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="../../assets/img/favicon.png"><link rel="stylesheet" href="../../assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><div class="nav__link"><a href="../../">Home</a></div><div class="nav__link"><a href="../../webpack_react">Table of Contents</a></div></nav></div><main role="main"><div class="post"><div class="header-image" style="background-image:url(/images/taxi.jpg);"></div><h1 class="post__heading">Styling React</h1><div class="post__content"><div><p>Traditionally web pages have been split up in markup (ie. HTML), styling (ie. CSS) and logic (ie. JavaScript). Even though this sounds simple in practice there are overlaps. You might trigger CSS animations through JavaScript. As seen earlier React provides a component oriented way of development. This in turn allows us to question some of our earlier beliefs.</p>
 <p>I will show you how to style our application the traditional way and then discuss some more advanced alternatives you might want to consider. With React things are still in bit of a flux and we&apos;re still figuring out the best ways to deal with styling. Some patterns have begun to emerge, however. Perhaps some of the ideas will stick.</p>
-<h2 id="undefinedold-school-styling">Old School Styling</h2>
+<h2 id="old-school-styling">Old School Styling</h2>
 <p>The old school approach to styling was just to sprinkle some ids and classes around, set up some rules and hope for the best. Although this can work up to an extent it gets more complicated as development goes on. By default everything is global in CSS. Furthermore nesting definitions (ie. <code>.main .sidebar .button</code>) creates implicit logic to your styling.</p>
-<h3 id="undefinedwebpack-configuration-for-vanilla-css">Webpack Configuration for Vanilla CSS</h3>
+<h3 id="webpack-configuration-for-vanilla-css">Webpack Configuration for Vanilla CSS</h3>
 <p>It is easy to configure vanilla CSS is Webpack. Consider the example below:</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> common = {
@@ -20,7 +20,7 @@
 </code></pre>
 <p>To recap first <a href="https://www.npmjs.com/package/css-loader">css-loader</a> goes through possible <code>@import</code> and <code>url()</code> statements within the matched files and treats them as regular <code>require</code>. This allows us to rely on various other loaders such as <a href="https://www.npmjs.com/package/file-loader">file-loader</a> or <a href="https://www.npmjs.com/package/url-loader">url-loader</a>.</p>
 <p><code>file-loader</code> generates files while <code>url-loader</code> can create inline data urls for small resources. This can be useful for optimizing application loading as you avoid unnecessary requests while providing a slightly bigger payload. Small improvements such as this can yield large benefits especially if you are depending on a large amount of small resources within your style definitions.</p>
-<h3 id="undefinedbasic-style-for-kanban">Basic Style for Kanban</h3>
+<h3 id="basic-style-for-kanban">Basic Style for Kanban</h3>
 <p>To give our application slightly nicer outlook, we can try some old school CSS tricks:</p>
 <p><strong>app/stylesheets/main.css</strong></p>
 <pre><code class="undefinedcss">body {
@@ -95,7 +95,7 @@
 </code></pre>
 <p>Finally we make sure our application takes the new declarations into account. You could argue that each component could deal with the import by itself but this is one way to go. It makes testing components easier as you don&apos;t have to worry about the import in other environments.</p>
 <p>If we use lazy loading for our components, it makes sense to move <code>require</code> on component level. The lazy loading machinery will then be able to benefit from that. As a result the initial CSS your user has to load will be smaller.</p>
-<h2 id="undefinedgenerating-a-separate-bundle-for-css">Generating a Separate Bundle for CSS</h2>
+<h2 id="generating-a-separate-bundle-for-css">Generating a Separate Bundle for CSS</h2>
 <p>The current approach works well for simple cases. It simply inlines the CSS as a part of our JavaScript bundle. Although this can be performant (one less request), easy to set up and compiles fast, it may not be ideal always.</p>
 <p>We cannot for instance leverage caching for our CSS. If only JavaScript portion changes all CSS will be loaded still. As our CSS is injected through JavaScript, there is additional overhead. If the user isn&apos;t running JavaScript, no styling will be applied to the markup at all.</p>
 <p>There is a plugin that allows us to work around these problems. <a href="https://www.npmjs.com/package/extract-text-webpack-plugin">extract-text-webpack-plugin</a> generates a separate bundle for CSS. It comes with some overhead during compilation phase and won&apos;t work with hot module reloading (HMR). It also takes some additional setup.</p>
@@ -153,7 +153,7 @@
 }
 </code></pre>
 <p>Using this set up we can still benefit from HMR during development. For production build we generate a separate CSS. <code>html-webpack-plugin</code> will pick it up automatically and inject into our <code>index.html</code>.</p>
-<h2 id="undefinedlinting-css">Linting CSS</h2>
+<h2 id="linting-css">Linting CSS</h2>
 <p>As we saw earlier linting can be powerful. It points out potential problems before they escalate into real issues. <a href="https://www.npmjs.com/package/csslint">csslint</a> allows us to lint CSS. <a href="https://www.npmjs.com/package/csslint-loader">csslint-loader</a> makes it possible to integrate it into our project. To get started hit <code>npm i csslint csslint-loader --save-dev</code>.</p>
 <p>Next we&apos;ll need to integrate it with our configuration:</p>
 <p><strong>webpack.config.js</strong></p>
@@ -213,25 +213,25 @@
 </code></pre>
 <p>If you hit <code>npm run lint-css</code> now, you should see some output, hopefully without errors. That <code>--quiet</code> flag is there to keep the tool silent unless there are errors.</p>
 <p>Thanks to the Webpack configuration we did, you should get output during <code>npm start</code> process as well. In addition you should consider setting up csslint with your editor. That way you get more integrated development experience.</p>
-<h2 id="undefinedcss-methodologies">CSS Methodologies</h2>
+<h2 id="css-methodologies">CSS Methodologies</h2>
 <p>This old school approach is simple and probably enough for our application. What happens when the application starts to grow and new concepts get added, though? Broad CSS selectors are like globals. The problem gets even worse if you have to deal with loading order. If selectors end up in a tie, the last declaration wins. Unless there&apos;s <code>!important</code> somewhere and so on. It gets complex very fast.</p>
 <p>We could battle this problem by making the selectors more specific, using some naming rules and so on but where to draw the line? There are various alternative methodologies you can consider.</p>
 <p>Particularly <a href="http://oocss.org/">OOCSS</a> (Object-Oriented CSS), <a href="https://smacss.com/">SMACSS</a> (Scalable and Modular Approach for CSS) and <a href="https://en.bem.info/method/">BEM</a> (Block Element Modifier) are well known. Each of them solves problems of vanilla CSS in their own way.</p>
-<h3 id="undefinedbem">BEM</h3>
+<h3 id="bem">BEM</h3>
 <p>BEM originates from Yandex. They realized the traditional way of dealing with CSS isn&apos;t enough and decided to do something about it. The goal of BEM is to allow reusable components and code sharing through that. Sites such as <a href="http://getbem.com/">Get BEM</a> help you to understand the methodology in more detail.</p>
 <p>As maintaining long class names BEM requires can be ardious various libraries have appeared to make this easier. For React examples of these are <a href="https://www.npmjs.com/package/react-bem-helper">react-bem-helper</a>, <a href="https://www.npmjs.com/package/react-bem-render">react-bem-render</a> and <a href="https://www.npmjs.com/package/bem-react">bem-react</a>.</p>
 <p>Note that <a href="https://www.npmjs.com/package/postcss-bem-linter">postcss-bem-linter</a> allows you to lint your CSS for BEM conformance.</p>
-<h3 id="undefinedoocss-and-smacss">OOCSS and SMACSS</h3>
+<h3 id="oocss-and-smacss">OOCSS and SMACSS</h3>
 <p>Just like BEM both OOCSS and SMACSS come with their own conventions and methodology. As of writing no React specific helper libraries exist for OOCSS and SMACSS.</p>
 <p>csslint rules <code>Disallow qualified headings</code> and <code>Headings should only be defined once</code> allow you to check your CSS against OOCSS principles.</p>
-<h3 id="undefinedpros-and-cons">Pros and Cons</h3>
+<h3 id="pros-and-cons">Pros and Cons</h3>
 <p>The primary benefit of adopting a methodology is that it brings certain structure to your project. Rather than writing ad hoc rules and hoping everything works you will actually have something stronger to fall back onto. The methodologies overcome some of the basic issues of CSS and help you develop good software over longer term. Conventions they bring help particularly in maintenance and are less prone to lead to a mess.</p>
 <p>On the downside once you adopt one you are pretty much stuck with that on your project. But if you are willing to commit, there are benefits to gain.</p>
 <p>The methodologies also bring their own quirks (ie. complex naming schemes) and may make certain things more complicated than they have to be. They don&apos;t necessarily solve any of the bigger underlying issues but rather provide patches around them.</p>
 <p>There are various approaches, such as using preprocessors, that go deeper and solve some of these fundamental problems. That said it&apos;s not an either-or proposition. You may adopt a methodology even if you use some preprocessor.</p>
-<h2 id="undefinedcssnext-less-sass">cssnext, Less, Sass</h2>
+<h2 id="cssnext-less-sass">cssnext, Less, Sass</h2>
 <p>Vanilla CSS is missing some functionality that would make maintenance work easier. Consider something basic like variables, math/color functions and so on. It would also be nice to be able to forget about browser specific prefixes. These are small things that add up quite fast and make it annoying to write vanilla CSS.</p>
-<h3 id="undefinedcssnext">cssnext</h3>
+<h3 id="cssnext">cssnext</h3>
 <p><img src="/images/cssnext.jpg" alt="cssnext"></p>
 <p><a href="https://cssnext.github.io/">cssnext</a> is a project that allows us to experience the future now. There are some restrictions but it may be worth a go. In Webpack it is simply a matter of installing <a href="https://www.npmjs.com/package/cssnext-loader">cssnext-loader</a> and attaching it to your CSS configuration. In our case you would end up with the following:</p>
 <pre><code class="undefinedjavascript">{
@@ -241,7 +241,7 @@
 </code></pre>
 <p>The advantage of this approach is that you will literally be coding in the future. As browsers get better and adopt the standards, you don&apos;t have to worry about porting.</p>
 <p>If that sounds a little much or you are just interested in a particular feature such as autoprefixing, you can check out <a href="https://www.npmjs.com/package/autoprefixer-loader">autoprefixer-loader</a> and <a href="https://www.npmjs.com/package/postcss-loader">postcss-loader</a>. cssnext relies on postcss. It provides you more granular level of control of CSS plugins. You can even implement your own using a bit of JavaScript.</p>
-<h3 id="undefinedless">Less</h3>
+<h3 id="less">Less</h3>
 <p><img src="/images/less.png" alt="Less"></p>
 <p>Less is a popular CSS preprocessor that implements functionality we talked about and comes with a syntax of its own. In Webpack using Less doesn&apos;t take a lot of effort. <a href="https://www.npmjs.com/package/less-loader">less-loader</a> deals with the heavy lifting:</p>
 <pre><code class="undefinedjavascript">{
@@ -250,7 +250,7 @@
 }
 </code></pre>
 <p>There is also support for Less plugins, sourcemaps and so on but to understand how those work you should check out the project itself.</p>
-<h3 id="undefinedsass">Sass</h3>
+<h3 id="sass">Sass</h3>
 <p><img src="/images/sass.png" alt="Sass"></p>
 <p>Sass is a popular alternative to Less. You should use <a href="https://www.npmjs.com/package/sass-loader">sass-loader</a> with it. Remember to install <code>node-sass</code> to your project as the loader has a peer dependency on that. Webpack configuration is light again:</p>
 <pre><code class="undefinedjavascript">{
@@ -259,13 +259,13 @@
 }
 </code></pre>
 <p>Check out the loader for more advanced usage.</p>
-<h3 id="undefinedpros-and-cons">Pros and Cons</h3>
+<h3 id="pros-and-cons">Pros and Cons</h3>
 <p>Compared to vanilla CSS preprocessors bring a lot to the table. They deal with certain annoyances (ie. autoprefixing) and provide useful features. Particularly cssnext and postcss seem future proof alternatives to me. That said, I can see value in other preprocessors as they are established and well understood projects.</p>
 <p>In our project we could benefit from cssnext even if we didn&apos;t make any changes to our CSS. Thanks to autoprefixing rounded corners of our lanes would look good even in legacy browsers. In addition we could parametrize styling thanks to variables.</p>
-<h2 id="undefinedreact-based-approaches">React Based Approaches</h2>
+<h2 id="react-based-approaches">React Based Approaches</h2>
 <p>With React we have some additional alternatives. What if the way we&apos;ve been thinking about styling has been misguided? CSS is powerful but it can become an unmaintainable mess without some discipline. Where to draw the line between CSS and JavaScript?</p>
 <p>There are various approaches for React that allow us to push styling to component level. It may sound heretical. React, being an iconoclast, may lead the way here.</p>
-<h3 id="undefinedinline-styles-to-rescue">Inline Styles to Rescue</h3>
+<h3 id="inline-styles-to-rescue">Inline Styles to Rescue</h3>
 <p>Ironically the way solutions based on React solve this is through inline styles. Getting rid of inline styles was one of the main reasons for using separate CSS files in the first place. Now we are back there.</p>
 <p>This means that instead of something like</p>
 <pre><code class="undefinedjavascript">render(props, context) {
@@ -308,7 +308,7 @@
 <li>CSS style extraction - It is useful to be able to extract separate CSS files as that helps with the initial loading of the page. Back to start!</li>
 </ul>
 <p>I will cover some of the available libraries to give you a better idea how they work. See <a href="https://github.com/MicheleBertoli/css-in-js">Michele&apos;s list</a> for more a comprehensive outlook of the situation.</p>
-<h3 id="undefinedradium">Radium</h3>
+<h3 id="radium">Radium</h3>
 <p><a href="http://projects.formidablelabs.com/radium/">Radium</a> has certain valuable ideas that are worth highlighting. Most importantly it provides abstractions required to deal with media queries, pseudo classes (ie. <code>:hover</code>) and modifiers (primary/secondary button and so on).</p>
 <p>It expands the basic syntax as follows:</p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> style = {
@@ -345,7 +345,7 @@
   }
 };
 </code></pre>
-<h3 id="undefinedreact-style">React Style</h3>
+<h3 id="react-style">React Style</h3>
 <p><a href="https://github.com/js-next/react-style">React Style</a> uses the same syntax as React Native <a href="https://facebook.github.io/react-native/docs/stylesheet.html#content">StyleSheet</a>. It expands the basic definition by introducing additional keys for fragments.</p>
 <pre><code class="undefinedjavascript">var StyleSheet = import &apos;react-style&apos;;
 
@@ -373,7 +373,7 @@ var styles = StyleSheet.create({
 </code></pre>
 <p>As you can see we can use individual fragments to get the same effect as Radium modifiers. Also media queries are supported. React Style expects that you manipulate browser states (ie. <code>:hover</code> and such) through JavaScript. Also CSS animations won&apos;t work. Instead it&apos;s preferred to use some other solution for that.</p>
 <p>Interestingly there is a <a href="https://github.com/js-next/react-style-webpack-plugin">React Style plugin for Webpack</a>. It can extract CSS declarations into a separate bundle. Now we are closer to the world we&apos;re used to but without cascades. We also have our style declarations on component level.</p>
-<h3 id="undefinedsmart-css">smart-css</h3>
+<h3 id="smart-css">smart-css</h3>
 <p><a href="https://github.com/hackhat/smart-css">smart-css</a> takes a similar approach except this time we are operating based on classes. To give you a better idea, consider the example below:</p>
 <pre><code class="undefinedjavascript">var SmartCSS = require(&apos;smart-css&apos;);
 var css = new SmartCSS();
@@ -403,7 +403,7 @@ SmartCSS.injectStyles();
 </code></pre>
 <p>The approach supports pseudoselectors. Ie. you could define a selector such as <code>.button:hover</code> and it would just work.</p>
 <p>There are plans to introduce autoprefixing, better ways to deal with measurements, better APIs for complex properties and for a Webpack plugin to extract the CSS into an external file.</p>
-<h3 id="undefinedreact-inline">React Inline</h3>
+<h3 id="react-inline">React Inline</h3>
 <p><a href="https://github.com/martinandert/react-inline">React Inline</a> is an interesting twist on StyleSheet. It generates CSS based on <code>className</code> prop of elements where it is used. The example above could be adapted to React Inline like this:</p>
 <pre><code class="undefinedjavascript">import cx from &apos;classnames&apos;;
 ...
@@ -418,7 +418,7 @@ class ConfirmButton extends React.Component {
 }
 </code></pre>
 <p>Unlike React Style, the approach supports browser states (ie. <code>:hover</code> etc.). Unfortunately it relies on its own custom tooling to generate React code and CSS it needs to work. As of yet there&apos;s no Webpack loader available.</p>
-<h3 id="undefinedjsxstyle">jsxstyle</h3>
+<h3 id="jsxstyle">jsxstyle</h3>
 <p>Pete Hunt&apos;s <a href="https://github.com/petehunt/jsxstyle">jsxstyle</a> aims to mitigate some problems of React Style&apos;s approach. As you saw in previous examples we still have style definitions separate from the component markup. jsxstyle merges these two concepts. Consider the following example:</p>
 <pre><code class="undefinedjavascript">// PrimaryButton component
 &lt;button
@@ -428,7 +428,7 @@ class ConfirmButton extends React.Component {
 </code></pre>
 <p>The approach is still in its early days. For instance support for media queries is missing. Instead of defining modifiers as above, you&apos;ll end up defining more components to support your use cases.</p>
 <p>Just like React Style, also jsxstyle comes with a Webpack loader that can extract CSS into a separate file.</p>
-<h2 id="undefinedcss-modules">CSS Modules</h2>
+<h2 id="css-modules">CSS Modules</h2>
 <p>As if there weren&apos;t enough styling options for React, there&apos;s one more that&apos;s worth mentioning. <a href="https://github.com/css-modules/css-modules">CSS Modules</a> starts from the premise that CSS rules should be local by default. Globals should be treated as a special case. Mark Dalgleish&apos;s post <a href="https://medium.com/seek-ui-engineering/the-end-of-global-css-90d2a4a06284">The End of Global CSS</a> goes more detail into this.</p>
 <p>The genius of this approach is in that it still allows us to develop CSS as we&apos;ve been used to. This itself solves a large amount of problems libraries above try to solve in their own ways. If we need global styles, we can still get them. We still might want to have some around for some higher level styling after all. This time we&apos;re being explicit about it.</p>
 <p>To give you a better idea, consider the example below:</p>
@@ -460,7 +460,7 @@ import styles from &apos;./style.css&apos;;
 &lt;button className={classNames(styles.button, styles.primary)}&gt;Confirm&lt;/button&gt;
 </code></pre>
 <p>As you can see, this approach provides a good balance between what a lot of people are familiar with already and what various React specific libraries do. It would not surprise me a lot if this approach gained popularity even though it&apos;s still early days. See <a href="https://css-modules.github.io/webpack-demo/">CSS Modules Webpack Demo</a> for more examples.</p>
-<h2 id="undefinedconclusion">Conclusion</h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>It is simple to try out various styling approaches with Webpack. You can do it all ranging from vanilla CSS to more complex setups. React specific tooling even comes with loaders of their own. This makes it easy to try out different alternatives.</p>
 <p>React based styling approaches allow us to push styles to component level. This provides an interesting contrast to conventional approaches where CSS is kept separate. Dealing with component specific logic becomes easier. You will lose some power provided by CSS but in return you gain something that is simpler to understand and harder to break.</p>
 <p>CSS Modules strike in between conventional approach and React specific approaches. Even though it&apos;s a newcomer, it shows a lot of promise. The biggest benefit seems to be that it doesn&apos;t lose too much in the process even though it&apos;s a nice step ahead from what was before.</p>
