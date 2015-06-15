@@ -1039,7 +1039,7 @@ main {
       -webkit-flex-direction: column;
           -ms-flex-direction: column;
               flex-direction: column;
-      margin-top: 27px; } }
+      margin-top: 13.5px; } }
   @media only screen and (max-width: 550px) {
     .docs-nav {
       -webkit-box-orient: vertical;
@@ -1049,7 +1049,7 @@ main {
               flex-direction: column; } }
 
 .docs-nav--header {
-  margin-bottom: 13.5px; }
+  margin-bottom: 0; }
 
 .docs-nav__link {
   font-size: 15px;
@@ -1456,6 +1456,15 @@ input[type="date"], .input {
 .header-anchor {
   margin-left: 0.25em; }
 
+.prevnext-pages {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10vh;
+  background: -webkit-linear-gradient(bottom, rgba(255, 255, 255, 0) 0%, #fff 35%, #fff 100%);
+  background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, #fff 35%, #fff 100%); }
+
 .previous-page, .next-page {
   font-family: "Avenir Next", "Helvetica Neue", sans-serif;
   text-transform: uppercase;
@@ -1475,9 +1484,21 @@ input[type="date"], .input {
 .next-page::after {
   content: "\2192"; }
 
+@media (max-width: 1150px) {
+  .docs-nav__wrapper {
+    margin-top: 100vh; }
+  .header-image + .post__heading + .post__content {
+    margin-top: 0; } }
+
 @media (max-width: 550px) {
   .post__heading h1 {
     margin: 0; }
+  .prevnext-pages {
+    position: inherit;
+    height: auto;
+    top: auto;
+    left: auto;
+    right: auto; }
   .next-page, .previous-page {
     padding: 5px;
     background: white;
