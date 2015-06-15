@@ -1511,11 +1511,13 @@ input[type="date"], .input {
     bottom: 10px; } }
 
 blockquote.tip {
-  background-color: #eafff7;
+  font-size: medium;
+  background-color: #F5FFFB;
   padding: 1em;
   margin-bottom: 1em; }
 
 blockquote.warning {
-  background-color: #ffffef;
+  font-size: medium;
+  background-color: #FFFFFA;
   padding: 1em;
   margin-bottom: 1em; }
