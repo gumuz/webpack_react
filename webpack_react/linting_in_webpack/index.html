@@ -6,13 +6,13 @@
 <p>In this chapter I&apos;ll go through these tools briefly. We&apos;ll integrate just ESLint into our project. Of course if you want, you can give the other tools a go. Just don&apos;t be surprised that they aren&apos;t included in the demonstration code.</p>
 <h2 id="webpack-and-jshint">Webpack and JSHint<a class="header-anchor" href="#webpack-and-jshint">#</a></h2>
 <p>Interestingly no JSLint loader seems to exist for Webpack yet. Fortunately there&apos;s one for JSHint. If you already using it, setting it up with Webpack is easy. You will need to install <a href="https://www.npmjs.com/package/jshint-loader">jshint-loader</a> to your project (<code>npm i jshint-loader --save-dev</code>). In addition you will need a little bit of configuration.</p>
-<pre><code class="undefinedjavascript"><span class="hljs-built_in">module</span>: {
+<pre><code class="undefinedjavascript"><span class="hljs-rule"><span class="hljs-attribute">module</span>:<span class="hljs-value"> {
   preLoaders: [
     {
-      test: <span class="hljs-regexp">/\.js$/</span>,
-      <span class="hljs-comment">// define an include so we check just the files we need</span>
-      include: path.join(ROOT_PATH, &apos;app&apos;),
-      loader: &apos;jshint&apos;,
+      test: /\.js$/,
+      // define an include so we check just the files we need
+      include: path.<span class="hljs-function">join</span>(ROOT_PATH, &amp;apos</span></span>;<span class="hljs-tag">app</span>&amp;<span class="hljs-tag">apos</span>;),
+      <span class="hljs-rule"><span class="hljs-attribute">loader</span>:<span class="hljs-value"> &amp;apos</span></span>;<span class="hljs-tag">jshint</span>&amp;<span class="hljs-tag">apos</span>;,
     },
   ],
 },
@@ -201,12 +201,12 @@ alert(&apos;foo&apos;); <span class="hljs-comment">// eslint-disable-line no-ale
 <h2 id="checking-javascript-style-with-jscs">Checking JavaScript Style with JSCS<a class="header-anchor" href="#checking-javascript-style-with-jscs">#</a></h2>
 <p>Especially in a team environment it can be annoying if one guy uses tabs and other spaces. There can also be discrepancies between space usage. Some like to use two, some like four for indentation. In short it can get pretty messy without any discipline. Fortunately there is a tool known as JSCS. It will allow you to define a style guide for your project.</p>
 <p><a href="https://github.com/unindented/jscs-loader">jscs-loader</a> provides Webpack hooks to the tool. Integration is similar as in the case of ESLint. You would define <code>.jscsrc</code> with your style guide rules and use configuration like this:</p>
-<pre><code class="undefinedjavascript"><span class="hljs-built_in">module</span>: {
+<pre><code class="undefinedjavascript"><span class="hljs-rule"><span class="hljs-attribute">module</span>:<span class="hljs-value"> {
   preLoaders: [
     {
-      test: <span class="hljs-regexp">/\.jsx?$/</span>,
-      loaders: [&apos;eslint&apos;, &apos;jscs&apos;],
-      include: path.join(ROOT_PATH, &apos;app&apos;),
+      test: /\.jsx?$/,
+      loaders: [&amp;apos</span></span>;<span class="hljs-tag">eslint</span>&amp;<span class="hljs-tag">apos</span>;, &amp;<span class="hljs-tag">apos</span>;<span class="hljs-tag">jscs</span>&amp;<span class="hljs-tag">apos</span>;],
+      <span class="hljs-rule"><span class="hljs-attribute">include</span>:<span class="hljs-value"> path.<span class="hljs-function">join</span>(ROOT_PATH, &amp;apos</span></span>;<span class="hljs-tag">app</span>&amp;<span class="hljs-tag">apos</span>;),
     },
   ],
 },

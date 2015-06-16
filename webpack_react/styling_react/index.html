@@ -23,67 +23,67 @@
 <h3 id="basic-style-for-kanban">Basic Style for Kanban<a class="header-anchor" href="#basic-style-for-kanban">#</a></h3>
 <p>To give our application slightly nicer outlook, we can try some old school CSS tricks:</p>
 <p><strong>app/stylesheets/main.css</strong></p>
-<pre><code class="undefinedcss">body {
-  background: cornsilk;
+<pre><code class="undefinedcss"><span class="hljs-tag">body</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> cornsilk</span></span>;
 
-  font-family: sans-serif;
-}
+  <span class="hljs-rule"><span class="hljs-attribute">font-family</span>:<span class="hljs-value"> sans-serif</span></span>;
+}</span>
 </code></pre>
 <p>First we make sure the font we are using doesn&apos;t have serifs. It&apos;s not a big tweak to make but improves things already.</p>
 <p><strong>app/stylesheets/lane.css</strong></p>
-<pre><code class="undefinedcss">.lane {
-  margin: <span class="hljs-number">1</span>em;
+<pre><code class="undefinedcss"><span class="hljs-class">.lane</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">1em</span></span></span>;
 
-  border: <span class="hljs-number">1</span>px solid <span class="hljs-comment">#ccc;</span>
-  border-radius: <span class="hljs-number">0.5</span>em;
+  <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1px</span> solid <span class="hljs-hexcolor">#ccc</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">border-radius</span>:<span class="hljs-value"> <span class="hljs-number">0.5em</span></span></span>;
 
-  min-width: <span class="hljs-number">10</span>em;
+  <span class="hljs-rule"><span class="hljs-attribute">min-width</span>:<span class="hljs-value"> <span class="hljs-number">10em</span></span></span>;
 
-  display: inline-block;
-  vertical-align: top;
+  <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> inline-block</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">vertical-align</span>:<span class="hljs-value"> top</span></span>;
 
-  background-color: <span class="hljs-comment">#efefef;</span>
-}
+  <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#efefef</span></span></span>;
+}</span>
 
-.lane-header {
-  padding: <span class="hljs-number">1</span>em;
+<span class="hljs-class">.lane-header</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">1em</span></span></span>;
 
-  border-top-left-radius: <span class="hljs-number">0.5</span>em;
-  border-top-right-radius: <span class="hljs-number">0.5</span>em;
+  <span class="hljs-rule"><span class="hljs-attribute">border-top-left-radius</span>:<span class="hljs-value"> <span class="hljs-number">0.5em</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">border-top-right-radius</span>:<span class="hljs-value"> <span class="hljs-number">0.5em</span></span></span>;
 
-  overflow: auto;
+  <span class="hljs-rule"><span class="hljs-attribute">overflow</span>:<span class="hljs-value"> auto</span></span>;
 
-  color: <span class="hljs-comment">#efefef;</span>
-  background-color: <span class="hljs-comment">#333;</span>
-}
+  <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#efefef</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#333</span></span></span>;
+}</span>
 
-.lane-name {
-  <span class="hljs-built_in">float</span>: left;
-}
+<span class="hljs-class">.lane-name</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> left</span></span>;
+}</span>
 
-.lane-add-note {
-  <span class="hljs-built_in">float</span>: right;
-}
+<span class="hljs-class">.lane-add-note</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">float</span>:<span class="hljs-value"> right</span></span>;
+}</span>
 </code></pre>
 <p>Next we orient our lanes in a row by utilizing <code>display: inline-block</code> property. We also make sure alignment, margin and padding work. There is also subtle rounding to give the lanes a less blockish look.</p>
 <p><strong>app/stylesheets/note.css</strong></p>
-<pre><code class="undefinedcss">.notes {
-  margin: <span class="hljs-number">0.5</span>em;
+<pre><code class="undefinedcss"><span class="hljs-class">.notes</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">0.5em</span></span></span>;
 
-  padding-left: <span class="hljs-number">0</span>;
+  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
 
-  list-style: none;
-}
+  <span class="hljs-rule"><span class="hljs-attribute">list-style</span>:<span class="hljs-value"> none</span></span>;
+}</span>
 
-.note {
-  margin-bottom: <span class="hljs-number">0.25</span>em;
+<span class="hljs-class">.note</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">margin-bottom</span>:<span class="hljs-value"> <span class="hljs-number">0.25em</span></span></span>;
 
-  padding: <span class="hljs-number">0.5</span>em;
+  <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">0.5em</span></span></span>;
 
-  border: <span class="hljs-number">1</span>px solid <span class="hljs-comment">#ddd;</span>
+  <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1px</span> solid <span class="hljs-hexcolor">#ddd</span></span></span>;
 
-  background-color: <span class="hljs-comment">#fdfdfd;</span>
-}
+  <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#fdfdfd</span></span></span>;
+}</span>
 </code></pre>
 <p>For notes it&apos;s enough just to replace some of that default list styling. We also make notes visually separate from the lanes by applying color and shape.</p>
 <p><strong>app/main.jsx</strong></p>

@@ -80,9 +80,9 @@
 <p>Loaders are evaluated from right to left. In this case it will pass a possible CSS file to <em>css-loader</em> first and to <em>style-loader</em> after that. <em>css-loader</em> will resolve <code>@import</code> and <code>url</code> statements of our CSS files. <em>style-loader</em> deals with <code>require</code> statements in our JavaScript. Similar approach works with CSS preprocessors.</p>
 <blockquote class="warning">Although <code>[&apos;style&apos;, &apos;css&apos;]</code> type loader configuration can be convenient, it can lead to issues due to the way the lookup works. If you happened to have <code>css</code> named module installed at <code>node_modules</code>, it would try to use that instead of <code>css-loader</code> which we might expect!</blockquote><p>We are missing just one bit, the actual CSS itself:</p>
 <p><strong>app/stylesheets/main.css</strong></p>
-<pre><code class="undefinedcss">body {
-  background: cornsilk;
-}
+<pre><code class="undefinedcss"><span class="hljs-tag">body</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> cornsilk</span></span>;
+}</span>
 </code></pre>
 <p>In addition we&apos;ll need to make Webpack aware of this file:</p>
 <p><strong>app/main.js</strong></p>

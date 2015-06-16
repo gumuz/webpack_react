@@ -58,17 +58,17 @@ npm init
 app.appendChild(component());
 </code></pre>
 <p>Now run <code>node_modules/.bin/webpack</code> in your terminal and your application will be built. A <em>bundle.js</em> file will appear in your <code>/build</code> folder. You should see something along this at your terminal:</p>
-<pre><code class="undefinedbash">&gt; webpack_demo@1.0.0 build /Users/something/projects/webpack_demo
-&gt; webpack
+<pre><code class="undefinedbash">&amp;<span class="hljs-tag">gt</span>; <span class="hljs-tag">webpack_demo</span><span class="hljs-at_rule">@<span class="hljs-keyword">1.0.0</span> build /Users/something/projects/webpack_demo
+&gt;</span>; <span class="hljs-tag">webpack</span>
 
-Hash: e02f97146a15a8a5c3a9
-Version: webpack 1.8.4
-Time: 44ms
+<span class="hljs-rule"><span class="hljs-attribute">Hash</span>:<span class="hljs-value"> e02f97146a15a8a5c3a9
+Version: webpack <span class="hljs-number">1.8</span>.<span class="hljs-number">4</span>
+Time: <span class="hljs-number">44ms</span>
     Asset     Size  Chunks             Chunk Names
-bundle.js  1.74 kB       0  [emitted]  main
-   [0] ./app/main.js 115 bytes {0} [built]
-   [1] ./app/component.js 134 bytes {0} [built]
-</code></pre>
+bundle.js  <span class="hljs-number">1.74</span> kB       <span class="hljs-number">0</span>  [emitted]  main
+   [<span class="hljs-number">0</span>] ./app/main.js <span class="hljs-number">115</span> bytes {<span class="hljs-number">0</span>} [built]
+   [<span class="hljs-number">1</span>] ./app/component.js <span class="hljs-number">134</span> bytes {<span class="hljs-number">0</span>} [built]
+</span></span></code></pre>
 <h2 id="setting-up-entry-point">Setting Up Entry Point<a class="header-anchor" href="#setting-up-entry-point">#</a></h2>
 <p>In order to actually use our bundle, we&apos;ll need to define the last missing bit, <em>index.html</em>. Here&apos;s a starting point:</p>
 <p><strong>build/index.html</strong></p>
