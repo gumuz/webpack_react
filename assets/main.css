@@ -1058,6 +1058,16 @@ main {
   margin-bottom: 0.3em;
   line-height: 1.5; }
 
+.docs-nav__wrapper--push-down {
+  margin-top: 100vh; }
+  .docs-nav__wrapper--push-down + .header-image + .post__heading + .post__content {
+    margin-top: 0; }
+  @media only screen and (min-width: 1150px) {
+    .docs-nav__wrapper--push-down {
+      position: absolute; }
+      .docs-nav__wrapper--push-down + .header-image + .post__heading + .post__content {
+        margin-top: 100vh; } }
+
 .btn {
   font-family: "Avenir Next", "Helvetica Neue", sans-serif;
   text-transform: uppercase;
@@ -1485,12 +1495,6 @@ input[type="date"], .input {
 
 .next-page::after {
   content: "\2192"; }
-
-@media (max-width: 1150px) {
-  .docs-nav__wrapper {
-    margin-top: 100vh; }
-  .docs-nav__wrapper + .header-image + .post__heading + .post__content {
-    margin-top: 0; } }
 
 @media (max-width: 550px) {
   .post__heading h1 {
