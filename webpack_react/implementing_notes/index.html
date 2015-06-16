@@ -16,7 +16,7 @@
     &lt;div&gt;
       &lt;ul&gt;{notes.map((note, i) =&gt;
         &lt;li key={&apos;note&apos; + i}&gt;
-          &lt;Note task={note.task} /&gt;
+          &lt;Note value={note.task} /&gt;
         &lt;/li&gt;
       )}&lt;/ul&gt;
     &lt;/div&gt;
@@ -24,10 +24,10 @@
 }
 </code></pre>
 <p>We will use a special feature of JSX in form of <code>{}</code>. Within these braces we can mix JavaScript with JSX. In this case we will render a bunch of <code>li</code> elements. Each contains a <code>Note</code>. In order to tell React in which order to render the elements, we&apos;ll set <code>key</code> property for each. It is important that this is unique or otherwise it won&apos;t be able to figure out the correct order.</p>
-<blockquote class="tip">If you want to attach comments to your JSX, just use <code>{/* no comments */}</code>.</blockquote><p>If everything went correctly, you should see a list with three <code>Learn Webpack</code> items on it. That&apos;s almost nice. The problem is that we haven&apos;t taken <code>task</code> property in count at <code>Note</code>. We&apos;ll need to tweak its implementation like this:</p>
+<blockquote class="tip">If you want to attach comments to your JSX, just use <code>{/* no comments */}</code>.</blockquote><p>If everything went correctly, you should see a list with three <code>Learn Webpack</code> items on it. That&apos;s almost nice. The problem is that we haven&apos;t taken <code>value</code> property in count at <code>Note</code>. We&apos;ll need to tweak its implementation like this:</p>
 <p><strong>app/components/Note.jsx</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-function"><span class="hljs-title">render</span></span>() {
-  <span class="hljs-built_in">return</span> &lt;div&gt;{this.props.task}&lt;/div&gt;;
+  <span class="hljs-built_in">return</span> &lt;div&gt;{this.props.value}&lt;/div&gt;;
 }
 </code></pre>
 <p>As you can see the property we passed to our component gets mapped to <code>this.props</code>. After that it is just a matter of showing it wherever we like.</p>
@@ -46,7 +46,7 @@ import Note from &apos;./Note&apos;;
     <span class="hljs-built_in">return</span> (
       &lt;ul className=&apos;notes&apos;&gt;{notes.map((note, i) =&gt;
         &lt;li className=&apos;note&apos; key={&apos;note&apos; + i}&gt;
-          &lt;Note task={note.task} /&gt;
+          &lt;Note value={note.task} /&gt;
         &lt;/li&gt;
       )}&lt;/ul&gt;
     );
@@ -135,17 +135,19 @@ render() {
     };
   }
   <span class="hljs-function"><span class="hljs-title">render</span></span>() {
-    var edited = this.state.edited;
-    var task = this.props.task;
+  /* eslint-disable no-unused-vars */
+  const {value, onEdit, ...props} = this.props;
+  /* eslint-enable no-unused-vars */
+  var edited = this.state.edited;
 
-    <span class="hljs-built_in">return</span> (
-      &lt;div&gt;{
+  <span class="hljs-built_in">return</span> (
+    &lt;div {...props}&gt;{
         edited
         ? &lt;input <span class="hljs-built_in">type</span>=&apos;text&apos;
-          defaultValue={task}
+          defaultValue={value}
           onBlur={this.finishEdit.bind(this)}
           onKeyPress={this.checkEnter.bind(this)}/&gt;
-        : &lt;div onClick={this.edit.bind(this)}&gt;{task}&lt;/div&gt;
+        : &lt;div onClick={this.edit.bind(this)}&gt;{value}&lt;/div&gt;
       }&lt;/div&gt;
     );
   }
@@ -192,7 +194,7 @@ itemEdited(i, task) {
 <p><strong>app/components/Notes.jsx</strong></p>
 <pre><code class="undefinedjavascript">...
 &lt;Note
-  task={note.task}
+  value={note.task}
   onEdit={<span class="hljs-keyword">this</span>.props.onEdit.bind(<span class="hljs-keyword">this</span>, i)} /&gt;
 ...
 </code></pre>
@@ -238,7 +240,7 @@ itemEdited(i, task) {
 </code></pre>
 <p>Now we can start typing. For instance you could attach types for <code>Note</code> props like this:</p>
 <pre><code class="undefinedjavascript">constructor(props: {
-  task: string;
+  value: string;
   onEdit: <span class="hljs-built_in">Function</span>;
 }) {...}
 </code></pre>

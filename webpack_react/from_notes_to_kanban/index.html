@@ -279,6 +279,110 @@ import NoteStore from &apos;../stores/NoteStore&apos;;
     }
   }
 </code></pre>
+<p>Now we have something that mostly works. We have separate lanes, you can add new notes to them and modify/remote them. There are still a few bits we&apos;re missing. Namely lane name editing and lane removal. Let&apos;s get those done next.</p>
+<h2 id="implementing-edit-remove-for-lane-">Implementing Edit/Remove for <code>Lane</code><a class="header-anchor" href="#implementing-edit-remove-for-lane-">#</a></h2>
+<p>We can follow the same idea as for <code>Note</code> here. Ie. if you click <code>Lane</code> name, it should become editable. In case the new name is empty, we&apos;ll simply remove it. Given it&apos;s the same behavior we can extract it from <code>Note</code> and then reuse at <code>Lane</code>.</p>
+<p>Given <code>Note</code> already contains some of the logic we need, we can generalize the component. Simply rename <code>Note.jsx</code> as <code>Editable.jsx</code>. Make <code>Notes.jsx</code> point at <code>Editable</code> instead of <code>Note</code>.</p>
+<p>Next we should replace <code>Lane</code> name to be rendered through <code>Editable</code>:</p>
+<p><strong>app/components/Lane.jsx</strong></p>
+<pre><code class="undefinedjavascript">...
+
+<span class="hljs-keyword">import</span> Editable <span class="hljs-keyword">from</span> &apos;./Editable&apos;;
+
+...
+
+&lt;Editable className=&apos;lane-name&apos; value={name}
+  onEdit={<span class="hljs-keyword">this</span>.nameEdited.bind(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">this</span>.props.i)} /&gt;
+
+...
+
+nameEdited(id, name) {
+  <span class="hljs-built_in">console</span>.log(&apos;edited lane name&apos;, id, name);
+}
+</code></pre>
+<p>If you try to edit a lane name now, you should see a console print. We still need some logic (ie. actions and store tweaks) to make this work. A good starting point is to sketch out the component level logic:</p>
+<p><strong>app/components/Lane.jsx</strong></p>
+<pre><code class="undefinedjavascript">...
+<span class="hljs-keyword">import</span> LaneActions <span class="hljs-keyword">from</span> &apos;../actions/LaneActions&apos;;
+
+...
+
+nameEdited(id, name) {
+  <span class="hljs-keyword">if</span>(name) {
+    LaneActions.update(i, name);
+  }
+  <span class="hljs-keyword">else</span> {
+    LaneActions.remove(i);
+  }
+}
+</code></pre>
+<p>This is exactly the same logic as for notes. In fact it is be possible to factor the behavior into a method of its own. This can be done by extracting actions into a parameter. As duplication is root of all evil, let&apos;s change it to this form:</p>
+<p><strong>app/components/Lane.jsx</strong></p>
+<pre><code class="undefinedjavascript">...
+
+&lt;Editable className=&apos;lane-name&apos; value={name}
+  onEdit={<span class="hljs-keyword">this</span>.edited.bind(<span class="hljs-keyword">this</span>, LaneActions, <span class="hljs-keyword">this</span>.props.i)} /&gt;
+
+...
+
+&lt;Notes onEdit={<span class="hljs-keyword">this</span>.edited.bind(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">this</span>.actions)} /&gt;
+
+...
+
+edited(actions, id, value) {
+  <span class="hljs-keyword">if</span>(value) {
+    actions.update(id, value);
+  }
+  <span class="hljs-keyword">else</span> {
+    actions.remove(id);
+  }
+}
+</code></pre>
+<p>Now our editing logic in a single place. We could have done this modification later but this felt like a good place to do that. Sometimes it can be justified to get rid of duplicates and push them to methods, components or decorators. We are still missing some of the logic to make <code>Lane</code> edit/remove work, though. To achieve that we need to extend <code>Lane</code> actions and store.</p>
+<p><strong>app/actions/LaneActions.js</strong></p>
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> alt <span class="hljs-keyword">from</span> &apos;../libs/alt&apos;;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LaneActions</span> </span>{
+  init(lanes) {
+    <span class="hljs-keyword">this</span>.dispatch(lanes);
+  }
+  create(name) {
+    <span class="hljs-keyword">this</span>.dispatch(name);
+  }
+  update(id, name) {
+    <span class="hljs-keyword">this</span>.dispatch({id, name});
+  }
+  remove(id) {
+    <span class="hljs-keyword">this</span>.dispatch(id);
+  }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> alt.createActions(LaneActions);
+</code></pre>
+<p>It&apos;s the same idea as for <code>NoteActions</code> apart from the way we instantiate the stores. It would be possible to extract the instantiation logic from here as well. That could be a good idea especially if you want to have multiple boards in your application.</p>
+<p>One radical option would be to use the same base class for both <code>LaneActions</code> and <code>NoteActions</code> but that feels like a premature optimization as it is difficult to say how these APIs might evolve. Some amount of duplication can be acceptable.</p>
+<p>We still need those <code>LaneStore</code> methods. Not surprisingly it&apos;s going to be very similar <code>NoteStore</code> implementation. Again, a possible place to clean up later.</p>
+<p><strong>app/stores/LaneStore.js</strong></p>
+<pre><code class="undefinedjavascript">...
+
+update({id, name}) {
+  <span class="hljs-keyword">const</span> lanes = <span class="hljs-keyword">this</span>.lanes;
+
+  lanes[id].name = name;
+
+  <span class="hljs-keyword">this</span>.setState({
+    lanes: lanes,
+  });
+}
+remove(id) {
+  <span class="hljs-keyword">const</span> lanes = <span class="hljs-keyword">this</span>.lanes;
+
+  <span class="hljs-keyword">this</span>.setState({
+    lanes: lanes.slice(<span class="hljs-number">0</span>, id).concat(lanes.slice(id + <span class="hljs-number">1</span>)),
+  });
+}
+</code></pre>
+<p>After these changes you should be able to modify lane names and remove lanes. Even persistency should just work without requiring any further tweaking. The implementation could be trimmed and some code could be removed but for now it&apos;s nice to have some room to maneuver. Who knows what sort of requirements might come up after all.</p>
 <h2 id="conclusion">Conclusion<a class="header-anchor" href="#conclusion">#</a></h2>
-<p>If you run the application now, you should have something quite functional together! Even persistency works. It definitely is an eyesore still and we&apos;re missing some functionality like moving notes from a lane to lane. Before getting further on that let&apos;s take a little break and study various ways to style applications in React.</p>
+<p>In this chapter we managed to generalize our application somehow. We actually have something you can sort of use! It&apos;s not pretty and the user experience is quite horrible. Still, it&apos;s better than before. Before focusing on advanced functionality let&apos;s try to make the application look a little better and study some styling approaches.</p>
 </div></div></div><noscript></noscript><div class="prevnext-pages"><a href="../react_and_flux" class="previous-page">React and Flux</a><a href="../styling_react" class="next-page">Styling React</a></div></main></div></body></html>
