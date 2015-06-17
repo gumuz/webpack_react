@@ -98,7 +98,7 @@
 <h2 id="generating-a-separate-bundle-for-css">Generating a Separate Bundle for CSS<a class="header-anchor" href="#generating-a-separate-bundle-for-css">#</a></h2>
 <p>The current approach works well for simple cases. It simply inlines the CSS as a part of our JavaScript bundle. Although this can be performant (one less request), easy to set up and compiles fast, it may not be ideal always.</p>
 <p>We cannot for instance leverage caching for our CSS. If only JavaScript portion changes all CSS will be loaded still. As our CSS is injected through JavaScript, there is additional overhead. If the user isn&apos;t running JavaScript, no styling will be applied to the markup at all.</p>
-<p>There is a plugin that allows us to work around these problems. <a href="https://www.npmjs.com/package/extract-text-webpack-plugin">extract-text-webpack-plugin</a> generates a separate bundle for CSS. It comes with some overhead during compilation phase and won&apos;t work with hot module reloading (HMR). It also takes some additional setup.</p>
+<p>There is a plugin that allows us to work around these problems. <a href="https://www.npmjs.com/package/extract-text-webpack-plugin">extract-text-webpack-plugin</a> generates a separate bundle for CSS. It comes with some overhead during compilation phase and won&apos;t work with Hot Module Replacement (HMR). It also takes some additional setup.</p>
 <p>Hit <code>npm i extract-text-webpack-plugin --save-dev</code> and tweak configuration like this:</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> ExtractTextPlugin = <span class="hljs-built_in">require</span>(&apos;extract-text-webpack-plugin&apos;);
