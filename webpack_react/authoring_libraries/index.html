@@ -25,56 +25,56 @@
 <p>All packages come with a <code>package.json</code> that describes metadata related to them. This includes information about the author, various links, dependencies and so on. The <a href="https://docs.npmjs.com/files/package.json">official documentation</a> covers them in detail.</p>
 <p>I&apos;ve annotated <code>package.json</code> of my <a href="https://github.com/survivejs/react-component-boilerplate">React component boilerplate</a> below.</p>
 <pre><code class="undefinedjson">{
-  &quot;name&quot;: &quot;react-component-boilerplate&quot;, -- Name <span class="hljs-keyword">of</span> the project
-  &quot;description&quot;: &quot;Boilerplate <span class="hljs-keyword">for</span> React.js components&quot;, -- Brief description
-  &quot;author&quot;: &quot;Juho Vepsalainen &lt;email goes here&gt;&quot;, -- Who is the author + optional email
-  &quot;user&quot;: &quot;bebraw&quot;, -- This is boilerplate specific (not used by npm)
-  &quot;version&quot;: &quot;<span class="hljs-number">0.0</span>.0&quot;, -- Version <span class="hljs-keyword">of</span> the package
-  &quot;scripts&quot;: { -- <span class="hljs-string">`npm run &lt;name&gt;`</span>
-    &quot;start&quot;: &quot;TARGET=dev node dev-server/server.js&quot;,
-    &quot;test&quot;: &quot;jest &amp;&amp; npm run check-style &amp;&amp; npm run lint&quot;,
-    &quot;gh-pages&quot;: &quot;TARGET=gh-pages webpack --config ./config&quot;,
-    &quot;deploy-gh-pages&quot;: &quot;TARGET=gh-pages node ./config/deploy-gh-pages.js&quot;,
-    &quot;dist&quot;: &quot;TARGET=dist webpack &amp;&amp; TARGET=dist-min webpack&quot;,
-    &quot;dist-modules&quot;: &quot;babel ./src --out-dir ./dist-modules&quot;,
-    &quot;lint&quot;: &quot;eslint . --ext .js --ext .jsx&quot;,
-    &quot;check-style&quot;: &quot;jscs .&quot;,
-    &quot;replace-meta&quot;: &quot;node scripts/replace_meta.js&quot;,
-    &quot;preversion&quot;: &quot;npm run test &amp;&amp; npm run dist &amp;&amp; npm run dist-modules &amp;&amp; git commit -am \&quot;Update dist\&quot;&quot;,
-    &quot;postpublish&quot;: &quot;npm run gh-pages &amp;&amp; npm run deploy-gh-pages&quot;
+  <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;react-component-boilerplate&quot;</span>, -- Name of the project
+  <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;Boilerplate for React.js components&quot;</span>, -- Brief description
+  <span class="hljs-string">&quot;author&quot;</span>: <span class="hljs-string">&quot;Juho Vepsalainen &lt;email goes here&gt;&quot;</span>, -- Who is the author + optional email
+  <span class="hljs-string">&quot;user&quot;</span>: <span class="hljs-string">&quot;bebraw&quot;</span>, -- This is boilerplate specific (not used by npm)
+  <span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.0.0&quot;</span>, -- Version of the package
+  <span class="hljs-string">&quot;scripts&quot;</span>: { -- `npm run &lt;name&gt;`
+    <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-string">&quot;TARGET=dev node dev-server/server.js&quot;</span>,
+    <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-string">&quot;jest &amp;&amp; npm run check-style &amp;&amp; npm run lint&quot;</span>,
+    <span class="hljs-string">&quot;gh-pages&quot;</span>: <span class="hljs-string">&quot;TARGET=gh-pages webpack --config ./config&quot;</span>,
+    <span class="hljs-string">&quot;deploy-gh-pages&quot;</span>: <span class="hljs-string">&quot;TARGET=gh-pages node ./config/deploy-gh-pages.js&quot;</span>,
+    <span class="hljs-string">&quot;dist&quot;</span>: <span class="hljs-string">&quot;TARGET=dist webpack &amp;&amp; TARGET=dist-min webpack&quot;</span>,
+    <span class="hljs-string">&quot;dist-modules&quot;</span>: <span class="hljs-string">&quot;babel ./src --out-dir ./dist-modules&quot;</span>,
+    <span class="hljs-string">&quot;lint&quot;</span>: <span class="hljs-string">&quot;eslint . --ext .js --ext .jsx&quot;</span>,
+    <span class="hljs-string">&quot;check-style&quot;</span>: <span class="hljs-string">&quot;jscs .&quot;</span>,
+    <span class="hljs-string">&quot;replace-meta&quot;</span>: <span class="hljs-string">&quot;node scripts/replace_meta.js&quot;</span>,
+    <span class="hljs-string">&quot;preversion&quot;</span>: <span class="hljs-string">&quot;npm run test &amp;&amp; npm run dist &amp;&amp; npm run dist-modules &amp;&amp; git commit -am \&quot;Update dist\&quot;&quot;</span>,
+    <span class="hljs-string">&quot;postpublish&quot;</span>: <span class="hljs-string">&quot;npm run gh-pages &amp;&amp; npm run deploy-gh-pages&quot;</span>
   },
   -- Entry point <span class="hljs-keyword">for</span> terminal (ie. &lt;package name&gt;)
-  -- Don&apos;t set <span class="hljs-keyword">this</span> unless you intend to allow cli usage
+  -- Don<span class="hljs-string">&apos;t set this unless you intend to allow cli usage
   &quot;bin&quot;: &quot;./index.js&quot;,
   -- Entry point (defaults to index.js)
   &quot;main&quot;: &quot;dist-modules/index.js&quot;,
-  &quot;dependencies&quot;: {}, -- Package dependencies (keep small <span class="hljs-keyword">if</span> possible)
+  &quot;dependencies&quot;: {}, -- Package dependencies (keep small if possible)
   &quot;devDependencies&quot;: { -- Package development dependencies
-    &quot;babel&quot;: &quot;^<span class="hljs-number">5.1</span>.10&quot;,
-    &quot;babel-eslint&quot;: &quot;^<span class="hljs-number">3.0</span>.1&quot;,
-    &quot;babel-loader&quot;: &quot;^<span class="hljs-number">5.0</span>.0&quot;,
+    &quot;babel&quot;: &quot;^5.1.10&quot;,
+    &quot;babel-eslint&quot;: &quot;^3.0.1&quot;,
+    &quot;babel-loader&quot;: &quot;^5.0.0&quot;,
     ...
-    &quot;webpack&quot;: &quot;^<span class="hljs-number">1.8</span>.4&quot;,
-    &quot;webpack-dev-server&quot;: &quot;^<span class="hljs-number">1.8</span>.0&quot;
+    &quot;webpack&quot;: &quot;^1.8.4&quot;,
+    &quot;webpack-dev-server&quot;: &quot;^1.8.0&quot;
   },
-  -- You may want to give a rough dependency hint <span class="hljs-keyword">for</span> things like React components
-  -- The idea is to avoid depending directly and <span class="hljs-keyword">let</span> user deal <span class="hljs-keyword">with</span> it instead
+  -- You may want to give a rough dependency hint for things like React components
+  -- The idea is to avoid depending directly and let user deal with it instead
   -- You should use a loose rule here
-  -- If the rule is too strict, that will cause problems at the user end even <span class="hljs-keyword">if</span>
+  -- If the rule is too strict, that will cause problems at the user end even if
   -- the library would work.
   &quot;peerDependencies&quot;: {
-    &quot;react&quot;: &quot;&gt;=<span class="hljs-number">0.11</span>.2 &lt;<span class="hljs-number">1.0</span>.0&quot;
+    &quot;react&quot;: &quot;&gt;=0.11.2 &lt;1.0.0&quot;
   },
   -- Links to repository, homepage and so on
   &quot;repository&quot;: {
     &quot;type&quot;: &quot;git&quot;,
-    &quot;url&quot;: &quot;https:<span class="hljs-comment">//github.com/bebraw/react-component-boilerplate.git&quot;</span>
+    &quot;url&quot;: &quot;https://github.com/bebraw/react-component-boilerplate.git&quot;
   },
-  &quot;homepage&quot;: &quot;https:<span class="hljs-comment">//bebraw.github.io/react-component-boilerplate/&quot;,</span>
+  &quot;homepage&quot;: &quot;https://bebraw.github.io/react-component-boilerplate/&quot;,
   &quot;bugs&quot;: {
-    &quot;url&quot;: &quot;https:<span class="hljs-comment">//github.com/bebraw/react-component-boilerplate/issues&quot;</span>
+    &quot;url&quot;: &quot;https://github.com/bebraw/react-component-boilerplate/issues&quot;
   },
-  -- Keywords related to package, fill <span class="hljs-keyword">this</span> well to make the package findable
+  -- Keywords related to package, fill this well to make the package findable
   &quot;keywords&quot;: [
     &quot;react&quot;,
     &quot;reactjs&quot;,
@@ -90,7 +90,7 @@
     ]
   }
 }
-</code></pre>
+</span></code></pre>
 <p>As you can see <code>package.json</code> can contain a lot of information. You can attach non-npm specific metadata there that can be used by tooling.</p>
 <h2 id="npm-workflow">npm Workflow<a class="header-anchor" href="#npm-workflow">#</a></h2>
 <p>Working with npm is surprisingly simple. Provided you have created an account on the service and logged in once using <a href="https://docs.npmjs.com/cli/adduser">npm adduser</a>, all you need to do is to hit <code>npm publish</code>. Given that the package name is still available, you should have something out there!</p>
@@ -108,22 +108,22 @@
 <pre><code class="undefinedjavascript">...
 
 <span class="hljs-keyword">var</span> mergeDist = merge.bind(<span class="hljs-literal">null</span>, {
-    devtool: &apos;source-map&apos;,
+    devtool: <span class="hljs-string">&apos;source-map&apos;</span>,
     output: {
         path: config.paths.dist,
-        libraryTarget: &apos;umd&apos;,
+        libraryTarget: <span class="hljs-string">&apos;umd&apos;</span>,
         library: config.library,
     },
     entry: config.paths.lib,
     externals: {
-        react: &apos;react&apos;,
-        &apos;react/addons&apos;: &apos;react/addons&apos;
+        react: <span class="hljs-string">&apos;react&apos;</span>,
+        <span class="hljs-string">&apos;react/addons&apos;</span>: <span class="hljs-string">&apos;react/addons&apos;</span>
     },
     <span class="hljs-built_in">module</span>: {
         loaders: [
             {
                 test: <span class="hljs-regexp">/\.jsx?$/</span>,
-                loaders: [&apos;babel&apos;],
+                loaders: [<span class="hljs-string">&apos;babel&apos;</span>],
                 include: config.paths.lib,
             }
         ]
@@ -132,13 +132,13 @@
 
 exports.dist = mergeDist({
     output: {
-        filename: config.filename + &apos;.js&apos;,
+        filename: config.filename + <span class="hljs-string">&apos;.js&apos;</span>,
     },
 });
 
 exports.distMin = mergeDist({
     output: {
-        filename: config.filename + &apos;.min.js&apos;,
+        filename: config.filename + <span class="hljs-string">&apos;.min.js&apos;</span>,
     },
     plugins: [
         <span class="hljs-keyword">new</span> webpack.optimize.UglifyJsPlugin({
@@ -157,9 +157,9 @@ exports.distMin = mergeDist({
 </code></pre>
 <p>This will walk through <code>./lib</code> directory and output a processed file for each it encounters to <code>./dist-modules</code>.</p>
 <p>Since we want to avoid having to run the command directly whenever we publish a new version, we can connect it to <code>prepublish</code> hook like this:</p>
-<pre><code class="undefinedjson">&quot;scripts&quot;: {
+<pre><code class="undefinedjson"><span class="hljs-string">&quot;scripts&quot;</span>: {
   ...
-  &quot;prepublish&quot;: &quot;babel ./lib --out-dir ./dist-modules&quot;
+  <span class="hljs-string">&quot;prepublish&quot;</span>: <span class="hljs-string">&quot;babel ./lib --out-dir ./dist-modules&quot;</span>
 }
 </code></pre>
 <p>Make sure you hit <code>npm i babel --save-dev</code> to include the tool into your project.</p>

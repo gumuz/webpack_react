@@ -6,13 +6,13 @@
 <p>In this chapter I&apos;ll go through these tools briefly. We&apos;ll integrate just ESLint into our project. Of course if you want, you can give the other tools a go. Just don&apos;t be surprised that they aren&apos;t included in the demonstration code.</p>
 <h2 id="webpack-and-jshint">Webpack and JSHint<a class="header-anchor" href="#webpack-and-jshint">#</a></h2>
 <p>Interestingly no JSLint loader seems to exist for Webpack yet. Fortunately there&apos;s one for JSHint. If you already using it, setting it up with Webpack is easy. You will need to install <a href="https://www.npmjs.com/package/jshint-loader">jshint-loader</a> to your project (<code>npm i jshint-loader --save-dev</code>). In addition you will need a little bit of configuration.</p>
-<pre><code class="undefinedjavascript"><span class="hljs-rule"><span class="hljs-attribute">module</span>:<span class="hljs-value"> {
+<pre><code class="undefinedjavascript"><span class="hljs-built_in">module</span>: {
   preLoaders: [
     {
-      test: /\.js$/,
-      // define an include so we check just the files we need
-      include: path.<span class="hljs-function">join</span>(ROOT_PATH, &amp;apos</span></span>;<span class="hljs-tag">app</span>&amp;<span class="hljs-tag">apos</span>;),
-      <span class="hljs-rule"><span class="hljs-attribute">loader</span>:<span class="hljs-value"> &amp;apos</span></span>;<span class="hljs-tag">jshint</span>&amp;<span class="hljs-tag">apos</span>;,
+      test: <span class="hljs-regexp">/\.js$/</span>,
+      <span class="hljs-comment">// define an include so we check just the files we need</span>
+      include: path.join(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
+      loader: <span class="hljs-string">&apos;jshint&apos;</span>,
     },
   ],
 },
@@ -20,25 +20,25 @@
 <p>You can also define custom settings using a <code>jshint</code> object. The project README covers that in detail. The tool will look into specific rules to apply from <code>.jshintrc</code>. Those have been covered at JSHint documentation in detail. An example configuration could look like this:</p>
 <p><strong>.jshintrc</strong></p>
 <pre><code class="undefinedjson">{
-  &quot;bitwise&quot;: <span class="hljs-literal">true</span>,
-  &quot;browser&quot;: <span class="hljs-literal">true</span>,
-  &quot;camelcase&quot;: <span class="hljs-literal">false</span>,
-  &quot;curly&quot;: <span class="hljs-literal">true</span>,
-  &quot;eqeqeq&quot;: <span class="hljs-literal">true</span>,
-  &quot;esnext&quot;: <span class="hljs-literal">true</span>,
-  &quot;immed&quot;: <span class="hljs-literal">true</span>,
-  &quot;indent&quot;: <span class="hljs-number">2</span>,
-  &quot;latedef&quot;: <span class="hljs-literal">false</span>,
-  &quot;newcap&quot;: <span class="hljs-literal">true</span>,
-  &quot;noarg&quot;: <span class="hljs-literal">true</span>,
-  &quot;node&quot;: <span class="hljs-literal">true</span>,
-  &quot;quotmark&quot;: &quot;double&quot;,
-  &quot;strict&quot;: <span class="hljs-literal">true</span>,
-  &quot;trailing&quot;: <span class="hljs-literal">true</span>,
-  &quot;undef&quot;: <span class="hljs-literal">true</span>,
-  &quot;unused&quot;: <span class="hljs-literal">true</span>,
-  &quot;sub&quot;: <span class="hljs-literal">true</span>
-}
+  &quot;<span class="hljs-attribute">bitwise</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">browser</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">camelcase</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">curly</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">eqeqeq</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">esnext</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">immed</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">indent</span>&quot;: <span class="hljs-value"><span class="hljs-number">2</span></span>,
+  &quot;<span class="hljs-attribute">latedef</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">newcap</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">noarg</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">node</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">quotmark</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;double&quot;</span></span>,
+  &quot;<span class="hljs-attribute">strict</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">trailing</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">undef</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">unused</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">sub</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span>
+</span>}
 </code></pre>
 <p>Besides setting it up with Webpack it can be highly beneficial to look into an integration with your editor or IDE. Having warnings and errors inline makes a world of difference. Webpack will still complain but an integrated approach has its benefits.</p>
 <h2 id="setting-up-eslint">Setting Up ESLint<a class="header-anchor" href="#setting-up-eslint">#</a></h2>
@@ -46,9 +46,9 @@
 <h3 id="connecting-eslint-with-package-json-">Connecting ESlint with <code>package.json</code><a class="header-anchor" href="#connecting-eslint-with-package-json-">#</a></h3>
 <p>In order to integrate ESLint with our project, we&apos;ll need to do a couple of little tweaks. To get it installed, invoke <code>npm i babel-eslint eslint eslint-plugin-react --save-dev</code>. That will add ESLint and the plugin we want to use as our project development dependency. Next we&apos;ll need to do some configuration to make linting work in our project.</p>
 <p><strong>package.json</strong></p>
-<pre><code class="undefinedjson">&quot;scripts&quot;: {
+<pre><code class="undefinedjson"><span class="hljs-string">&quot;scripts&quot;</span>: {
   ...
-  &quot;lint&quot;: &quot;eslint . --ext .js --ext .jsx&quot;
+  <span class="hljs-string">&quot;lint&quot;</span>: <span class="hljs-string">&quot;eslint . --ext .js --ext .jsx&quot;</span>
 }
 ...
 </code></pre>
@@ -59,49 +59,48 @@
 <p>Next we&apos;ll need to activate <a href="https://www.npmjs.com/package/babel-eslint">babel-eslint</a> so that ESLint works with our Babel code. In addition we need to activate React specific rules and set up a couple of our own. You can adjust these to your liking. You&apos;ll find more information about the rules at <a href="http://eslint.org/docs/rules/">the official rule documentation</a>.</p>
 <p><strong>.eslintrc</strong></p>
 <pre><code class="undefinedjson">{
-  &quot;parser&quot;: &quot;babel-eslint&quot;,
-  &quot;env&quot;: {
-    &quot;browser&quot;: <span class="hljs-literal">true</span>,
-    &quot;node&quot;: <span class="hljs-literal">true</span>
-  },
-  &quot;plugins&quot;: [
-    &quot;react&quot;
-  ],
-  &quot;ecmaFeatures&quot;: {
-    &quot;jsx&quot;: <span class="hljs-literal">true</span>,
-    &quot;modules&quot;: <span class="hljs-literal">true</span>
-  },
-  &quot;rules&quot;: {
-    &quot;strict&quot;: [<span class="hljs-number">2</span>, &quot;global&quot;],
-    &quot;no-underscore-dangle&quot;: <span class="hljs-number">0</span>,
-    &quot;no-use-before-define&quot;: <span class="hljs-number">0</span>,
-    &quot;eol-last&quot;: <span class="hljs-number">0</span>,
-    &quot;quotes&quot;: [<span class="hljs-number">2</span>, &quot;single&quot;],
-    &quot;comma-dangle&quot;: &quot;always&quot;,
-    &quot;react/jsx-boolean-value&quot;: <span class="hljs-number">1</span>,
-    &quot;react/jsx-quotes&quot;: <span class="hljs-number">1</span>,
-    &quot;react/jsx-no-undef&quot;: <span class="hljs-number">1</span>,
-    &quot;react/jsx-uses-react&quot;: <span class="hljs-number">1</span>,
-    &quot;react/jsx-uses-vars&quot;: <span class="hljs-number">1</span>,
-    &quot;react/no-did-mount-set-state&quot;: <span class="hljs-number">1</span>,
-    &quot;react/no-did-update-set-state&quot;: <span class="hljs-number">1</span>,
-    &quot;react/no-multi-comp&quot;: <span class="hljs-number">1</span>,
-    &quot;react/no-unknown-property&quot;: <span class="hljs-number">1</span>,
-    &quot;react/react-<span class="hljs-keyword">in</span>-jsx-scope&quot;: <span class="hljs-number">1</span>,
-    &quot;react/self-closing-comp&quot;: <span class="hljs-number">1</span>,
-    &quot;react/wrap-multilines&quot;: <span class="hljs-number">1</span>
-  }
-}
+  &quot;<span class="hljs-attribute">parser</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;babel-eslint&quot;</span></span>,
+  &quot;<span class="hljs-attribute">env</span>&quot;: <span class="hljs-value">{
+    &quot;<span class="hljs-attribute">browser</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    &quot;<span class="hljs-attribute">node</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span>
+  </span>}</span>,
+  &quot;<span class="hljs-attribute">plugins</span>&quot;: <span class="hljs-value">[
+    <span class="hljs-string">&quot;react&quot;</span>
+  ]</span>,
+  &quot;<span class="hljs-attribute">ecmaFeatures</span>&quot;: <span class="hljs-value">{
+    &quot;<span class="hljs-attribute">jsx</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    &quot;<span class="hljs-attribute">modules</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span>
+  </span>}</span>,
+  &quot;<span class="hljs-attribute">rules</span>&quot;: <span class="hljs-value">{
+    &quot;<span class="hljs-attribute">strict</span>&quot;: <span class="hljs-value">[<span class="hljs-number">2</span>, <span class="hljs-string">&quot;global&quot;</span>]</span>,
+    &quot;<span class="hljs-attribute">no-underscore-dangle</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    &quot;<span class="hljs-attribute">no-use-before-define</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    &quot;<span class="hljs-attribute">eol-last</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    &quot;<span class="hljs-attribute">quotes</span>&quot;: <span class="hljs-value">[<span class="hljs-number">2</span>, <span class="hljs-string">&quot;single&quot;</span>]</span>,
+    &quot;<span class="hljs-attribute">comma-dangle</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    &quot;<span class="hljs-attribute">react/jsx-boolean-value</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    &quot;<span class="hljs-attribute">react/jsx-quotes</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    &quot;<span class="hljs-attribute">react/jsx-no-undef</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    &quot;<span class="hljs-attribute">react/jsx-uses-react</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    &quot;<span class="hljs-attribute">react/jsx-uses-vars</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    &quot;<span class="hljs-attribute">react/no-did-mount-set-state</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    &quot;<span class="hljs-attribute">react/no-did-update-set-state</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    &quot;<span class="hljs-attribute">react/no-multi-comp</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    &quot;<span class="hljs-attribute">react/no-unknown-property</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    &quot;<span class="hljs-attribute">react/react-in-jsx-scope</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    &quot;<span class="hljs-attribute">react/self-closing-comp</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span>
+  </span>}
+</span>}
 </code></pre>
-<p>Note how we can define severity of an individual rule by passing it a number. Zero or &#xB4;false` would mean a rule is set off. One would mark it as a warning. Two would yield an error. In some cases you can pass additional parameters to a rule by using an array notation.</p>
+<p>Note how we can define severity of an individual rule by passing it a number. Zero or <code>false</code> would mean a rule is set off. One would mark it as a warning. Two would yield an error. In some cases you can pass additional parameters to a rule by using an array notation.</p>
 <p>If you hit <code>npm run lint</code> now, you should get some errors and warnings to fix depending on the rules you have set up. Go ahead and fix them if there are any. You can check <a href="https://github.com/survivejs/webpack">the book site</a> for potential fixes if you get stuck.</p>
 <blockquote class="tip">Note that like some other tools, such as JSCS and JSHint, ESLint supports <code>package.json</code> based configuration. Simply add a <code>eslintConfig</code> field to it and write the configuration there.</blockquote><blockquote class="tip">It is possible to generate a sample <code>.eslintrc</code> using <code>eslint --init</code> (or <code>node_modules/.bin/eslint --init</code> for local install). This can be useful on new projects.</blockquote><h3 id="dealing-with-elifecycle-error">Dealing with <code>ELIFECYCLE</code> Error<a class="header-anchor" href="#dealing-with-elifecycle-error">#</a></h3>
 <p>In case the linting process fails, <code>npm</code> will give you a nasty looking <code>ELIFECYCLE</code> error.A good way to achieve a tidier output is to invoke <code>npm run lint --silent</code>. That will hide the <code>ELIFECYCLE</code> bit. You can define an alias for this purpose. At Unix you would do <code>alias run=&apos;npm run --silent&apos;</code> and then <code>run &lt;script&gt;</code>.</p>
 <p>Alternatively you could pipe output to <code>true</code> like this:</p>
 <p><strong>package.json</strong></p>
-<pre><code class="undefinedjson">&quot;scripts&quot;: {
+<pre><code class="undefinedjson"><span class="hljs-string">&quot;scripts&quot;</span>: {
   ...
-  &quot;lint&quot;: &quot;eslint . --ext .js --ext .jsx || <span class="hljs-literal">true</span>&quot;
+  <span class="hljs-string">&quot;lint&quot;</span>: <span class="hljs-string">&quot;eslint . --ext .js --ext .jsx || true&quot;</span>
 }
 ...
 </code></pre>
@@ -110,7 +109,7 @@
 <p>We can make Webpack emit ESLint messages for us by using <a href="https://www.npmjs.com/package/eslint-loader">eslint-loader</a>. As the first step hit <code>npm i eslint-loader --save-dev</code> to add it to the project.</p>
 <p>Next we need to tweak our development configuration to include it. Add the following section to it:</p>
 <p><strong>webpack.config.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === &apos;dev&apos;) {
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = mergeConfig({
     entry: [...],
     <span class="hljs-built_in">module</span>: {
@@ -120,8 +119,8 @@
           <span class="hljs-comment">// we are using `eslint-loader` explicitly since</span>
           <span class="hljs-comment">// we have ESLint module installed. This way we</span>
           <span class="hljs-comment">// can be certain that it uses the right loader</span>
-          loader: &apos;eslint-loader&apos;,
-          include: path.join(ROOT_PATH, &apos;app&apos;),
+          loader: <span class="hljs-string">&apos;eslint-loader&apos;</span>,
+          include: path.join(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
         },
       ],
     },
@@ -150,7 +149,7 @@
 <span class="hljs-comment">/* eslint no-comma-dangle:1 */</span>
 </code></pre>
 <pre><code class="undefinedjavascript"><span class="hljs-comment">// disable rule per line</span>
-alert(&apos;foo&apos;); <span class="hljs-comment">// eslint-disable-line no-alert</span>
+alert(<span class="hljs-string">&apos;foo&apos;</span>); <span class="hljs-comment">// eslint-disable-line no-alert</span>
 </code></pre>
 <p>Note that the rule specific examples assume you have the rules in your configuration in the first place! You cannot specify new rules here. Instead you can modify the behavior of existing rules.</p>
 <h3 id="writing-your-own-rules">Writing Your Own Rules<a class="header-anchor" href="#writing-your-own-rules">#</a></h3>
@@ -168,7 +167,7 @@ alert(&apos;foo&apos;); <span class="hljs-comment">// eslint-disable-line no-ale
         demo: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
             <span class="hljs-keyword">return</span> {
                 Identifier: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node</span>) </span>{
-                    context.report(node, &apos;This is unexpected!&apos;);
+                    context.report(node, <span class="hljs-string">&apos;This is unexpected!&apos;</span>);
                 },
             };
         },
@@ -179,11 +178,11 @@ alert(&apos;foo&apos;); <span class="hljs-comment">// eslint-disable-line no-ale
 <p>Next you need to hit <code>npm link</code> within <code>eslint-plugin-custom</code>. This will make your plugin visible within your system. <code>npm link</code> allows you to consume easily a development version of a library you are developing. To reverse the link you can hit <code>npm unlink</code> when you feel like it.</p>
 <blockquote class="tip">If you want to do something serious, you should point to your plugin through <code>package.json</code>.</blockquote><p>Next we need to alter our project configuration to make it to find the plugin and the rule within.</p>
 <p><strong>.eslintrc</strong></p>
-<pre><code class="undefinedjson">&quot;plugins&quot;: {
-  &quot;custom&quot;,
+<pre><code class="undefinedjson"><span class="hljs-string">&quot;plugins&quot;</span>: {
+  <span class="hljs-string">&quot;custom&quot;</span>,
 },
-&quot;rules&quot;: {
-  &quot;custom/demo&quot;: 1,
+<span class="hljs-string">&quot;rules&quot;</span>: {
+  <span class="hljs-string">&quot;custom/demo&quot;</span>: <span class="hljs-number">1</span>,
   ...
 }
 </code></pre>
@@ -205,39 +204,39 @@ alert(&apos;foo&apos;); <span class="hljs-comment">// eslint-disable-line no-ale
   preLoaders: [
     {
       test: /\.jsx?$/,
-      loaders: [&amp;apos</span></span>;<span class="hljs-tag">eslint</span>&amp;<span class="hljs-tag">apos</span>;, &amp;<span class="hljs-tag">apos</span>;<span class="hljs-tag">jscs</span>&amp;<span class="hljs-tag">apos</span>;],
-      <span class="hljs-rule"><span class="hljs-attribute">include</span>:<span class="hljs-value"> path.<span class="hljs-function">join</span>(ROOT_PATH, &amp;apos</span></span>;<span class="hljs-tag">app</span>&amp;<span class="hljs-tag">apos</span>;),
+      loaders: [<span class="hljs-string">&apos;eslint&apos;</span>, <span class="hljs-string">&apos;jscs&apos;</span>],
+      include: path.<span class="hljs-function">join</span>(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
     },
   ],
 },
-</code></pre>
+</span></span></code></pre>
 <p>To make it work with JSX, you&apos;ll need to point it to <code>esprima-fb</code> parser through <code>.jscsrc</code>. There are also various other options and even some presets. Consider the example below:</p>
 <p><strong>.jscsrc</strong></p>
 <pre><code class="undefinedjson">{
-  &quot;esprima&quot;: &quot;esprima-fb&quot;,
-  &quot;preset&quot;: &quot;google&quot;,
+  &quot;<span class="hljs-attribute">esprima</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;esprima-fb&quot;</span></span>,
+  &quot;<span class="hljs-attribute">preset</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;google&quot;</span></span>,
 
-  &quot;fileExtensions&quot;: [&quot;.js&quot;, &quot;.jsx&quot;],
+  &quot;<span class="hljs-attribute">fileExtensions</span>&quot;: <span class="hljs-value">[<span class="hljs-string">&quot;.js&quot;</span>, <span class="hljs-string">&quot;.jsx&quot;</span>]</span>,
 
-  &quot;requireCurlyBraces&quot;: <span class="hljs-literal">true</span>,
-  &quot;requireParenthesesAroundIIFE&quot;: <span class="hljs-literal">true</span>,
+  &quot;<span class="hljs-attribute">requireCurlyBraces</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  &quot;<span class="hljs-attribute">requireParenthesesAroundIIFE</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,
 
-  &quot;maximumLineLength&quot;: <span class="hljs-number">120</span>,
-  &quot;validateLineBreaks&quot;: &quot;LF&quot;,
-  &quot;validateIndentation&quot;: <span class="hljs-number">4</span>,
+  &quot;<span class="hljs-attribute">maximumLineLength</span>&quot;: <span class="hljs-value"><span class="hljs-number">120</span></span>,
+  &quot;<span class="hljs-attribute">validateLineBreaks</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;LF&quot;</span></span>,
+  &quot;<span class="hljs-attribute">validateIndentation</span>&quot;: <span class="hljs-value"><span class="hljs-number">4</span></span>,
 
-  &quot;disallowKeywords&quot;: [&quot;<span class="hljs-keyword">with</span>&quot;],
-  &quot;disallowSpacesInsideObjectBrackets&quot;: <span class="hljs-literal">null</span>,
-  &quot;disallowImplicitTypeConversion&quot;: [&quot;string&quot;],
+  &quot;<span class="hljs-attribute">disallowKeywords</span>&quot;: <span class="hljs-value">[<span class="hljs-string">&quot;with&quot;</span>]</span>,
+  &quot;<span class="hljs-attribute">disallowSpacesInsideObjectBrackets</span>&quot;: <span class="hljs-value"><span class="hljs-literal">null</span></span>,
+  &quot;<span class="hljs-attribute">disallowImplicitTypeConversion</span>&quot;: <span class="hljs-value">[<span class="hljs-string">&quot;string&quot;</span>]</span>,
 
-  &quot;safeContextKeyword&quot;: &quot;that&quot;,
+  &quot;<span class="hljs-attribute">safeContextKeyword</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;that&quot;</span></span>,
 
-  &quot;excludeFiles&quot;: [
-    &quot;dist<span class="hljs-comment">/**&quot;,
-    &quot;node_modules<span class="hljs-comment">/**&quot;
+  &quot;<span class="hljs-attribute">excludeFiles</span>&quot;: <span class="hljs-value">[
+    <span class="hljs-string">&quot;dist/**&quot;</span>,
+    <span class="hljs-string">&quot;node_modules/**&quot;</span>
   ]
-}
-</span></span></code></pre>
+</span>}
+</code></pre>
 <p>We won&apos;t use the tool in this project but it&apos;s good to be aware of it.</p>
 <blockquote class="tip">Note that like some other tools, such as ESLint and JSHint, JSCS supports <code>package.json</code> based configuration. Simply add a <code>jscsConfig</code> field to it and write the configuration there.</blockquote><h2 id="conclusion">Conclusion<a class="header-anchor" href="#conclusion">#</a></h2>
 <p>In this chapter you learned how to lint your code using Webpack in various ways. It is one of those techniques that yields benefits over longer term as you get to fix possible problems before they become actual issues. Next we&apos;ll delve deeper as we discuss hot module reloading and React in the next chapter.</p>

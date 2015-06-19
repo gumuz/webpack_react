@@ -30,13 +30,13 @@ npm init
 <h3 id="creating-webpack-configuration">Creating Webpack Configuration<a class="header-anchor" href="#creating-webpack-configuration">#</a></h3>
 <p>In our case a basic configuration could look like this:</p>
 <p><strong>webpack.config.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;path&apos;</span>);
 
 <span class="hljs-built_in">module</span>.exports = {
-  entry: path.resolve(__dirname, &apos;app/main.js&apos;),
+  entry: path.resolve(__dirname, <span class="hljs-string">&apos;app/main.js&apos;</span>),
   output: {
-    path: path.resolve(__dirname, &apos;build&apos;),
-    filename: &apos;bundle.js&apos;,
+    path: path.resolve(__dirname, <span class="hljs-string">&apos;build&apos;</span>),
+    filename: <span class="hljs-string">&apos;bundle.js&apos;</span>,
   },
 };
 </code></pre>
@@ -45,42 +45,42 @@ npm init
 <p>Now that we have basic configuration in place, we&apos;ll need something to build. Let&apos;s start with a classic <code>Hello World</code> type of app. Set up <code>/app</code> like this:</p>
 <p><strong>app/component.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">var</span> element = <span class="hljs-built_in">document</span>.createElement(&apos;h1&apos;);
-  element.innerHTML = &apos;Hello world&apos;;
+  <span class="hljs-keyword">var</span> element = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&apos;h1&apos;</span>);
+  element.innerHTML = <span class="hljs-string">&apos;Hello world&apos;</span>;
   <span class="hljs-keyword">return</span> element;
 };
 </code></pre>
 <p><strong>app/main.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> component = <span class="hljs-built_in">require</span>(&apos;./component.js&apos;);
-<span class="hljs-keyword">var</span> app = <span class="hljs-built_in">document</span>.createElement(&apos;div&apos;);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> component = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./component.js&apos;</span>);
+<span class="hljs-keyword">var</span> app = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&apos;div&apos;</span>);
 
 <span class="hljs-built_in">document</span>.body.appendChild(app);
 app.appendChild(component());
 </code></pre>
 <p>Now run <code>node_modules/.bin/webpack</code> in your terminal and your application will be built. A <em>bundle.js</em> file will appear in your <code>/build</code> folder. You should see something along this at your terminal:</p>
-<pre><code class="undefinedbash">&amp;<span class="hljs-tag">gt</span>; <span class="hljs-tag">webpack_demo</span><span class="hljs-at_rule">@<span class="hljs-keyword">1.0.0</span> build /Users/something/projects/webpack_demo
-&gt;</span>; <span class="hljs-tag">webpack</span>
+<pre><code class="undefinedbash">&gt; webpack_demo@1.0.0 build /Users/something/projects/webpack_demo
+&gt; webpack
 
-<span class="hljs-rule"><span class="hljs-attribute">Hash</span>:<span class="hljs-value"> e02f97146a15a8a5c3a9
-Version: webpack <span class="hljs-number">1.8</span>.<span class="hljs-number">4</span>
-Time: <span class="hljs-number">44ms</span>
+Hash: e02f97146a15a8a5c3a9
+Version: webpack 1.8.4
+Time: 44ms
     Asset     Size  Chunks             Chunk Names
-bundle.js  <span class="hljs-number">1.74</span> kB       <span class="hljs-number">0</span>  [emitted]  main
-   [<span class="hljs-number">0</span>] ./app/main.js <span class="hljs-number">115</span> bytes {<span class="hljs-number">0</span>} [built]
-   [<span class="hljs-number">1</span>] ./app/component.js <span class="hljs-number">134</span> bytes {<span class="hljs-number">0</span>} [built]
-</span></span></code></pre>
+bundle.js  1.74 kB       0  [emitted]  main
+   [0] ./app/main.js 115 bytes {0} [built]
+   [1] ./app/component.js 134 bytes {0} [built]
+</code></pre>
 <h2 id="setting-up-entry-point">Setting Up Entry Point<a class="header-anchor" href="#setting-up-entry-point">#</a></h2>
 <p>In order to actually use our bundle, we&apos;ll need to define the last missing bit, <em>index.html</em>. Here&apos;s a starting point:</p>
 <p><strong>build/index.html</strong></p>
-<pre><code class="undefinedhtml">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;/&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;script src=&quot;bundle.js&quot;&gt;&lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
+<pre><code class="undefinedhtml"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">&quot;UTF-8&quot;</span>/&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">&quot;bundle.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
 </code></pre>
 <p>We simply just point at the bundle via <em>script</em> <code>src</code>, nothing more than that. Generally this is the way you work with Webpack. You figure out what you want to load, find a loader and hook it up. Sometimes you&apos;ll need to implement loaders yourself but we&apos;ll cover that later.</p>
 <h2 id="running-the-application">Running the Application<a class="header-anchor" href="#running-the-application">#</a></h2>
@@ -88,8 +88,8 @@ bundle.js  <span class="hljs-number">1.74</span> kB       <span class="hljs-numb
 <h2 id="setting-up-package-json-scripts-">Setting Up <code>package.json</code> <em>scripts</em><a class="header-anchor" href="#setting-up-package-json-scripts-">#</a></h2>
 <p>It can be useful to run build, serve and such commands through <code>npm</code>. That way you don&apos;t have to worry about the technology used in the project. You just invoke the commands. This can be achieved easily by setting up a <code>scripts</code> section to <code>package.json</code>.</p>
 <p>In this case we can move the build step behind <code>npm run build</code> by adding the following section at <code>package.json</code>:</p>
-<pre><code class="undefinedjson">&quot;scripts&quot;: {
-  &quot;build&quot;: &quot;webpack&quot;
+<pre><code class="undefinedjson"><span class="hljs-string">&quot;scripts&quot;</span>: {
+  <span class="hljs-string">&quot;build&quot;</span>: <span class="hljs-string">&quot;webpack&quot;</span>
 }
 </code></pre>
 <p>You can either replace the current <code>scripts</code> section with the above or just add that <code>build</code> line there. To invoke a build, you can hit <code>npm run build</code> now. npm will find it as <code>npm run</code> adds Webpack to the <code>PATH</code> temporarily.</p>

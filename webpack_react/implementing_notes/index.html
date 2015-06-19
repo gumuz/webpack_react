@@ -3,7 +3,7 @@
 <p>A good first step would be to extend <code>Note</code> interface. We would probably want to render a list of these. Ideally we should be able to perform basic editing operations over the list and create new items as needed. We&apos;ll probably also want to mark items as done.</p>
 <p>This means <code>App</code> will have to coordinate the state. Let&apos;s start by rendering a list and then expand from there. Here&apos;s sample code for an enhanced <code>render</code> method:</p>
 <p><strong>app/components/App.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-function"><span class="hljs-title">render</span></span>() {
+<pre><code class="undefinedjavascript">render() {
   var notes = [{
     task: &apos;Learn Webpack&apos;,
   }, {
@@ -12,22 +12,22 @@
     task: &apos;Do laundry&apos;,
   }];
 
-  <span class="hljs-built_in">return</span> (
-    &lt;div&gt;
-      &lt;ul&gt;{notes.map((note, i) =&gt;
-        &lt;li key={&apos;note&apos; + i}&gt;
-          &lt;Note value={note.task} /&gt;
-        &lt;/li&gt;
-      )}&lt;/ul&gt;
-    &lt;/div&gt;
+  return (
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>{notes.map((note, i) =&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{&apos;note&apos;</span> + <span class="hljs-attribute">i</span>}&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Note</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{note.task}</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+      )}<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
   );
 }
 </code></pre>
 <p>We will use a special feature of JSX in form of <code>{}</code>. Within these braces we can mix JavaScript with JSX. In this case we will render a bunch of <code>li</code> elements. Each contains a <code>Note</code>. In order to tell React in which order to render the elements, we&apos;ll set <code>key</code> property for each. It is important that this is unique or otherwise it won&apos;t be able to figure out the correct order.</p>
 <blockquote class="tip">If you want to attach comments to your JSX, just use <code>{/* no comments */}</code>.</blockquote><p>If everything went correctly, you should see a list with three <code>Learn Webpack</code> items on it. That&apos;s almost nice. The problem is that we haven&apos;t taken <code>value</code> property in count at <code>Note</code>. We&apos;ll need to tweak its implementation like this:</p>
 <p><strong>app/components/Note.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-function"><span class="hljs-title">render</span></span>() {
-  <span class="hljs-built_in">return</span> &lt;div&gt;{this.props.value}&lt;/div&gt;;
+<pre><code class="undefinedjavascript">render() {
+  return <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>{this.props.value}<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>;
 }
 </code></pre>
 <p>As you can see the property we passed to our component gets mapped to <code>this.props</code>. After that it is just a matter of showing it wherever we like.</p>
@@ -39,16 +39,16 @@
 <pre><code class="undefinedjavascript">import React from &apos;react&apos;;
 import Note from &apos;./Note&apos;;
 
-<span class="hljs-built_in">export</span> default class Notes extends React.Component {
-  <span class="hljs-function"><span class="hljs-title">render</span></span>() {
+export default class Notes extends React.Component {
+  render() {
     var notes = this.props.items;
 
-    <span class="hljs-built_in">return</span> (
-      &lt;ul className=&apos;notes&apos;&gt;{notes.map((note, i) =&gt;
-        &lt;li className=&apos;note&apos; key={&apos;note&apos; + i}&gt;
-          &lt;Note value={note.task} /&gt;
-        &lt;/li&gt;
-      )}&lt;/ul&gt;
+    return (
+      <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">className</span>=<span class="hljs-value">&apos;notes&apos;</span>&gt;</span>{notes.map((note, i) =&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">className</span>=<span class="hljs-value">&apos;note&apos;</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{&apos;note&apos;</span> + <span class="hljs-attribute">i</span>}&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Note</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{note.task}</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+      )}<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
     );
   }
 }
@@ -56,17 +56,17 @@ import Note from &apos;./Note&apos;;
 <p>I attached some classes there so it&apos;s easier to style the component later.</p>
 <p>Remember to replace the old list with <code>&lt;Notes items={notes} /&gt;</code> at <em>App.jsx</em>:</p>
 <p><strong>app/components/App.jsx</strong></p>
-<pre><code class="undefinedjavascript">import Notes from &apos;./Notes&apos;;
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> Notes <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./Notes&apos;</span>;
 
 ...
-<span class="hljs-function"><span class="hljs-title">render</span></span>() {
+render() {
   ...
 
-  <span class="hljs-built_in">return</span> (
-    &lt;div&gt;
-      &lt;Notes items={notes} /&gt;
-    &lt;/div&gt;
-  );
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">items</span>=<span class="hljs-value">{notes}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+  )</span>;
 }
 ...
 </code></pre>
@@ -75,17 +75,17 @@ import Note from &apos;./Note&apos;;
 <p>It would be useful if we could add new items to our Notes list. Let&apos;s just do a plus button that adds a new dummy item to our list.</p>
 <p>To get a button show up, change <code>render</code> method like this:</p>
 <p><strong>app/components/App.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-function"><span class="hljs-title">render</span></span>() {
+<pre><code class="undefinedjavascript">render() {
   ...
 
-  <span class="hljs-built_in">return</span> (
-    &lt;div&gt;
-      &lt;button onClick={this.addItem.bind(this)}&gt;+&lt;/button&gt;
-      &lt;Notes items={notes} /&gt;
-    &lt;/div&gt;
+  return (
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.addItem.bind(this)}</span>&gt;</span>+<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">items</span>=<span class="hljs-value">{notes}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
   );
 }
-<span class="hljs-function"><span class="hljs-title">addItem</span></span>() {
+addItem() {
   console.log(&apos;add item&apos;);
 }
 </code></pre>
@@ -97,11 +97,11 @@ import Note from &apos;./Note&apos;;
 
   <span class="hljs-keyword">this</span>.state = {
     notes: [{
-      task: &apos;Learn Webpack&apos;,
+      task: <span class="hljs-string">&apos;Learn Webpack&apos;</span>,
     }, {
-      task: &apos;Learn React&apos;,
+      task: <span class="hljs-string">&apos;Learn React&apos;</span>,
     }, {
-      task: &apos;Do laundry&apos;,
+      task: <span class="hljs-string">&apos;Do laundry&apos;</span>,
     }],
   };
 }
@@ -114,7 +114,7 @@ render() {
 <pre><code class="undefinedjavascript">addItem() {
   <span class="hljs-keyword">this</span>.setState({
     notes: <span class="hljs-keyword">this</span>.state.notes.concat([{
-      task: &apos;New task&apos;,
+      task: <span class="hljs-string">&apos;New task&apos;</span>,
     }])
   });
 }
@@ -126,45 +126,45 @@ render() {
 <p>This means we&apos;ll need to extend <code>Note</code> somehow and communicate possible changes to <code>App</code> so that it knows to update the data model. In addition <code>Note</code> needs to keep track of its edit state and show the correct element (div or input) based on that.</p>
 <p>We can achieve these goals using a callback and a ternary expression. Here&apos;s a sample implementation of the idea:</p>
 <p><strong>app/components/Note.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-built_in">export</span> default class Note extends React.Component {
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Note</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   constructor(props) {
-    super(props);
+    <span class="hljs-keyword">super</span>(props);
 
-    this.state = {
+    <span class="hljs-keyword">this</span>.state = {
       edited: <span class="hljs-literal">false</span>,
     };
   }
-  <span class="hljs-function"><span class="hljs-title">render</span></span>() {
-  /* eslint-disable no-unused-vars */
-  const {value, onEdit, ...props} = this.props;
-  /* eslint-enable no-unused-vars */
-  var edited = this.state.edited;
+  render() {
+  <span class="hljs-comment">/* eslint-disable no-unused-vars */</span>
+  <span class="hljs-keyword">const</span> {value, onEdit, ...props} = <span class="hljs-keyword">this</span>.props;
+  <span class="hljs-comment">/* eslint-enable no-unused-vars */</span>
+  <span class="hljs-keyword">var</span> edited = <span class="hljs-keyword">this</span>.state.edited;
 
-  <span class="hljs-built_in">return</span> (
-    &lt;div {...props}&gt;{
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> {<span class="hljs-attribute">...props</span>}&gt;</span>{
         edited
-        ? &lt;input <span class="hljs-built_in">type</span>=&apos;text&apos;
-          defaultValue={value}
-          onBlur={this.finishEdit.bind(this)}
-          onKeyPress={this.checkEnter.bind(this)}/&gt;
-        : &lt;div onClick={this.edit.bind(this)}&gt;{value}&lt;/div&gt;
-      }&lt;/div&gt;
-    );
+        ? <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">&apos;text&apos;</span>
+          <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">{value}</span>
+          <span class="hljs-attribute">onBlur</span>=<span class="hljs-value">{this.finishEdit.bind(this)}</span>
+          <span class="hljs-attribute">onKeyPress</span>=<span class="hljs-value">{this.checkEnter.bind(this)}</span>/&gt;</span>
+        : <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.edit.bind(this)}</span>&gt;</span>{value}<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+      }<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    )</span>;
   }
-  <span class="hljs-function"><span class="hljs-title">edit</span></span>() {
-    this.setState({
+  edit() {
+    <span class="hljs-keyword">this</span>.setState({
         edited: <span class="hljs-literal">true</span>,
     });
   }
   checkEnter(e) {
-    <span class="hljs-keyword">if</span>(e.key === &apos;Enter&apos;) {
-      this.finishEdit(e);
+    <span class="hljs-keyword">if</span>(e.key === <span class="hljs-string">&apos;Enter&apos;</span>) {
+      <span class="hljs-keyword">this</span>.finishEdit(e);
     }
   }
   finishEdit(e) {
-    this.props.onEdit(e.target.value);
+    <span class="hljs-keyword">this</span>.props.onEdit(e.target.value);
 
-    this.setState({
+    <span class="hljs-keyword">this</span>.setState({
       edited: <span class="hljs-literal">false</span>,
     });
   }
@@ -193,9 +193,9 @@ itemEdited(i, task) {
 <p>We also need to tweak <code>Notes</code> like this:</p>
 <p><strong>app/components/Notes.jsx</strong></p>
 <pre><code class="undefinedjavascript">...
-&lt;Note
-  value={note.task}
-  onEdit={<span class="hljs-keyword">this</span>.props.onEdit.bind(<span class="hljs-keyword">this</span>, i)} /&gt;
+<span class="hljs-tag">&lt;<span class="hljs-title">Note</span>
+  <span class="hljs-attribute">value</span>=<span class="hljs-value">{note.task}</span>
+  <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.props.onEdit.bind(this,</span> <span class="hljs-attribute">i</span>)} /&gt;</span>
 ...
 </code></pre>
 <p>As you can see the nested hierarchy is starting to cause some subtle problems. We&apos;ll fix these later. Now we just want to get something to work. You should be able to edit todos now.</p>
@@ -221,7 +221,7 @@ itemEdited(i, task) {
 <blockquote class="tip">We just introduced some interesting behavior to our system. Note that as we track edit state on <code>Note</code> level, this means if you remove an item before the edited <code>Note</code>, the same old element remains edited. If we want to edit specific data, our data model should change to take this in count. Can you see how?</blockquote><h2 id="adding-type-checking-with-flow">Adding Type Checking with Flow<a class="header-anchor" href="#adding-type-checking-with-flow">#</a></h2>
 <p>As we saw earlier with <code>onEdit</code>, it gave us a nasty error before we actually defined a handler for the case. Thanks to <a href="http://flowtype.org/">Flow</a> and <a href="https://gcanti.github.io/flowcheck/">Flowcheck</a> we can add typing information to our source. This is very useful in a situation where you are working with large project and many developers. Just like with linting earlier this is one way to make your work more boring. Boring is still good!</p>
 <p>We can set up Flow type checking to our Webpack easily by first doing <code>npm i flowcheck-loader --save-dev</code> and then extending our development configuration a little like this:</p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === &apos;dev&apos;) {
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = mergeConfig({
     ...
     <span class="hljs-built_in">module</span>: {
@@ -229,8 +229,8 @@ itemEdited(i, task) {
       loaders: {
         {
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
-          loaders: [&apos;react-hot&apos;, &apos;babel&apos;, &apos;flowcheck&apos;],
-          include: path.join(ROOT_PATH, &apos;app&apos;),
+          loaders: [<span class="hljs-string">&apos;react-hot&apos;</span>, <span class="hljs-string">&apos;babel&apos;</span>, <span class="hljs-string">&apos;flowcheck&apos;</span>],
+          include: path.join(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
         },
       },
     },

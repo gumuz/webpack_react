@@ -11,7 +11,7 @@
     loaders: [
       {
         test: <span class="hljs-regexp">/\.css$/</span>,
-        loaders: [&apos;style&apos;, &apos;css&apos;],
+        loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>],
       },
     ],
   },
@@ -87,9 +87,9 @@
 </code></pre>
 <p>For notes it&apos;s enough just to replace some of that default list styling. We also make notes visually separate from the lanes by applying color and shape.</p>
 <p><strong>app/main.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> &apos;./stylesheets/main.css&apos;;
-<span class="hljs-keyword">import</span> &apos;./stylesheets/lane.css&apos;;
-<span class="hljs-keyword">import</span> &apos;./stylesheets/note.css&apos;;
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> <span class="hljs-string">&apos;./stylesheets/main.css&apos;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&apos;./stylesheets/lane.css&apos;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&apos;./stylesheets/note.css&apos;</span>;
 
 ...
 </code></pre>
@@ -101,41 +101,41 @@
 <p>There is a plugin that allows us to work around these problems. <a href="https://www.npmjs.com/package/extract-text-webpack-plugin">extract-text-webpack-plugin</a> generates a separate bundle for CSS. It comes with some overhead during compilation phase and won&apos;t work with Hot Module Replacement (HMR). It also takes some additional setup.</p>
 <p>Hit <code>npm i extract-text-webpack-plugin --save-dev</code> and tweak configuration like this:</p>
 <p><strong>webpack.config.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> ExtractTextPlugin = <span class="hljs-built_in">require</span>(&apos;extract-text-webpack-plugin&apos;);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> ExtractTextPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;extract-text-webpack-plugin&apos;</span>);
 ...
 
 <span class="hljs-keyword">var</span> common = {
-  entry: [path.join(ROOT_PATH, &apos;app/main.jsx&apos;)],
+  entry: [path.join(ROOT_PATH, <span class="hljs-string">&apos;app/main.jsx&apos;</span>)],
   resolve: {
-    extensions: [&apos;&apos;, &apos;.js&apos;, &apos;.jsx&apos;],
+    extensions: [<span class="hljs-string">&apos;&apos;</span>, <span class="hljs-string">&apos;.js&apos;</span>, <span class="hljs-string">&apos;.jsx&apos;</span>],
   },
   output: {
-    path: path.resolve(ROOT_PATH, &apos;build&apos;),
-    filename: &apos;bundle.js&apos;,
+    path: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;build&apos;</span>),
+    filename: <span class="hljs-string">&apos;bundle.js&apos;</span>,
   },
 };
 
 <span class="hljs-keyword">var</span> mergeConfig = merge.bind(<span class="hljs-literal">null</span>, common);
 
-<span class="hljs-keyword">if</span>(TARGET === &apos;build&apos;) {
+<span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = mergeConfig({
     <span class="hljs-built_in">module</span>: {
       loaders: [
         {
           test: <span class="hljs-regexp">/\.css$/</span>,
-          loader: ExtractTextPlugin.extract(&apos;style&apos;, &apos;css&apos;)
+          loader: ExtractTextPlugin.extract(<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>)
         },
         ...
       ]
     },
     plugins: [
-      <span class="hljs-keyword">new</span> ExtractTextPlugin(&apos;styles.css&apos;),
+      <span class="hljs-keyword">new</span> ExtractTextPlugin(<span class="hljs-string">&apos;styles.css&apos;</span>),
       ...
     ],
   });
 }
 
-<span class="hljs-keyword">if</span>(TARGET === &apos;dev&apos;) {
+<span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = mergeConfig({
     ...
     <span class="hljs-built_in">module</span>: {
@@ -143,7 +143,7 @@
       loaders: [
         {
           test: <span class="hljs-regexp">/\.css$/</span>,
-          loaders: [&apos;style&apos;, &apos;css&apos;],
+          loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>],
         },
         ...
       ]
@@ -159,19 +159,19 @@
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript">...
 
-<span class="hljs-keyword">if</span>(TARGET === &apos;dev&apos;) {
+<span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = mergeConfig({
-    entry: [&apos;webpack/hot/dev-server&apos;],
+    entry: [<span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>],
     <span class="hljs-built_in">module</span>: {
       preLoaders: [
         {
           test: <span class="hljs-regexp">/\.css$/</span>,
-          loader: &apos;csslint&apos;,
+          loader: <span class="hljs-string">&apos;csslint&apos;</span>,
         },
         {
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
-          loader: &apos;eslint-loader&apos;,
-          include: path.join(ROOT_PATH, &apos;app&apos;),
+          loader: <span class="hljs-string">&apos;eslint-loader&apos;</span>,
+          include: path.join(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
         },
       ],
       ...
@@ -183,32 +183,32 @@
 <p>To keep things nice and tidy I put it into the <code>preLoaders</code> section of configuration.</p>
 <p><strong>.csslintrc</strong></p>
 <pre><code class="undefinedjson">{
-  &quot;adjoining-classes&quot;: <span class="hljs-literal">false</span>,
-  &quot;box-sizing&quot;: <span class="hljs-literal">false</span>,
-  &quot;box-model&quot;: <span class="hljs-literal">false</span>,
-  &quot;compatible-vendor-prefixes&quot;: <span class="hljs-literal">false</span>,
-  &quot;floats&quot;: <span class="hljs-literal">false</span>,
-  &quot;font-sizes&quot;: <span class="hljs-literal">false</span>,
-  &quot;gradients&quot;: <span class="hljs-literal">false</span>,
-  &quot;important&quot;: <span class="hljs-literal">false</span>,
-  &quot;known-properties&quot;: <span class="hljs-literal">false</span>,
-  &quot;outline-none&quot;: <span class="hljs-literal">false</span>,
-  &quot;qualified-headings&quot;: <span class="hljs-literal">false</span>,
-  &quot;regex-selectors&quot;: <span class="hljs-literal">false</span>,
-  &quot;shorthand&quot;: <span class="hljs-literal">false</span>,
-  &quot;text-indent&quot;: <span class="hljs-literal">false</span>,
-  &quot;unique-headings&quot;: <span class="hljs-literal">false</span>,
-  &quot;universal-selector&quot;: <span class="hljs-literal">false</span>,
-  &quot;unqualified-attributes&quot;: <span class="hljs-literal">false</span>
-}
+  &quot;<span class="hljs-attribute">adjoining-classes</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">box-sizing</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">box-model</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">compatible-vendor-prefixes</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">floats</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">font-sizes</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">gradients</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">important</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">known-properties</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">outline-none</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">qualified-headings</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">regex-selectors</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">shorthand</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">text-indent</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">unique-headings</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">universal-selector</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">unqualified-attributes</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span>
+</span>}
 </code></pre>
 <p>I decided to use a set of rules from Twitter Bootstrap. These seem like a good starting point.</p>
 <p><strong>package.json</strong></p>
-<pre><code class="undefinedjson">&quot;scripts&quot;: {
+<pre><code class="undefinedjson"><span class="hljs-string">&quot;scripts&quot;</span>: {
   ...
-  &quot;lint&quot;: &quot;npm run lint-js &amp;&amp; npm run lint-css&quot;,
-  &quot;lint-js&quot;: &quot;eslint . --ext .js --ext .jsx&quot;,
-  &quot;lint-css&quot;: &quot;csslint app/stylesheets --quiet&quot;
+  <span class="hljs-string">&quot;lint&quot;</span>: <span class="hljs-string">&quot;npm run lint-js &amp;&amp; npm run lint-css&quot;</span>,
+  <span class="hljs-string">&quot;lint-js&quot;</span>: <span class="hljs-string">&quot;eslint . --ext .js --ext .jsx&quot;</span>,
+  <span class="hljs-string">&quot;lint-css&quot;</span>: <span class="hljs-string">&quot;csslint app/stylesheets --quiet&quot;</span>
 },
 </code></pre>
 <p>If you hit <code>npm run lint-css</code> now, you should see some output, hopefully without errors. That <code>--quiet</code> flag is there to keep the tool silent unless there are errors.</p>
@@ -236,7 +236,7 @@
 <p><a href="https://cssnext.github.io/">cssnext</a> is a project that allows us to experience the future now. There are some restrictions but it may be worth a go. In Webpack it is simply a matter of installing <a href="https://www.npmjs.com/package/cssnext-loader">cssnext-loader</a> and attaching it to your CSS configuration. In our case you would end up with the following:</p>
 <pre><code class="undefinedjavascript">{
   <span class="hljs-built_in">test</span>: /\.css$/,
-  loaders: [&apos;style&apos;, &apos;css&apos;, &apos;cssnext&apos;],
+  loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>, <span class="hljs-string">&apos;cssnext&apos;</span>],
 }
 </code></pre>
 <p>The advantage of this approach is that you will literally be coding in the future. As browsers get better and adopt the standards, you don&apos;t have to worry about porting.</p>
@@ -246,7 +246,7 @@
 <p>Less is a popular CSS preprocessor that implements functionality we talked about and comes with a syntax of its own. In Webpack using Less doesn&apos;t take a lot of effort. <a href="https://www.npmjs.com/package/less-loader">less-loader</a> deals with the heavy lifting:</p>
 <pre><code class="undefinedjavascript">{
   <span class="hljs-built_in">test</span>: /\.less$/,
-  loaders: [&apos;style&apos;, &apos;css&apos;, &apos;less&apos;],
+  loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>, <span class="hljs-string">&apos;less&apos;</span>],
 }
 </code></pre>
 <p>There is also support for Less plugins, sourcemaps and so on but to understand how those work you should check out the project itself.</p>
@@ -255,7 +255,7 @@
 <p>Sass is a popular alternative to Less. You should use <a href="https://www.npmjs.com/package/sass-loader">sass-loader</a> with it. Remember to install <code>node-sass</code> to your project as the loader has a peer dependency on that. Webpack configuration is light again:</p>
 <pre><code class="undefinedjavascript">{
   <span class="hljs-built_in">test</span>: /\.scss$/,
-  loaders: [&apos;style&apos;, &apos;css&apos;, &apos;sass&apos;],
+  loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>, <span class="hljs-string">&apos;sass&apos;</span>],
 }
 </code></pre>
 <p>Check out the loader for more advanced usage.</p>
@@ -269,29 +269,29 @@
 <p>Ironically the way solutions based on React solve this is through inline styles. Getting rid of inline styles was one of the main reasons for using separate CSS files in the first place. Now we are back there.</p>
 <p>This means that instead of something like</p>
 <pre><code class="undefinedjavascript">render(props, context) {
-  var notes = this.props.notes;
+  <span class="hljs-keyword">var</span> notes = <span class="hljs-keyword">this</span>.props.notes;
 
-  <span class="hljs-built_in">return</span> (
-    &lt;ul className=&apos;notes&apos;&gt;{notes.map((note, i) =&gt;
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">className</span>=<span class="hljs-value">&apos;notes&apos;</span>&gt;</span>{notes.map((note, i) =&gt;
       ...
-    )}&lt;/ul&gt;
-  );
+    )}<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+  )</span>;
 }
 </code></pre>
 <p>and accompanying CSS, we&apos;ll do something like this:</p>
 <pre><code class="undefinedjavascript">render(props, context) {
-  var notes = this.props.notes;
-  var style = {
-    margin: &apos;<span class="hljs-number">0.5</span>em&apos;,
+  <span class="hljs-keyword">var</span> notes = <span class="hljs-keyword">this</span>.props.notes;
+  <span class="hljs-keyword">var</span> style = {
+    margin: <span class="hljs-string">&apos;0.5em&apos;</span>,
     paddingLeft: <span class="hljs-number">0</span>,
-    listStyle: &apos;none&apos;,
+    listStyle: <span class="hljs-string">&apos;none&apos;</span>,
   };
 
-  <span class="hljs-built_in">return</span> (
-    &lt;ul style={style}&gt;{notes.map((note, i) =&gt;
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{style}</span>&gt;</span>{notes.map((note, i) =&gt;
       ...
-    )}&lt;/ul&gt;
-  );
+    )}<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+  )</span>;
 }
 </code></pre>
 <p>Just like with HTML attribute names, we are using the same camelcase convention for CSS properties.</p>
@@ -313,25 +313,25 @@
 <p>It expands the basic syntax as follows:</p>
 <pre><code class="undefinedjavascript">var styles = {
   button: {
-    padding: &apos;1em&apos;,
+    padding: <span class="hljs-string">&apos;1em&apos;</span>,
 
-    &apos;:hover&apos;: {
-      border: &apos;1px solid black&apos;
+    <span class="hljs-string">&apos;:hover&apos;</span>: {
+      border: <span class="hljs-string">&apos;1px solid black&apos;</span>
     },
 
-    &apos;@media (max-width: 200px)&apos;: {
-      width: &apos;100%&apos;,
+    <span class="hljs-string">&apos;@media (max-width: 200px)&apos;</span>: {
+      width: <span class="hljs-string">&apos;100%&apos;</span>,
 
-      &apos;:hover&apos;: {
-        background: &apos;white&apos;,
+      <span class="hljs-string">&apos;:hover&apos;</span>: {
+        background: <span class="hljs-string">&apos;white&apos;</span>,
       },
     },
   },
   primary: {
-    background: &apos;green&apos;
+    background: <span class="hljs-string">&apos;green&apos;</span>
   },
   warning: {
-    background: &apos;yellow&apos;
+    background: <span class="hljs-string">&apos;yellow&apos;</span>
   },
 };
 
@@ -342,22 +342,22 @@
 <p>For <code>style</code> prop to work, you&apos;ll need to annotate your classes using <code>@Radium</code> decorator.</p>
 <h3 id="react-style">React Style<a class="header-anchor" href="#react-style">#</a></h3>
 <p><a href="https://github.com/js-next/react-style">React Style</a> uses the same syntax as React Native <a href="https://facebook.github.io/react-native/docs/stylesheet.html#content">StyleSheet</a>. It expands the basic definition by introducing additional keys for fragments.</p>
-<pre><code class="undefinedjavascript">var StyleSheet = import &apos;react-style&apos;;
+<pre><code class="undefinedjavascript">var StyleSheet = import <span class="hljs-string">&apos;react-style&apos;</span>;
 
 var styles = StyleSheet.create({
   primary: {
-    background: &apos;green&apos;
+    background: <span class="hljs-string">&apos;green&apos;</span>
   },
   warning: {
-    background: &apos;yellow&apos;
+    background: <span class="hljs-string">&apos;yellow&apos;</span>
   },
   button: {
-    padding: &apos;1em&apos;
+    padding: <span class="hljs-string">&apos;1em&apos;</span>
   },
   // media queries
-  &apos;@media (max-width: 200px)&apos;: {
+  <span class="hljs-string">&apos;@media (max-width: 200px)&apos;</span>: {
       button: {
-        width: &apos;100%&apos;
+        width: <span class="hljs-string">&apos;100%&apos;</span>
       }
   }
 });
@@ -370,45 +370,45 @@ var styles = StyleSheet.create({
 <p>Interestingly there is a <a href="https://github.com/js-next/react-style-webpack-plugin">React Style plugin for Webpack</a>. It can extract CSS declarations into a separate bundle. Now we are closer to the world we&apos;re used to but without cascades. We also have our style declarations on component level.</p>
 <h3 id="smart-css">smart-css<a class="header-anchor" href="#smart-css">#</a></h3>
 <p><a href="https://github.com/hackhat/smart-css">smart-css</a> takes a similar approach except this time we are operating based on classes. To give you a better idea, consider the example below:</p>
-<pre><code class="undefinedjavascript">var SmartCSS = require(&apos;smart-css&apos;);
+<pre><code class="undefinedjavascript">var SmartCSS = require(<span class="hljs-string">&apos;smart-css&apos;</span>);
 var css = new SmartCSS();
 
-css.setClass(&apos;.button&apos;, {
-    padding: &apos;<span class="hljs-number">1</span>em&apos;
+css.setClass(<span class="hljs-string">&apos;.button&apos;</span>, {
+    padding: <span class="hljs-string">&apos;1em&apos;</span>
 });
-css.setClass(&apos;.button&apos;, {
-    width: &apos;<span class="hljs-number">100</span>%&apos;
+css.setClass(<span class="hljs-string">&apos;.button&apos;</span>, {
+    width: <span class="hljs-string">&apos;100%&apos;</span>
 }, {
-    media: &apos;max-width: <span class="hljs-number">200</span>px&apos;
+    media: <span class="hljs-string">&apos;max-width: 200px&apos;</span>
 });
-css.setClass(&apos;.primary&apos;, {
-    background: &apos;green&apos;
+css.setClass(<span class="hljs-string">&apos;.primary&apos;</span>, {
+    background: <span class="hljs-string">&apos;green&apos;</span>
 });
-css.setClass(&apos;.warning&apos;, {
-    background: &apos;yellow&apos;
+css.setClass(<span class="hljs-string">&apos;.warning&apos;</span>, {
+    background: <span class="hljs-string">&apos;yellow&apos;</span>
 });
 
 ...
 
 &lt;button className={css.getClasses({button: <span class="hljs-literal">true</span>, primary: <span class="hljs-literal">true</span>})}&gt;Confirm&lt;/button&gt;
 
-// <span class="hljs-keyword">in</span> addition you&apos;ll need to trigger at higher level after the elements you are using
+// <span class="hljs-keyword">in</span> addition you<span class="hljs-string">&apos;ll need to trigger at higher level after the elements you are using
 // have been injected to DOM
 SmartCSS.injectStyles();
-</code></pre>
+</span></code></pre>
 <p>The approach supports pseudoselectors. Ie. you could define a selector such as <code>.button:hover</code> and it would just work.</p>
 <p>There are plans to introduce autoprefixing, better ways to deal with measurements, better APIs for complex properties and for a Webpack plugin to extract the CSS into an external file.</p>
 <h3 id="react-inline">React Inline<a class="header-anchor" href="#react-inline">#</a></h3>
 <p><a href="https://github.com/martinandert/react-inline">React Inline</a> is an interesting twist on StyleSheet. It generates CSS based on <code>className</code> prop of elements where it is used. The example above could be adapted to React Inline like this:</p>
-<pre><code class="undefinedjavascript">import cx from &apos;classnames&apos;;
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> cx <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;classnames&apos;</span>;
 ...
 
-class ConfirmButton extends React.Component {
-  <span class="hljs-function"><span class="hljs-title">render</span></span>() {
-    const {className} = this.props;
-    const classes = cx(styles.button, styles.primary, className);
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConfirmButton</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">const</span> {className} = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">const</span> classes = cx(styles.button, styles.primary, className);
 
-    <span class="hljs-built_in">return</span> &lt;button className={classes}&gt;Confirm&lt;/button&gt;;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">className</span>=<span class="hljs-value">{classes}</span>&gt;</span>Confirm<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>;</span>
   }
 }
 </code></pre>
@@ -416,10 +416,10 @@ class ConfirmButton extends React.Component {
 <h3 id="jsxstyle">jsxstyle<a class="header-anchor" href="#jsxstyle">#</a></h3>
 <p>Pete Hunt&apos;s <a href="https://github.com/petehunt/jsxstyle">jsxstyle</a> aims to mitigate some problems of React Style&apos;s approach. As you saw in previous examples we still have style definitions separate from the component markup. jsxstyle merges these two concepts. Consider the following example:</p>
 <pre><code class="undefinedjavascript">// PrimaryButton component
-&lt;button
-  padding=&apos;1em&apos;
-  background=&apos;green&apos;
-&gt;Confirm&lt;/button&gt;
+<span class="hljs-tag">&lt;<span class="hljs-title">button</span>
+  <span class="hljs-attribute">padding</span>=<span class="hljs-value">&apos;1em&apos;</span>
+  <span class="hljs-attribute">background</span>=<span class="hljs-value">&apos;green&apos;</span>
+&gt;</span>Confirm<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
 </code></pre>
 <p>The approach is still in its early days. For instance support for media queries is missing. Instead of defining modifiers as above, you&apos;ll end up defining more components to support your use cases.</p>
 <p>Just like React Style, also jsxstyle comes with a Webpack loader that can extract CSS into a separate file.</p>
@@ -428,22 +428,22 @@ class ConfirmButton extends React.Component {
 <p>The genius of this approach is in that it still allows us to develop CSS as we&apos;ve been used to. This itself solves a large amount of problems libraries above try to solve in their own ways. If we need global styles, we can still get them. We still might want to have some around for some higher level styling after all. This time we&apos;re being explicit about it.</p>
 <p>To give you a better idea, consider the example below:</p>
 <p><strong>style.css</strong></p>
-<pre><code class="undefinedcss">.primary {
-  background: &apos;green&apos;;
-}
+<pre><code class="undefinedcss"><span class="hljs-class">.primary</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-string">&apos;green&apos;</span></span></span>;
+}</span>
 
-.warning {
-  background: &apos;yellow&apos;;
-}
+<span class="hljs-class">.warning</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-string">&apos;yellow&apos;</span></span></span>;
+}</span>
 
-.button {
-  padding: 1em;
-}
+<span class="hljs-class">.button</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">1em</span></span></span>;
+}</span>
 
-@media (max-width: 200px) {
-  .button {
-    width: 100%;
-  }
+<span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (max-width: <span class="hljs-number">200px</span>) </span>{
+  <span class="hljs-class">.button</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">100%</span></span></span>;
+  }</span>
 }
 </code></pre>
 <p><strong>button.jsx</strong></p>
@@ -452,7 +452,7 @@ import styles from &apos;./style.css&apos;;
 
 ...
 
-&lt;button className={classNames(styles.button, styles.primary)}&gt;Confirm&lt;/button&gt;
+<span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">className</span>=<span class="hljs-value">{classNames(styles.button,</span> <span class="hljs-attribute">styles.primary</span>)}&gt;</span>Confirm<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
 </code></pre>
 <p>As you can see, this approach provides a good balance between what a lot of people are familiar with already and what various React specific libraries do. It would not surprise me a lot if this approach gained popularity even though it&apos;s still early days. See <a href="https://css-modules.github.io/webpack-demo/">CSS Modules Webpack Demo</a> for more examples.</p>
 <h2 id="conclusion">Conclusion<a class="header-anchor" href="#conclusion">#</a></h2>

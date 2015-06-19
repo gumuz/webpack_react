@@ -8,46 +8,46 @@
 <h2 id="installing-react">Installing React<a class="header-anchor" href="#installing-react">#</a></h2>
 <p>To get started install React to your project. Just hit <code>npm i react --save</code> and you should be set. As a next step we could port our <strong>app/component.js</strong> to React. Provided we use ES6 module and class syntax and JSX, we can go with a solution like this:</p>
 <p><strong>app/components/App.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> &apos;react&apos;;
-<span class="hljs-keyword">import</span> Note <span class="hljs-keyword">from</span> &apos;./Note&apos;;
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
+<span class="hljs-keyword">import</span> Note <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./Note&apos;</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   render() {
-    <span class="hljs-keyword">return</span> &lt;Note /&gt;;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Note</span> /&gt;</span>;</span>
   }
 }
 </code></pre>
 <p><code>App</code> will work as an entry point to our application. Later on it will orchestrate logic etc.</p>
 <p>We also need to define that <code>Note</code> component:</p>
 <p><strong>app/components/Note.jsx</strong></p>
-<pre><code class="undefinedjavascript">import React from &apos;react&apos;;
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
 
-<span class="hljs-built_in">export</span> default class Note extends React.Component {
-  <span class="hljs-function"><span class="hljs-title">render</span></span>() {
-    <span class="hljs-built_in">return</span> &lt;div&gt;Learn Webpack&lt;/div&gt;;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Note</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>Learn Webpack<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>;</span>
   }
 }
 </code></pre>
 <blockquote class="tip">Note that we&apos;re using <em>jsx</em> extension here to tell modules using JSX syntax apart from regular ones. This is a good convention to have.</blockquote><p>In addition we&apos;ll need to adjust our <code>main.js</code> to render the component correctly. Note that I&apos;ve renamed it as <code>main.jsx</code> given we have JSX content there. Here&apos;s one solution:</p>
 <p><strong>app/main.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> &apos;./stylesheets/main.css&apos;;
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> <span class="hljs-string">&apos;./stylesheets/main.css&apos;</span>;
 
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> &apos;react&apos;;
-<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> &apos;./components/App&apos;;
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
+<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./components/App&apos;</span>;
 
 main();
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">var</span> app = <span class="hljs-built_in">document</span>.createElement(&apos;div&apos;);
+    <span class="hljs-keyword">var</span> app = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&apos;div&apos;</span>);
     <span class="hljs-built_in">document</span>.body.appendChild(app);
 
-    React.render(&lt;App /&gt;, app);
+    React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">App</span> /&gt;</span>, app);
 }
-</code></pre>
+</span></code></pre>
 <p>This change needs to be taken in count at configuration. Change entry path like this:</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> common = {
-  entry: [path.join(ROOT_PATH, &apos;app/main.jsx&apos;)]
+  entry: [path.join(ROOT_PATH, <span class="hljs-string">&apos;app/main.jsx&apos;</span>)]
   ...
 }
 </code></pre>
@@ -63,10 +63,10 @@ main();
         test: <span class="hljs-regexp">/\.jsx?$/</span>,
 
         <span class="hljs-comment">// use babel loader</span>
-        loader: &apos;babel&apos;,
+        loader: <span class="hljs-string">&apos;babel&apos;</span>,
 
         <span class="hljs-comment">// operate only on our app directory</span>
-        include: path.join(ROOT_PATH, &apos;app&apos;),
+        include: path.join(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
       },
       ...
     ]
@@ -78,9 +78,9 @@ main();
 <p>Webpack traverses <code>[&apos;&apos;, &apos;.webpack.js&apos;, &apos;.web.js&apos;, &apos;.js&apos;]</code> files by default. This will get problematic with our <code>import Note from &apos;./Note&apos;;</code> statement. In order to make it find JSX, we&apos;ll need to add another piece of configuration like this:</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> common = {
-  entry: [path.join(ROOT_PATH, &apos;app/main.jsx&apos;)],
+  entry: [path.join(ROOT_PATH, <span class="hljs-string">&apos;app/main.jsx&apos;</span>)],
   resolve: {
-    extensions: [&apos;&apos;, &apos;.js&apos;, &apos;.jsx&apos;],
+    extensions: [<span class="hljs-string">&apos;&apos;</span>, <span class="hljs-string">&apos;.js&apos;</span>, <span class="hljs-string">&apos;.jsx&apos;</span>],
   },
   ...
 };
@@ -101,11 +101,11 @@ index.html  204 bytes          [emitted]
 <h2 id="optimizing-build-size">Optimizing Build Size<a class="header-anchor" href="#optimizing-build-size">#</a></h2>
 <p>We can resolve this issue by minifying our build. As easy way to do this is to pass <code>-p</code> parameter to <code>webpack</code>. It will give a bunch of warnings especially in React environment by default, however, so we&apos;ll enable minification using other way. Add the following section to your Webpack configuration:</p>
 <p><strong>webpack.config.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(&apos;webpack&apos;);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;webpack&apos;</span>);
 
 ...
 
-<span class="hljs-keyword">if</span>(TARGET === &apos;build&apos;) {
+<span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = mergeConfig({
     ...
     plugins: [
@@ -135,14 +135,14 @@ index.html  204 bytes          [emitted]
 <p>We can perform one more step to decrease build size further. React relies on <code>process.env.NODE_ENV</code> based optimizations. If we force it to <code>production</code>, React will get in an optimized manner. This will disable some checks (ie. property type checks) but it will give you a smaller build and improved performance.</p>
 <p>In Webpack terms you can add the following snippet to the <code>plugins</code> section of your configuration like this:</p>
 <p><strong>webpack.config.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === &apos;build&apos;) {
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = mergeConfig({
     ...
     plugins: [
       <span class="hljs-keyword">new</span> webpack.DefinePlugin({
-        &apos;process.env&apos;: {
+        <span class="hljs-string">&apos;process.env&apos;</span>: {
           <span class="hljs-comment">// This has effect on the react lib size</span>
-          &apos;NODE_ENV&apos;: <span class="hljs-built_in">JSON</span>.stringify(&apos;production&apos;),
+          <span class="hljs-string">&apos;NODE_ENV&apos;</span>: <span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-string">&apos;production&apos;</span>),
         }
       }),
       ...
@@ -174,7 +174,7 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
     loaders: [
       {
         test: <span class="hljs-regexp">/\.css$/</span>,
-        loaders: [&apos;style&apos;, &apos;css&apos;],
+        loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>],
       },
     ],
   },
@@ -182,14 +182,14 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
 
 ...
 
-<span class="hljs-keyword">if</span>(TARGET === &apos;build&apos;) {
+<span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = mergeConfig({
     <span class="hljs-built_in">module</span>: {
       loaders: [
         {
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
-          loader: &apos;babel&apos;,
-          include: path.join(ROOT_PATH, &apos;app&apos;),
+          loader: <span class="hljs-string">&apos;babel&apos;</span>,
+          include: path.join(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
         },
       ],
     },
@@ -199,19 +199,19 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
   });
 }
 
-<span class="hljs-keyword">if</span>(TARGET === &apos;dev&apos;) {
+<span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = mergeConfig({
     entry: [
-      &apos;webpack-dev-server/client?http:<span class="hljs-comment">//&apos; + IP + &apos;:&apos; + PORT,</span>
-      &apos;webpack/hot/only-dev-server&apos;, <span class="hljs-comment">// only-dev-server!</span>
+      <span class="hljs-string">&apos;webpack-dev-server/client?http://&apos;</span> + IP + <span class="hljs-string">&apos;:&apos;</span> + PORT,
+      <span class="hljs-string">&apos;webpack/hot/only-dev-server&apos;</span>, <span class="hljs-comment">// only-dev-server!</span>
     ],
     <span class="hljs-built_in">module</span>: {
       ...
       loaders: [
         {
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
-          loaders: [&apos;react-hot&apos;, &apos;babel&apos;],
-          include: path.join(ROOT_PATH, &apos;app&apos;),
+          loaders: [<span class="hljs-string">&apos;react-hot&apos;</span>, <span class="hljs-string">&apos;babel&apos;</span>],
+          include: path.join(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
         },
       ],
     },

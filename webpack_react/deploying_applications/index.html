@@ -8,22 +8,22 @@
 <h2 id="creating-a-production-configuration">Creating a Production Configuration<a class="header-anchor" href="#creating-a-production-configuration">#</a></h2>
 <p>Creating a production configuration is not that much different from creating configuration for development. We&apos;ll use different paths for the output and avoid development workflow specific configuration. It is also common to add caching configuration to your production configuration.</p>
 <p>To run the configuration and create a distribution for deployment we create a script. In addition to our existing <code>npm start</code> we will add <code>npm run prod</code>. What differs with our new production script is that it does not use the <code>webpack-dev-server</code>. We will only use webpack to produce a distribution. To make this work, we&#x2019;ll need to tweak our <code>package.json</code> like this:</p>
-<pre><code>&quot;scripts&quot;: {
-  &quot;dev&quot;: &quot;webpack-dev-server --devtool <span class="hljs-built_in">eval</span> --progress --colors --hot --content-base build&quot;,
-  &quot;prod&quot;: &quot;NODE_ENV=production webpack -p --config webpack.production.js&quot;
+<pre><code><span class="hljs-string">&quot;scripts&quot;</span>: {
+  <span class="hljs-string">&quot;dev&quot;</span>: <span class="hljs-string">&quot;webpack-dev-server --devtool eval --progress --colors --hot --content-base build&quot;</span>,
+  <span class="hljs-string">&quot;prod&quot;</span>: <span class="hljs-string">&quot;NODE_ENV=production webpack -p --config webpack.production.js&quot;</span>
 }
 </code></pre><p>In <code>prod</code> we&#x2019;ll make sure <code>NODE_ENV</code> PATH variable is set to production. This way the libraries we are using can use whatever optimizations they might have in store. For instance in case of React this would disable certain checks and improve performance. The <code>-p</code> argument puts Webpack in production mode where it does its optimizations, like minification.</p>
 <p>We can achieve the same effect in our production configuration like this in case we want to simplify our <code>scripts</code> configuration:</p>
 <pre><code class="undefinedjavascript">...
-plugins: [
-  <span class="hljs-keyword">new</span> webpack.DefinePlugin({
-    &apos;process.env&apos;: {
-       &apos;NODE_ENV&apos;: <span class="hljs-built_in">JSON</span>.stringify(&apos;production&apos;),
+<span class="hljs-rule"><span class="hljs-attribute">plugins</span>:<span class="hljs-value"> [
+  new webpack.<span class="hljs-function">DefinePlugin</span>({
+    <span class="hljs-string">&apos;process.env&apos;</span>: {
+       <span class="hljs-string">&apos;NODE_ENV&apos;</span>: JSON.<span class="hljs-function">stringify</span>(<span class="hljs-string">&apos;production&apos;</span>),
     }
   }),
   ...
 ]
-</code></pre>
+</span></span></code></pre>
 <p>It is more verbose but on the other hand at least now it&#x2019;s a part of the configuration itself.</p>
 <h2 id="single-bundle">Single Bundle<a class="header-anchor" href="#single-bundle">#</a></h2>
 <p>If you are developing a simple application, or a demo, you can get away with a single bundle. It will contain all the JavaScript your app needs to run. In addition it will contain assets needed by your app including CSS, fonts and even images. As a result the loading time will be higher. Sometimes simple is beautiful, though.</p>
@@ -37,13 +37,13 @@ plugins: [
 </ul>
 <p>You can create a single bundle with the following configuration:</p>
 <p><em>webpack.production.js</em></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;path&apos;</span>);
 
 <span class="hljs-built_in">module</span>.exports = {
-  entry: path.resolve(__dirname, &apos;app/main.js&apos;),
+  entry: path.resolve(__dirname, <span class="hljs-string">&apos;app/main.js&apos;</span>),
   output: {
-    path: path.resolve(__dirname, &apos;dist&apos;),
-    filename: &apos;bundle.js&apos;,
+    path: path.resolve(__dirname, <span class="hljs-string">&apos;dist&apos;</span>),
+    filename: <span class="hljs-string">&apos;bundle.js&apos;</span>,
   }
 };
 </code></pre>
@@ -63,21 +63,21 @@ plugins: [
 </ul>
 <p>You can create a configuration like this:</p>
 <p><strong>webpack.production.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
-<span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(&apos;webpack&apos;);
-<span class="hljs-keyword">var</span> nodeModulesDir = path.resolve(__dirname, &apos;node_modules&apos;);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;path&apos;</span>);
+<span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;webpack&apos;</span>);
+<span class="hljs-keyword">var</span> nodeModulesDir = path.resolve(__dirname, <span class="hljs-string">&apos;node_modules&apos;</span>);
 
 <span class="hljs-built_in">module</span>.exports = {
   entry: {
-    app: [path.resolve(__dirname, &apos;app/main.js&apos;)],
-    vendors: [&apos;react&apos;]
+    app: [path.resolve(__dirname, <span class="hljs-string">&apos;app/main.js&apos;</span>)],
+    vendors: [<span class="hljs-string">&apos;react&apos;</span>]
   },
   output: {
-    path: path.resolve(__dirname, &apos;dist&apos;),
-    filename: &apos;app.js&apos;
+    path: path.resolve(__dirname, <span class="hljs-string">&apos;dist&apos;</span>),
+    filename: <span class="hljs-string">&apos;app.js&apos;</span>
   },
   plugins: [
-    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(&apos;vendors&apos;, &apos;vendors.js&apos;)
+    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(<span class="hljs-string">&apos;vendors&apos;</span>, <span class="hljs-string">&apos;vendors.js&apos;</span>)
   ]
 };
 </code></pre>
@@ -101,21 +101,21 @@ plugins: [
 <li>webpack.production.js</li>
 </ul>
 <p><strong>webpack.production.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
-<span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(&apos;webpack&apos;);
-<span class="hljs-keyword">var</span> nodeModulesDir = path.resolve(__dirname, &apos;node_modules&apos;);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;path&apos;</span>);
+<span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;webpack&apos;</span>);
+<span class="hljs-keyword">var</span> nodeModulesDir = path.resolve(__dirname, <span class="hljs-string">&apos;node_modules&apos;</span>);
 
 <span class="hljs-built_in">module</span>.exports = {
   entry: {
-    appA: path.resolve(__dirname, &apos;appA/main.js&apos;),
-    appB: path.resolve(__dirname, &apos;appB/main.js&apos;)
+    appA: path.resolve(__dirname, <span class="hljs-string">&apos;appA/main.js&apos;</span>),
+    appB: path.resolve(__dirname, <span class="hljs-string">&apos;appB/main.js&apos;</span>)
   },
   output: {
-    path: path.resolve(__dirname, &apos;dist&apos;),
-    filename: &apos;[name].js&apos; <span class="hljs-comment">// Notice we use a variable</span>
+    path: path.resolve(__dirname, <span class="hljs-string">&apos;dist&apos;</span>),
+    filename: <span class="hljs-string">&apos;[name].js&apos;</span> <span class="hljs-comment">// Notice we use a variable</span>
   },
   plugins: [
-    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(&apos;common&apos;, &apos;common.js&apos;)
+    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(<span class="hljs-string">&apos;common&apos;</span>, <span class="hljs-string">&apos;common.js&apos;</span>)
   ]
 };
 </code></pre>
@@ -138,56 +138,56 @@ plugins: [
 <li>webpack.production.js</li>
 </ul>
 <p><strong>webpack.production.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(&apos;path&apos;);
-<span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(&apos;webpack&apos;);
-<span class="hljs-keyword">var</span> nodeModulesDir = path.resolve(__dirname, &apos;node_modules&apos;);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;path&apos;</span>);
+<span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;webpack&apos;</span>);
+<span class="hljs-keyword">var</span> nodeModulesDir = path.resolve(__dirname, <span class="hljs-string">&apos;node_modules&apos;</span>);
 
 <span class="hljs-built_in">module</span>.exports = {
   entry: {
-    app: path.resolve(__dirname, &apos;app/main.js&apos;),
-    vendors: [&apos;react&apos;]
+    app: path.resolve(__dirname, <span class="hljs-string">&apos;app/main.js&apos;</span>),
+    vendors: [<span class="hljs-string">&apos;react&apos;</span>]
   },
   output: {
-    path: path.resolve(__dirname, &apos;dist&apos;),
-    filename: &apos;app.js&apos;
+    path: path.resolve(__dirname, <span class="hljs-string">&apos;dist&apos;</span>),
+    filename: <span class="hljs-string">&apos;app.js&apos;</span>
   },
   <span class="hljs-built_in">module</span>: {
     loaders: [{
       test: <span class="hljs-regexp">/\.js$/</span>,
       exclude: [nodeModulesDir],
-      loader: &apos;babel&apos;
+      loader: <span class="hljs-string">&apos;babel&apos;</span>
     }]
   },
   plugins: [
-    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(&apos;vendors&apos;, &apos;vendors.js&apos;)
+    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(<span class="hljs-string">&apos;vendors&apos;</span>, <span class="hljs-string">&apos;vendors.js&apos;</span>)
   ]
 };
 </code></pre>
 <p>So we are pretty much back where we started with a split application and vendors bundle. You do not really define your lazy dependencies in a configuration, Webpack automatically understands them when analyzing your code. So let us see how we would lazy load a <strong>profile page</strong>:</p>
 <p><strong>main.js (Using ES6 syntax)</strong></p>
-<pre><code class="undefinedjavascript">import React from &apos;react&apos;;
-import Feed from &apos;./Feed.js&apos;;
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
+<span class="hljs-keyword">import</span> Feed <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./Feed.js&apos;</span>;
 
-class App extends React.Component {
-  <span class="hljs-function"><span class="hljs-title">constructor</span></span>() {
-    this.state = { currentComponent: Feed };
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  constructor() {
+    <span class="hljs-keyword">this</span>.state = { currentComponent: Feed };
   }
-  <span class="hljs-function"><span class="hljs-title">openProfile</span></span>() {
-    require.ensure([], () =&gt; {
-      var Profile = require(&apos;./Profile.js&apos;);
-      this.setState({
+  openProfile() {
+    <span class="hljs-built_in">require</span>.ensure([], () =&gt; {
+      <span class="hljs-keyword">var</span> Profile = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./Profile.js&apos;</span>);
+      <span class="hljs-keyword">this</span>.setState({
         currentComponent: Profile
       });
     });
   }
-  <span class="hljs-function"><span class="hljs-title">render</span></span>() {
-   <span class="hljs-built_in">return</span> (
-      <span class="hljs-built_in">return</span> &lt;div&gt;{this.state.currentComponent()}&lt;/div&gt;
-    );
+  render() {
+   <span class="hljs-keyword">return</span> (
+      <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>{this.state.currentComponent()}<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    )</span>;
   }
 }
-React.render(&lt;App/&gt;, document.body);
-</code></pre>
+React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">App</span>/&gt;</span>, document.body);
+</span></code></pre>
 <p>So this is just an example. You would probably hook this up to a router, but the important part is using <code>require.ensure</code>. When Webpack finds that statement it will automatically create a chunk that can be lazy loaded.</p>
 <p><strong>What is the array on the first argument?</strong>: If you try to lazy load a chunk that depends on an other lazy loaded chunk you can set it as a dependency in the array. Just type in the path to the chunk; e.g. <code>[&apos;./FunnyButton.js&apos;]</code></p>
 <h2 id="isomorphic-app">Isomorphic App<a class="header-anchor" href="#isomorphic-app">#</a></h2>
@@ -196,22 +196,22 @@ React.render(&lt;App/&gt;, document.body);
 <p>One of the most important decisions you make is to inject the state of your application through the top component. This basically means that your components does not have any external dependencies at all. All they need to know comes through this injected state.</p>
 <p>This cookbook is not about isomorphic apps, but let us take a look at an example. We will not use ES6 syntax here because Node JS does not support it yet.</p>
 <p><strong>main.js (client)</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> React = <span class="hljs-built_in">require</span>(&apos;react&apos;);
-<span class="hljs-keyword">var</span> AppState = <span class="hljs-built_in">require</span>(&apos;./client/AppState.js&apos;);
-<span class="hljs-keyword">var</span> App = <span class="hljs-built_in">require</span>(&apos;./App.js&apos;);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> React = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;react&apos;</span>);
+<span class="hljs-keyword">var</span> AppState = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./client/AppState.js&apos;</span>);
+<span class="hljs-keyword">var</span> App = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./App.js&apos;</span>);
 
-React.render(&lt;App state={AppState}/&gt;, <span class="hljs-built_in">document</span>.body);
-</code></pre>
+React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">App</span> <span class="hljs-attribute">state</span>=<span class="hljs-value">{AppState}</span>/&gt;</span>, document.body);
+</span></code></pre>
 <p><strong>router.js (server)</strong></p>
-<pre><code class="undefinedjavascript">var React = require(&apos;react&apos;);
-var App = require(&apos;./App.js&apos;);
-var AppState = require(&apos;./server/AppState.js&apos;);
-var index = &apos;&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;{{component}}&lt;/body&gt;&lt;/html&gt;&apos;;
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> React = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;react&apos;</span>);
+<span class="hljs-keyword">var</span> App = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./App.js&apos;</span>);
+<span class="hljs-keyword">var</span> AppState = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./server/AppState.js&apos;</span>);
+<span class="hljs-keyword">var</span> index = <span class="hljs-string">&apos;&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;{{component}}&lt;/body&gt;&lt;/html&gt;&apos;</span>;
 
-app.get(&apos;/&apos;, <span class="hljs-keyword">function</span> (req, res) {
-  var componentHtml = React.renderToString(App({state: AppState}));
-  var html = index.replace(&apos;{{component}}&apos;, componentHtml);
-  res.type(&apos;html&apos;);
+app.get(<span class="hljs-string">&apos;/&apos;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">req, res</span>) </span>{
+  <span class="hljs-keyword">var</span> componentHtml = React.renderToString(App({state: AppState}));
+  <span class="hljs-keyword">var</span> html = index.replace(<span class="hljs-string">&apos;{{component}}&apos;</span>, componentHtml);
+  res.type(<span class="hljs-string">&apos;html&apos;</span>);
   res.send(html);
 });
 </code></pre>
