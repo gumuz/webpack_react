@@ -1,59 +1,8 @@
-<html><head><title>Deploying Applications / SurviveJS - Webpack and React</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="../../assets/img/favicon.png"><link rel="stylesheet" href="../../assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><div class="nav__link"><a href="/">Home</a></div><div class="nav__link"><a href="/webpack_react">Table of Contents</a></div><div class="nav__link"><a href="https://leanpub.com/survivejs_webpack">Buy the ebook</a></div></nav></div><main role="main"><div class="post"><div class="docs-nav__wrapper docs-nav__wrapper--push-down"><h4 class="docs-nav--header">Table of Contents</h4><div class="docs-nav"><a href="/webpack_react/introduction" class="docs-nav__link">Introduction</a><a href="/webpack_react/webpack_compared" class="docs-nav__link">Webpack Compared</a><a href="/webpack_react/getting_started" class="docs-nav__link">Getting Started</a><a href="/webpack_react/developing_with_webpack" class="docs-nav__link">Developing with Webpack</a><a href="/webpack_react/linting_in_webpack" class="docs-nav__link">Linting in Webpack</a><a href="/webpack_react/webpack_and_react" class="docs-nav__link">Webpack and React</a><a href="/webpack_react/implementing_notes" class="docs-nav__link">Implementing a Basic Note App</a><a href="/webpack_react/react_and_flux" class="docs-nav__link">React and Flux</a><a href="/webpack_react/from_notes_to_kanban" class="docs-nav__link">From Notes to Kanban</a><a href="/webpack_react/styling_react" class="docs-nav__link">Styling React</a><a href="/webpack_react/implementing_dnd" class="docs-nav__link">Implementing Drag and Drop</a><span class="docs-nav__link docs-nav__link--current">Deploying Applications</span><a href="/webpack_react/authoring_libraries" class="docs-nav__link">Authoring Libraries</a></div></div><div class="header-image" style="background-image:url(/images/boots.jpg);"></div><h1 class="post__heading">Deploying Applications</h1><div class="post__content"><div><p>If you were developing a native application you would probably bundle everything into one file and deploy it to some application store. Deploying to the web requires more considerations. Though Webpack lets you bundle your application into one file, including CSS, images, fonts etc., Webpack can also help you optimize how the browser grabs the assets of your application to give the best possible user experience.</p>
-<p>As there is no single right way to do this, we will cover a few different strategies you can use to approach this vital part. The strategy you&#x2019;ll want to use depends entirely on your goals. With Webpack you can end up with something very highly optimized. This incurs some extra complexity to the configuration but your users will be very glad you gave that extra effort.</p>
-<p>We&#x2019;ll start with the simplest case possible, a single production bundle. We&#x2019;ll just minify the assets and hope for the best. This approach is simple but doesn&#x2019;t scale that well. Your users will probably meet the infamous &#x201C;white screen of bad user experience&#x201D;, if only for a few hundred milliseconds, waiting for your application to load.</p>
-<p>This can be improved by splitting the bundles. The external dependencies of your application, like React, Underscore, Bootstrap etc. will likely require less updates than the core logic. We can separate them into a bundle separate from the one containing your logic and benefit from caching using hashing. Now you can deploy updates to the application logic and your users do not have to download the bundle containing the external dependencies . This isn&#x2019;t ideal but it is better.</p>
-<p>If we are dealing with an app that has multiple pages, we can move onto using a bundle per page. Why eat the whole pie when you only want a piece? This translates to a more concrete example where you only load assets needed to show the &#x201C;profile&#x201D; page. When the user clicks &#x201C;admin&#x201D; new assets will be loaded to display that page. This gives you a faster initial load of your application, but gives some latency when moving to pages that needs to download more assets. Webpack handles all this for you and we will show you how.</p>
-<p>There is one more thing we can do. We can turn our application into an isomorphic one. Back in the day we just served HTML and sprinkled a bit of logic on top of it using JavaScript. Then at some point we started generating the HTML on the client using JavaScript and templates. Single Page Apps were born. This simplified model of app development came with a cost.</p>
-<p>Having server rendered HTML available is beneficial because the users will not get a blank page while the JavaScript is loading. Web crawlers can benefit from this and as a result your SEO rankings are improved. The app is more performant and easier to consume. In addition we can preload some data to avoid queries. We will demonstrate this approach using React.</p>
-<h2 id="creating-a-production-configuration">Creating a Production Configuration<a class="header-anchor" href="#creating-a-production-configuration">#</a></h2>
-<p>Creating a production configuration is not that much different from creating configuration for development. We&apos;ll use different paths for the output and avoid development workflow specific configuration. It is also common to add caching configuration to your production configuration.</p>
-<p>To run the configuration and create a distribution for deployment we create a script. In addition to our existing <code>npm start</code> we will add <code>npm run prod</code>. What differs with our new production script is that it does not use the <code>webpack-dev-server</code>. We will only use webpack to produce a distribution. To make this work, we&#x2019;ll need to tweak our <code>package.json</code> like this:</p>
-<pre><code><span class="hljs-string">&quot;scripts&quot;</span>: {
-  <span class="hljs-string">&quot;dev&quot;</span>: <span class="hljs-string">&quot;webpack-dev-server --devtool eval --progress --colors --hot --content-base build&quot;</span>,
-  <span class="hljs-string">&quot;prod&quot;</span>: <span class="hljs-string">&quot;NODE_ENV=production webpack -p --config webpack.production.js&quot;</span>
-}
-</code></pre><p>In <code>prod</code> we&#x2019;ll make sure <code>NODE_ENV</code> PATH variable is set to production. This way the libraries we are using can use whatever optimizations they might have in store. For instance in case of React this would disable certain checks and improve performance. The <code>-p</code> argument puts Webpack in production mode where it does its optimizations, like minification.</p>
-<p>We can achieve the same effect in our production configuration like this in case we want to simplify our <code>scripts</code> configuration:</p>
-<pre><code class="undefinedjavascript">...
-<span class="hljs-rule"><span class="hljs-attribute">plugins</span>:<span class="hljs-value"> [
-  new webpack.<span class="hljs-function">DefinePlugin</span>({
-    <span class="hljs-string">&apos;process.env&apos;</span>: {
-       <span class="hljs-string">&apos;NODE_ENV&apos;</span>: JSON.<span class="hljs-function">stringify</span>(<span class="hljs-string">&apos;production&apos;</span>),
-    }
-  }),
-  ...
-]
-</span></span></code></pre>
-<p>It is more verbose but on the other hand at least now it&#x2019;s a part of the configuration itself.</p>
-<h2 id="single-bundle">Single Bundle<a class="header-anchor" href="#single-bundle">#</a></h2>
-<p>If you are developing a simple application, or a demo, you can get away with a single bundle. It will contain all the JavaScript your app needs to run. In addition it will contain assets needed by your app including CSS, fonts and even images. As a result the loading time will be higher. Sometimes simple is beautiful, though.</p>
-<p>The gotcha with this approach is that the generated bundle can be quite big. In addition if you make any changes to it, you will force your users to download everything again. We cannot leverage any form of caching effectively. That said, it&#x2019;s a viable approach in the simplest of cases.</p>
-<p>Given the following project file structure:</p>
-<ul>
-<li>app/main.js</li>
-<li>dist/</li>
-<li>package.json</li>
-<li>webpack.production.js</li>
-</ul>
-<p>You can create a single bundle with the following configuration:</p>
-<p><em>webpack.production.js</em></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;path&apos;</span>);
-
-<span class="hljs-built_in">module</span>.exports = {
-  entry: path.resolve(__dirname, <span class="hljs-string">&apos;app/main.js&apos;</span>),
-  output: {
-    path: path.resolve(__dirname, <span class="hljs-string">&apos;dist&apos;</span>),
-    filename: <span class="hljs-string">&apos;bundle.js&apos;</span>,
-  }
-};
-</code></pre>
-<p>Run <code>npm run prod</code> in the root of the project and a <code>bundle.js</code> file will be available in the <code>./dist</code> folder.</p>
+<html><head><title>Deploying Applications / SurviveJS - Webpack and React</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="../../assets/img/favicon.png"><link rel="stylesheet" href="../../assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><div class="nav__link"><a href="/">Home</a></div><div class="nav__link"><a href="/webpack_react">Table of Contents</a></div><div class="nav__link"><a href="https://leanpub.com/survivejs_webpack">Buy the ebook</a></div></nav></div><main role="main"><div class="post"><div class="docs-nav__wrapper docs-nav__wrapper--push-down"><h4 class="docs-nav--header">Table of Contents</h4><div class="docs-nav"><a href="/webpack_react/introduction" class="docs-nav__link">Introduction</a><a href="/webpack_react/webpack_compared" class="docs-nav__link">Webpack Compared</a><a href="/webpack_react/getting_started" class="docs-nav__link">Getting Started</a><a href="/webpack_react/developing_with_webpack" class="docs-nav__link">Developing with Webpack</a><a href="/webpack_react/linting_in_webpack" class="docs-nav__link">Linting in Webpack</a><a href="/webpack_react/webpack_and_react" class="docs-nav__link">Webpack and React</a><a href="/webpack_react/implementing_notes" class="docs-nav__link">Implementing a Basic Note App</a><a href="/webpack_react/react_and_flux" class="docs-nav__link">React and Flux</a><a href="/webpack_react/from_notes_to_kanban" class="docs-nav__link">From Notes to Kanban</a><a href="/webpack_react/styling_react" class="docs-nav__link">Styling React</a><a href="/webpack_react/implementing_dnd" class="docs-nav__link">Implementing Drag and Drop</a><span class="docs-nav__link docs-nav__link--current">Deploying Applications</span><a href="/webpack_react/authoring_libraries" class="docs-nav__link">Authoring Libraries</a></div></div><div class="header-image" style="background-image:url(/images/boots.jpg);"></div><h1 class="post__heading">Deploying Applications</h1><div class="post__content"><div><p>If you were developing a native application you would probably bundle everything into one file and deploy it to some application store. Size probably wouldn&apos;t that much. Web is different. You can get quite far with a single bundle but at certain point that becomes unwieldy. This is the area where Webpack excels. It will allow you to shape your bundles just the way you like it. In this chapter I will discuss more general strategies for dealing with it.</p>
+<p>The strategy you&#x2019;ll want to use depends entirely on your goals. With Webpack you can end up with something very highly optimized. This incurs some extra complexity to the configuration but your users will be very glad you gave that extra effort. So far you&apos;ve seen how to set up a basic minified bundle. The next step would be to split a vendor chunk from it.</p>
 <h2 id="splitting-app-and-vendors">Splitting App and Vendors<a class="header-anchor" href="#splitting-app-and-vendors">#</a></h2>
-<p>You will want to split app and vendors when your project consists of relatively large dependencies, compared to the project itself. This is beneficial when you do bug fixes or other changes to the application, as users do not need to download the vendors bundle again. The initial loading time of your application is not optimized compared to a single bundle, actually it is a bit slower because now you have to set up two HTTP requests to get the required assets. As with everything, it is about balance.</p>
-<blockquote>
-<p>Generally the more HTTP requests you have to fire, the slower things will get. Even though request payload itself might be small, each request comes with overhead. The overhead adds up quickly. This is the reason why clever bundling approaches are required. The situation is likely to change as HTTP/2 gets adopted. The situation is quite opposite there.</p>
-</blockquote>
-<p>Given the following project file structure:</p>
+<p>Separating app and vendors can make sense when your dependencies are large compared to the project itself. This is beneficial when you do bug fixes or other changes to the application. In that case your users would just need to download your app bundle in case vendor bundle remains unchanged. Compared to a single bundle initial loading will be slightly slower since each request comes with a slight overhead. But given we can leverage caching it&apos;s not a bad price to pay.</p>
+<blockquote class="tip">Generally the more HTTP requests you have to fire, the slower things will get. Even though request payload itself might be small, each request comes with overhead. The overhead adds up quickly. This is the reason why clever bundling approaches are required. The situation is likely to change as HTTP/2 gets adopted. The situation is quite opposite there.</blockquote><p>Given the following project file structure:</p>
 <ul>
 <li>app/main.js</li>
 <li>dist/</li>
@@ -74,21 +23,17 @@
   },
   output: {
     path: path.resolve(__dirname, <span class="hljs-string">&apos;dist&apos;</span>),
-    filename: <span class="hljs-string">&apos;app.js&apos;</span>
+    filename: <span class="hljs-string">&apos;app.[chunkhash].js&apos;</span>
   },
   plugins: [
-    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(<span class="hljs-string">&apos;vendors&apos;</span>, <span class="hljs-string">&apos;vendors.js&apos;</span>)
+    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(<span class="hljs-string">&apos;vendors&apos;</span>, <span class="hljs-string">&apos;vendors.[chunkhash].js&apos;</span>)
   ]
 };
 </code></pre>
 <p>This configuration will create two files in the <code>dist/</code> folder. <strong>app.js</strong> and <strong>vendors.js</strong>.</p>
-<blockquote>
-<p>Remember to add both files to your HTML file, or you will get the error: <code>Uncaught ReferenceError: webpackJsonp is not defined</code>.</p>
-</blockquote>
-<p>Before we explain how the CommonsChunkPlugin works we should briefly look back to &quot;Understanding Webpack&quot;. In the configuration above we have two <strong>entry point chunks</strong>, app and vendors. App consists of only one chunk and its children. That is our <em>main.js</em> file. The vendors entry point chunk also consists of only one chunk and its children. This is React itself. So an entry point chunk can be a merge of multiple chunks, but in this case it is only one each.</p>
-<p>These two entry chunks and their individual children chunks will be bundled into two different JavaScript files, <strong>app.js</strong> and <strong>vendors.js</strong>. Both of the bundles has <code>react</code> as either part of the entry chunk itself, like vendors, or it is required with a <code>var React = require(&apos;react&apos;)</code> statement, like in app.</p>
+<blockquote class="tip">Remember to add both files to your HTML file, or you will get the error: <code>Uncaught ReferenceError: webpackJsonp is not defined</code>.</blockquote><blockquote class="tip">That <code>[chunkhash]</code> up there is used for generating a unique id per chunk for caching. If chunk contents change, so does the hash. And as a result your client will reload the file. See <a href="http://webpack.github.io/docs/long-term-caching.html">long term caching</a> section at the official documentation for more information about the topic.</blockquote><p>The entry chunks and their individual children chunks will be bundled into two different JavaScript files, <strong>app.js</strong> and <strong>vendors.js</strong>. Both of the bundles has <code>react</code> as either part of the entry chunk itself, like vendors, or it is required with a <code>var React = require(&apos;react&apos;)</code> statement, like in app.</p>
 <p>Understanding this, you can understand how the CommonsChunkPlugin works. In the example above, if we did not configure a plugin at all React would be included in both entry chunks, app and vendors, and bundled into both the <em>app.js</em> file and <em>vendors.js</em> file. By using a plugin we can tell Webpack that the chunks included in vendors are common.</p>
-<p>That means when an other entry chunk, like app in this example, tries to require react it will first check  entry chunks defined as common. In our example, using the CommonsChunkPlugin, we say that the vendors entry chunk is common and when it is bundled, call that file <em>vendors.js</em>. The result of this is that we will now get two bundles, app.js and vendors.js, where app.js grabs react from vendors.js.</p>
+<p>That means when an other entry chunk, like app in this example, tries to require react it will first check  entry chunks defined as common. In our example, using the CommonsChunkPlugin, we say that the vendors entry chunk is common and when it is bundled, call that file <strong>vendors.js</strong>. The result of this is that we will now get two bundles, app.js and vendors.js, where app.js grabs React from vendors.js.</p>
 <h2 id="multiple-bundles">Multiple Bundles<a class="header-anchor" href="#multiple-bundles">#</a></h2>
 <p>Let&apos;s say you are working on a big project and you have a family of applications. These applications have different functionality, but they still share a lot of code. With Webpack you can create completely separate bundles that share a single common bundle. How much should be shared is something Webpack can optimize for you.</p>
 <p>Given the following project file structure:</p>
@@ -164,7 +109,7 @@
 };
 </code></pre>
 <p>So we are pretty much back where we started with a split application and vendors bundle. You do not really define your lazy dependencies in a configuration, Webpack automatically understands them when analyzing your code. So let us see how we would lazy load a <strong>profile page</strong>:</p>
-<p><strong>main.js (Using ES6 syntax)</strong></p>
+<p><strong>main.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
 <span class="hljs-keyword">import</span> Feed <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./Feed.js&apos;</span>;
 
@@ -186,15 +131,13 @@
     )</span>;
   }
 }
+
 React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">App</span>/&gt;</span>, document.body);
 </span></code></pre>
 <p>So this is just an example. You would probably hook this up to a router, but the important part is using <code>require.ensure</code>. When Webpack finds that statement it will automatically create a chunk that can be lazy loaded.</p>
-<p><strong>What is the array on the first argument?</strong>: If you try to lazy load a chunk that depends on an other lazy loaded chunk you can set it as a dependency in the array. Just type in the path to the chunk; e.g. <code>[&apos;./FunnyButton.js&apos;]</code></p>
-<h2 id="isomorphic-app">Isomorphic App<a class="header-anchor" href="#isomorphic-app">#</a></h2>
+<blockquote class="tip"><strong>What is the array on the first argument?</strong>: If you try to lazy load a chunk that depends on an other lazy loaded chunk you can set it as a dependency in the array. Just type in the path to the chunk; e.g. <code>[&apos;./FunnyButton.js&apos;]</code></blockquote><h2 id="isomorphic-app">Isomorphic App<a class="header-anchor" href="#isomorphic-app">#</a></h2>
 <p>So the great thing about React is that it runs on the server too. But that does not mean you can just create any app and run it on the server. You have to make some decisions on the architecture. The reason is that even though React and the components run on the server, you might have dependencies in those components that does not run on the server.</p>
-<h3 id="injecting-state">Injecting state<a class="header-anchor" href="#injecting-state">#</a></h3>
 <p>One of the most important decisions you make is to inject the state of your application through the top component. This basically means that your components does not have any external dependencies at all. All they need to know comes through this injected state.</p>
-<p>This cookbook is not about isomorphic apps, but let us take a look at an example. We will not use ES6 syntax here because Node JS does not support it yet.</p>
 <p><strong>main.js (client)</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> React = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;react&apos;</span>);
 <span class="hljs-keyword">var</span> AppState = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./client/AppState.js&apos;</span>);
@@ -216,13 +159,6 @@ app.get(<span class="hljs-string">&apos;/&apos;</span>, <span class="hljs-functi
 });
 </code></pre>
 <p>So this was a very naive and simple way of showing it, but what you should notice here is that we use the same <strong>App.js</strong> file on the client and server, but we have two different ways of producing the state.</p>
-<h3 id="how-can-i-attach-hashes-to-my-production-output-">How can I attach hashes to my production output?<a class="header-anchor" href="#how-can-i-attach-hashes-to-my-production-output-">#</a></h3>
-<p>TODO: explain hashing in this chapter</p>
-<ul>
-<li>Use <code>[hash]</code>. Example: <code>&apos;assets/bundle.[hash].js&apos;</code></li>
-</ul>
-<p>The benefit of this is that this will force the client to reload the file. There is more information about <code>[hash]</code> at <a href="http://webpack.github.io/docs/long-term-caching.html">the long term caching</a> section of the official documentation.</p>
-<blockquote>
-<p>Is it possible to change the hash only if bundle changed?</p>
-</blockquote>
+<h2 id="conclusion">Conclusion<a class="header-anchor" href="#conclusion">#</a></h2>
+<p>In this chapter you saw some common strategies to help you deal with deployment. This is an area where Webpack shines. You can configure it in various way to suit your purposes as you saw above.</p>
 </div></div></div><noscript></noscript><div class="prevnext-pages"><a href="../implementing_dnd" class="previous-page">Implementing Drag and Drop</a><a href="../authoring_libraries" class="next-page">Authoring Libraries</a></div></main></div></body></html>

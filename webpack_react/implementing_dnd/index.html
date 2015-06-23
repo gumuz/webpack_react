@@ -289,7 +289,7 @@ export default class Notes extends React.Component {
 
     <span class="hljs-keyword">if</span>(sourceIndex &gt;= <span class="hljs-number">0</span> &amp;&amp; targetIndex &gt;= <span class="hljs-number">0</span>) {
       <span class="hljs-keyword">this</span>.setState({
-        notes: update(<span class="hljs-keyword">this</span>.notes, {
+        notes: update(notes, {
           $splice: [
             [sourceIndex, <span class="hljs-number">1</span>],
             [targetIndex, <span class="hljs-number">0</span>, source],
@@ -299,7 +299,7 @@ export default class Notes extends React.Component {
     }
     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(targetIndex &gt;= <span class="hljs-number">0</span>) {
       <span class="hljs-keyword">this</span>.setState({
-        notes: update(<span class="hljs-keyword">this</span>.notes, {
+        notes: update(notes, {
           $splice: [
             [targetIndex, <span class="hljs-number">0</span>, source],
           ],
