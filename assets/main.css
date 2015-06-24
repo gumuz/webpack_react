@@ -1480,6 +1480,12 @@ code {
   position: inherit;
   width: 100%; }
 
+.post__meta {
+  margin-bottom: 1em; }
+
+.post__end_source {
+  margin-left: 1em; }
+
 .header-image, .post__heading {
   max-width: 100%; }
 
@@ -1497,6 +1503,8 @@ code {
   margin-top: 70vh; }
 
 @media screen and (min-width: 1150px) {
+  .docs-nav__link {
+    margin-right: auto; }
   .docs-nav__wrapper--push-down + .header-image + .post__heading + .post__content {
     margin-top: 70vh; } }
 
