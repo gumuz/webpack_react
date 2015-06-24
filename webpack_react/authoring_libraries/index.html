@@ -1,4 +1,4 @@
-<html><head><title>Authoring Libraries / SurviveJS - Webpack and React</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="../../assets/img/favicon.png"><link rel="stylesheet" href="../../assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><div class="nav__link"><a href="/">Home</a></div><div class="nav__link"><a href="/webpack_react">Table of Contents</a></div><div class="nav__link"><a href="https://leanpub.com/survivejs_webpack">Buy the ebook</a></div></nav></div><main role="main"><div class="post"><div class="docs-nav__wrapper docs-nav__wrapper--push-down"><h4 class="docs-nav--header">Table of Contents</h4><div class="docs-nav"><a href="/webpack_react/introduction" class="docs-nav__link">Introduction</a><a href="/webpack_react/webpack_compared" class="docs-nav__link">Webpack Compared</a><a href="/webpack_react/getting_started" class="docs-nav__link">Getting Started</a><a href="/webpack_react/developing_with_webpack" class="docs-nav__link">Developing with Webpack</a><a href="/webpack_react/linting_in_webpack" class="docs-nav__link">Linting in Webpack</a><a href="/webpack_react/webpack_and_react" class="docs-nav__link">Webpack and React</a><a href="/webpack_react/implementing_notes" class="docs-nav__link">Implementing a Basic Note App</a><a href="/webpack_react/react_and_flux" class="docs-nav__link">React and Flux</a><a href="/webpack_react/from_notes_to_kanban" class="docs-nav__link">From Notes to Kanban</a><a href="/webpack_react/styling_react" class="docs-nav__link">Styling React</a><a href="/webpack_react/implementing_dnd" class="docs-nav__link">Implementing Drag and Drop</a><a href="/webpack_react/deploying_applications" class="docs-nav__link">Deploying Applications</a><span class="docs-nav__link docs-nav__link--current">Authoring Libraries</span></div></div><div class="header-image" style="background-image:url(/images/library.jpg);"></div><h1 class="post__heading">Authoring Libraries</h1><div class="post__content"><div class="post__meta"><div class="post__start_source"><a href="https://github.com/survivejs/webpack_react/tree/master/project_source/https://www.flickr.com/photos/7870246@N03/481256246/kanban_app" target="_blank">Start source code</a></div><div class="post__end_source"><a href="https://github.com/survivejs/webpack_react/tree/master/project_source/https://www.flickr.com/photos/19219926@N04/3707001321/kanban_app" target="_blank">Finished source code</a></div></div><div><p><a href="https://www.npmjs.com/">npm</a> is one of the reasons behind the popularity of Node.js. It has become the package manager for JavaScript. Although initially it was used mostly for managing backend packages, it has become increasingly popular in frontend development. As you have seen so far it is easy to consume npm packages using Webpack.</p>
+<html><head><title>Authoring Libraries / SurviveJS - Webpack and React</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="../../assets/img/favicon.png"><link rel="stylesheet" href="../../assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><div class="nav__link"><a href="/">Home</a></div><div class="nav__link"><a href="/webpack_react">Table of Contents</a></div><div class="nav__link"><a href="https://leanpub.com/survivejs_webpack">Buy the ebook</a></div></nav></div><main role="main"><div class="post"><div class="docs-nav__wrapper docs-nav__wrapper--push-down"><h4 class="docs-nav--header">Table of Contents</h4><div class="docs-nav"><a href="/webpack_react/introduction" class="docs-nav__link">Introduction</a><a href="/webpack_react/webpack_compared" class="docs-nav__link">Webpack Compared</a><a href="/webpack_react/getting_started" class="docs-nav__link">Getting Started</a><a href="/webpack_react/developing_with_webpack" class="docs-nav__link">Developing with Webpack</a><a href="/webpack_react/linting_in_webpack" class="docs-nav__link">Linting in Webpack</a><a href="/webpack_react/webpack_and_react" class="docs-nav__link">Webpack and React</a><a href="/webpack_react/implementing_notes" class="docs-nav__link">Implementing a Basic Note App</a><a href="/webpack_react/react_and_flux" class="docs-nav__link">React and Flux</a><a href="/webpack_react/from_notes_to_kanban" class="docs-nav__link">From Notes to Kanban</a><a href="/webpack_react/styling_react" class="docs-nav__link">Styling React</a><a href="/webpack_react/implementing_dnd" class="docs-nav__link">Implementing Drag and Drop</a><a href="/webpack_react/deploying_applications" class="docs-nav__link">Deploying Applications</a><span class="docs-nav__link docs-nav__link--current">Authoring Libraries</span></div></div><div class="header-image" style="background-image:url(/images/library.jpg);"></div><h1 class="post__heading">Authoring Libraries</h1><div class="post__content"><div class="post__meta"><div class="post__start_source"><a href="https://github.com/survivejs/webpack_react/tree/master/project_source/https://www.flickr.com/photos/7870246@N03/481256246/kanban_app" target="_blank">Start source code</a></div><div class="post__end_source"><a href="https://github.com/survivejs/webpack_react/tree/master/project_source/https://www.flickr.com/photos/19219926@N04/3707001321/kanban_app" target="_blank">Finished source code</a></div><div class="post__demo"><a href="/demos/https://www.flickr.com/photos/19219926@N04/3707001321" target="_blank">Demo</a></div></div><div><p><a href="https://www.npmjs.com/">npm</a> is one of the reasons behind the popularity of Node.js. It has become the package manager for JavaScript. Although initially it was used mostly for managing backend packages, it has become increasingly popular in frontend development. As you have seen so far it is easy to consume npm packages using Webpack.</p>
 <p>Eventually you might want to publish your own packages. You can consider our demo application a package of its own, sort of. We could even design applications to be pluggable so that you could glue them into a bigger whole. This would take some careful thought but in theory you could split everything up in smaller sections which you then knit together.</p>
 <h2 id="anatomy-of-a-npm-package">Anatomy of a npm Package<a class="header-anchor" href="#anatomy-of-a-npm-package">#</a></h2>
 <p>Most of npm packages are small and include just a select few files such as:</p>
@@ -25,12 +25,18 @@
 <p>All packages come with a <code>package.json</code> that describes metadata related to them. This includes information about the author, various links, dependencies and so on. The <a href="https://docs.npmjs.com/files/package.json">official documentation</a> covers them in detail.</p>
 <p>I&apos;ve annotated <code>package.json</code> of my <a href="https://github.com/survivejs/react-component-boilerplate">React component boilerplate</a> below.</p>
 <pre><code class="undefinedjson">{
-  <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;react-component-boilerplate&quot;</span>, -- Name of the project
-  <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;Boilerplate for React.js components&quot;</span>, -- Brief description
-  <span class="hljs-string">&quot;author&quot;</span>: <span class="hljs-string">&quot;Juho Vepsalainen &lt;email goes here&gt;&quot;</span>, -- Who is the author + optional email
-  <span class="hljs-string">&quot;user&quot;</span>: <span class="hljs-string">&quot;bebraw&quot;</span>, -- This is boilerplate specific (not used by npm)
-  <span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.0.0&quot;</span>, -- Version of the package
-  <span class="hljs-string">&quot;scripts&quot;</span>: { -- `npm run &lt;name&gt;`
+  <span class="hljs-comment">/* Name of the project */</span>
+  <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;react-component-boilerplate&quot;</span>,
+  <span class="hljs-comment">/* Brief description */</span>
+  <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;Boilerplate for React.js components&quot;</span>,
+  <span class="hljs-comment">/* Who is the author + optional email */</span>
+  <span class="hljs-string">&quot;author&quot;</span>: <span class="hljs-string">&quot;Juho Vepsalainen &lt;email goes here&gt;&quot;</span>,
+  <span class="hljs-comment">/* This is boilerplate specific (not used by npm) */</span>
+  <span class="hljs-string">&quot;user&quot;</span>: <span class="hljs-string">&quot;bebraw&quot;</span>,
+  <span class="hljs-comment">/* Version of the package */</span>
+  <span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.0.0&quot;</span>,
+  <span class="hljs-comment">/* `npm run &lt;name&gt;` */</span>
+  <span class="hljs-string">&quot;scripts&quot;</span>: {
     <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-string">&quot;TARGET=dev node dev-server/server.js&quot;</span>,
     <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-string">&quot;jest &amp;&amp; npm run check-style &amp;&amp; npm run lint&quot;</span>,
     <span class="hljs-string">&quot;gh-pages&quot;</span>: <span class="hljs-string">&quot;TARGET=gh-pages webpack --config ./config&quot;</span>,
@@ -43,54 +49,58 @@
     <span class="hljs-string">&quot;preversion&quot;</span>: <span class="hljs-string">&quot;npm run test &amp;&amp; npm run dist &amp;&amp; npm run dist-modules &amp;&amp; git commit -am \&quot;Update dist\&quot;&quot;</span>,
     <span class="hljs-string">&quot;postpublish&quot;</span>: <span class="hljs-string">&quot;npm run gh-pages &amp;&amp; npm run deploy-gh-pages&quot;</span>
   },
-  -- Entry point <span class="hljs-keyword">for</span> terminal (ie. &lt;package name&gt;)
-  -- Don<span class="hljs-string">&apos;t set this unless you intend to allow cli usage
-  &quot;bin&quot;: &quot;./index.js&quot;,
-  -- Entry point (defaults to index.js)
-  &quot;main&quot;: &quot;dist-modules/index.js&quot;,
-  &quot;dependencies&quot;: {}, -- Package dependencies (keep small if possible)
-  &quot;devDependencies&quot;: { -- Package development dependencies
-    &quot;babel&quot;: &quot;^5.1.10&quot;,
-    &quot;babel-eslint&quot;: &quot;^3.0.1&quot;,
-    &quot;babel-loader&quot;: &quot;^5.0.0&quot;,
+  <span class="hljs-comment">/* Entry point for terminal (ie. &lt;package name&gt;) */</span>
+  <span class="hljs-comment">/* Don&apos;t set this unless you intend to allow cli usage */</span>
+  <span class="hljs-string">&quot;bin&quot;</span>: <span class="hljs-string">&quot;./index.js&quot;</span>,
+  <span class="hljs-comment">/* Entry point (defaults to index.js) */</span>
+  <span class="hljs-string">&quot;main&quot;</span>: <span class="hljs-string">&quot;dist-modules/index.js&quot;</span>,
+  <span class="hljs-comment">/* Package dependencies (small if possible) */</span>
+  <span class="hljs-string">&quot;dependencies&quot;</span>: {},
+  <span class="hljs-comment">/* Package development dependencies */</span>
+  <span class="hljs-string">&quot;devDependencies&quot;</span>: {
+    <span class="hljs-string">&quot;babel&quot;</span>: <span class="hljs-string">&quot;^5.1.10&quot;</span>,
+    <span class="hljs-string">&quot;babel-eslint&quot;</span>: <span class="hljs-string">&quot;^3.0.1&quot;</span>,
+    <span class="hljs-string">&quot;babel-loader&quot;</span>: <span class="hljs-string">&quot;^5.0.0&quot;</span>,
     ...
-    &quot;webpack&quot;: &quot;^1.8.4&quot;,
-    &quot;webpack-dev-server&quot;: &quot;^1.8.0&quot;
+    <span class="hljs-string">&quot;webpack&quot;</span>: <span class="hljs-string">&quot;^1.8.4&quot;</span>,
+    <span class="hljs-string">&quot;webpack-dev-server&quot;</span>: <span class="hljs-string">&quot;^1.8.0&quot;</span>
   },
-  -- You may want to give a rough dependency hint for things like React components
-  -- The idea is to avoid depending directly and let user deal with it instead
-  -- You should use a loose rule here
-  -- If the rule is too strict, that will cause problems at the user end even if
-  -- the library would work.
-  &quot;peerDependencies&quot;: {
-    &quot;react&quot;: &quot;&gt;=0.11.2 &lt;1.0.0&quot;
+  <span class="hljs-comment">/* You may want to give a rough dependency hint for things
+   * like React components. The idea is to avoid depending
+   * directly and let user deal with it instead.
+   *
+   * If the rule is too strict, that will cause problems for
+   * the user. */</span>
+  <span class="hljs-string">&quot;peerDependencies&quot;</span>: {
+    <span class="hljs-string">&quot;react&quot;</span>: <span class="hljs-string">&quot;&gt;=0.11.2 &lt;1.0.0&quot;</span>
   },
-  -- Links to repository, homepage and so on
-  &quot;repository&quot;: {
-    &quot;type&quot;: &quot;git&quot;,
-    &quot;url&quot;: &quot;https://github.com/bebraw/react-component-boilerplate.git&quot;
+  <span class="hljs-comment">/* Links to repository, homepage and so on */</span>
+  <span class="hljs-string">&quot;repository&quot;</span>: {
+    <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;git&quot;</span>,
+    <span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;https://github.com/bebraw/react-component-boilerplate.git&quot;</span>
   },
-  &quot;homepage&quot;: &quot;https://bebraw.github.io/react-component-boilerplate/&quot;,
-  &quot;bugs&quot;: {
-    &quot;url&quot;: &quot;https://github.com/bebraw/react-component-boilerplate/issues&quot;
+  <span class="hljs-string">&quot;homepage&quot;</span>: <span class="hljs-string">&quot;https://bebraw.github.io/react-component-boilerplate/&quot;</span>,
+  <span class="hljs-string">&quot;bugs&quot;</span>: {
+    <span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;https://github.com/bebraw/react-component-boilerplate/issues&quot;</span>
   },
-  -- Keywords related to package, fill this well to make the package findable
-  &quot;keywords&quot;: [
-    &quot;react&quot;,
-    &quot;reactjs&quot;,
-    &quot;boilerplate&quot;
+  <span class="hljs-comment">/* Keywords related to package,
+   * fill this well to make the package findable */</span>
+  <span class="hljs-string">&quot;keywords&quot;</span>: [
+    <span class="hljs-string">&quot;react&quot;</span>,
+    <span class="hljs-string">&quot;reactjs&quot;</span>,
+    <span class="hljs-string">&quot;boilerplate&quot;</span>
   ],
-  -- Which license to use
-  &quot;license&quot;: &quot;MIT&quot;,
-  -- Jest specific metadata
-  &quot;jest&quot;: {
-    &quot;scriptPreprocessor&quot;: &quot;./config/preprocessor.js&quot;,
-    &quot;unmockedModulePathPatterns&quot;: [
-      &quot;./node_modules/react&quot;
+  <span class="hljs-comment">/* Which license to use */</span>
+  <span class="hljs-string">&quot;license&quot;</span>: <span class="hljs-string">&quot;MIT&quot;</span>,
+  <span class="hljs-comment">/* Jest specific metadata */</span>
+  <span class="hljs-string">&quot;jest&quot;</span>: {
+    <span class="hljs-string">&quot;scriptPreprocessor&quot;</span>: <span class="hljs-string">&quot;./config/preprocessor.js&quot;</span>,
+    <span class="hljs-string">&quot;unmockedModulePathPatterns&quot;</span>: [
+      <span class="hljs-string">&quot;./node_modules/react&quot;</span>
     ]
   }
 }
-</span></code></pre>
+</code></pre>
 <p>As you can see <code>package.json</code> can contain a lot of information. You can attach non-npm specific metadata there that can be used by tooling.</p>
 <h2 id="npm-workflow">npm Workflow<a class="header-anchor" href="#npm-workflow">#</a></h2>
 <p>Working with npm is surprisingly simple. Provided you have created an account on the service and logged in once using <a href="https://docs.npmjs.com/cli/adduser">npm adduser</a>, all you need to do is to hit <code>npm publish</code>. Given that the package name is still available, you should have something out there!</p>
