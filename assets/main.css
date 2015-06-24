@@ -1474,7 +1474,9 @@ code {
   padding: 0.25em; }
 
 .nav {
-  padding-bottom: 0.25em; }
+  padding-bottom: 0.25em;
+  background: -webkit-linear-gradient(bottom, #fff 0%, rgba(255, 255, 255, 0.9) 35%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to top, #fff 0%, rgba(255, 255, 255, 0.9) 35%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0) 100%); }
 
 .post__content img {
   position: inherit;
