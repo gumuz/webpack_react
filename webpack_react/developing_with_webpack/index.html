@@ -95,18 +95,11 @@
 <p>In order to make our normal build (<code>npm run build</code>) work with CSS, you could attach that <em>module</em> bit to <code>webpack.config.js</code> too. Given it can be cumbersome to maintain configuration like this, I&apos;ll show you a nicer way.</p>
 <h2 id="sharing-common-configuration">Sharing Common Configuration<a class="header-anchor" href="#sharing-common-configuration">#</a></h2>
 <p>If we don&apos;t structure our configuration in a smart way, it will become easy to make mistakes. We&apos;ll want to avoid unnecessary duplication. Given Webpack configuration is just JavaScript, there are many ways to approach the problem. As long as we generate the structure Webpack expects, we should be fine.</p>
-<p>One way to do this is to keep all configuration in <code>webpack.config.js</code> and control what it returns using an environment variable. The advantage of this approach is that you can see all the bits and pieces and how they relate to each other from single place.</p>
-<p>We can adapt this approach to our project quite easily. First of all let&apos;s set up a structure like this:</p>
-<ul>
-<li>webpack.config.js - Our configuration</li>
-<li>/lib<ul>
-<li>merge.js - This will merge configuration to avoid duplication</li>
-</ul>
-</li>
-</ul>
+<p>One way to do this is to keep all configuration in <code>webpack.config.js</code> and control what it returns using an environment variable. The advantage of this approach is that you can see all the bits and pieces and how they relate to each other from single place. We can adapt this approach to our project quite easily.</p>
+<p>In order to make it easier to deal with this arrangement I&apos;ve developed a little custom merge utility known as <code>webpack-merge</code>. Install it using <code>npm i webpack-merge --save-dev</code> to your project. Compared to <code>merge</code> you might be used to this variant concatenates arrays instead of replacing them. This is very useful with Webpack as we&apos;ll see below.</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;path&apos;</span>);
-<span class="hljs-keyword">var</span> merge = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./lib/merge&apos;</span>);
+<span class="hljs-keyword">var</span> merge = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;webpack-merge&apos;</span>);
 
 <span class="hljs-keyword">var</span> TARGET = process.env.TARGET;
 <span class="hljs-keyword">var</span> ROOT_PATH = path.resolve(__dirname);
@@ -139,26 +132,6 @@
   });
 }
 </code></pre>
-<p><strong>lib/merge.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> _ = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;lodash&apos;</span>);
-
-<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">source, target</span>) </span>{
-  <span class="hljs-keyword">return</span> _.merge(target, source, joinArrays);
-
-  <span class="hljs-comment">// concat possible arrays</span>
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">joinArrays</span>(<span class="hljs-params">a, b</span>) </span>{
-    <span class="hljs-keyword">if</span>(_.isArray(a) &amp;&amp; _.isArray(b)) {
-      <span class="hljs-keyword">return</span> a.concat(b);
-    }
-    <span class="hljs-keyword">if</span>(_.isPlainObject(a) &amp;&amp; _.isPlainObject(b)) {
-      <span class="hljs-keyword">return</span> _.merge(a, b, joinArrays);
-    }
-
-    <span class="hljs-keyword">return</span> a;
-  }
-};
-</code></pre>
-<p>Remember to invoke <code>npm i lodash --save-dev</code> so our merge function will work!</p>
 <p>The common configuration has been separated to a section of its own. In this case <code>build</code> configuration is actually the same as <code>common</code> configuration. We do a little tweak for <code>develop</code> case. As you can see the configuration is quite easy to follow this way.</p>
 <p>To make everything work again, we&apos;ll need to tweak our <code>package.json</code> <strong>scripts</strong> section like this:</p>
 <pre><code class="undefinedjson">...
@@ -178,7 +151,7 @@
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;path&apos;</span>);
 <span class="hljs-keyword">var</span> HtmlWebpackPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;html-webpack-plugin&apos;</span>);
-<span class="hljs-keyword">var</span> merge = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./lib/merge&apos;</span>);
+<span class="hljs-keyword">var</span> merge = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;webpack-merge&apos;</span>);
 
 ...
 

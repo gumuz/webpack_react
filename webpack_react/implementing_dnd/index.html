@@ -256,21 +256,8 @@ export default class Notes extends React.Component {
 }
 </code></pre>
 <p>If you drag and drop a <code>Note</code> now, you should see each <code>NoteStore</code> trigger. Next we&apos;ll need to add some logic to make this work.</p>
-<p>Before doing that make sure you move <code>lodash</code> to core dependencies of the project. It will come in handy here.</p>
-<p><strong>package.json</strong></p>
-<pre><code class="undefinedjson">{
-  ...
-  <span class="hljs-string">&quot;dependencies&quot;</span>: {
-    ...
-    <span class="hljs-string">&quot;lodash&quot;</span>: <span class="hljs-string">&quot;^3.8.0&quot;</span>,
-    ...
-  },
-  ...
-}
-</code></pre>
 <p><strong>app/stores/NoteStore.jsx</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> update <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react/lib/update&apos;</span>;
-<span class="hljs-keyword">import</span> findIndex <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;lodash/array/findIndex&apos;</span>;
 
 ...
 
@@ -307,6 +294,12 @@ export default class Notes extends React.Component {
       <span class="hljs-keyword">this</span>.remove(sourceIndex);
     }
   }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findIndex</span>(<span class="hljs-params">arr, prop, value</span>) </span>{
+  <span class="hljs-keyword">var</span> o = arr.filter(c =&gt; c[prop] === value)[<span class="hljs-number">0</span>];
+
+  <span class="hljs-keyword">return</span> o &amp;&amp; arr.indexOf(o);
 }
 </code></pre>
 <p>There is actually quite a bit going on here. I modeled the solution based on React DnD draggable example and then expanded on it. Primarily there are three cases to worry about. In the first case we&apos;re dragging within the lane itself. We can use <code>$splice</code> there from <a href="https://facebook.github.io/react/docs/update.html">React immutability helpers</a>.</p>
