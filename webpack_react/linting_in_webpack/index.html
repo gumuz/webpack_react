@@ -165,15 +165,15 @@ alert(<span class="hljs-string">&apos;foo&apos;</span>); <span class="hljs-comme
 </ol>
 <p><strong>eslint-plugin-custom/index.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-built_in">module</span>.exports = {
-    rules: {
-        demo: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
-            <span class="hljs-keyword">return</span> {
-                Identifier: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node</span>) </span>{
-                    context.report(node, <span class="hljs-string">&apos;This is unexpected!&apos;</span>);
-                },
-            };
+  rules: {
+    demo: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+      <span class="hljs-keyword">return</span> {
+        Identifier: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node</span>) </span>{
+          context.report(node, <span class="hljs-string">&apos;This is unexpected!&apos;</span>);
         },
+      };
     },
+  },
 };
 </code></pre>
 <p>In this case we just report for every identifier found. In practice you&apos;ll likely want to do something more complex than this but this is a good starting point.</p>
@@ -181,7 +181,7 @@ alert(<span class="hljs-string">&apos;foo&apos;</span>); <span class="hljs-comme
 <blockquote class="tip">If you want to do something serious, you should point to your plugin through <code>package.json</code>.</blockquote><p>Next we need to alter our project configuration to make it to find the plugin and the rule within.</p>
 <p><strong>.eslintrc</strong></p>
 <pre><code class="undefinedjson"><span class="hljs-string">&quot;plugins&quot;</span>: {
-  <span class="hljs-string">&quot;custom&quot;</span>,
+  <span class="hljs-string">&quot;custom&quot;</span>
 },
 <span class="hljs-string">&quot;rules&quot;</span>: {
   <span class="hljs-string">&quot;custom/demo&quot;</span>: <span class="hljs-number">1</span>,
