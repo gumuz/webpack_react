@@ -1521,13 +1521,15 @@ code {
   padding-top: 5vh; }
 
 .docs-nav__wrapper--push-down {
-  margin-top: 70vh; }
+  margin-top: 75vh; }
 
 @media screen and (min-width: 1150px) {
   .docs-nav__link {
     margin-right: auto; }
   .docs-nav__wrapper--push-down + .header-image + .post__heading + .post__content {
-    margin-top: 75vh; } }
+    margin-top: 75vh; }
+  .post__heading {
+    font-size: 54px; } }
 
 .header-extra {
   font-size: small;
