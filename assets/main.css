@@ -1478,6 +1478,7 @@ code {
   padding: 0.25em; }
 
 .frontpage .front-header {
+  text-transform: none;
   font-size: 54px;
   line-height: 1.5; }
 .frontpage .front-header, .frontpage .front-motto {
@@ -1526,7 +1527,7 @@ code {
   .docs-nav__link {
     margin-right: auto; }
   .docs-nav__wrapper--push-down + .header-image + .post__heading + .post__content {
-    margin-top: 70vh; } }
+    margin-top: 75vh; } }
 
 .header-extra {
   font-size: small;
