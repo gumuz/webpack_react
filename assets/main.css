@@ -1478,6 +1478,7 @@ code {
   padding: 0.25em; }
 
 .frontpage .front-header {
+  margin-top: 0;
   margin-bottom: 0;
   text-transform: none;
   font-size: 54px;
