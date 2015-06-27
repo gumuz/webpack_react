@@ -1488,6 +1488,12 @@ code {
 .frontpage .post__heading {
   background: #333;
   text-align: center; }
+.frontpage .author-photo {
+  margin-left: 1em;
+  border-radius: 50px;
+  width: 100px;
+  height: 100px;
+  float: right; }
 
 .nav {
   padding-bottom: 0.25em;
