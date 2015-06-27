@@ -24,7 +24,7 @@ npm ERR! Please include the following file with any support request:
 </span></code></pre><p>In human terms it means that some package, <code>eslint-loader</code> in this case, has too strict <code>peerDependency</code> requirement. Our project has a newer version installed already and given the required peer dependency is older than our version we get this particular error.</p>
 <p>There are a couple of ways to work around this:</p>
 <ol>
-<li>Report the package author about the glitch and hope the version range will be expanded</li>
+<li>Report the package author about the glitch and hope the version range will be expanded.</li>
 <li>Resolve the conflict by settling to a version that satisfies the peer dependency. Ie. in this case we could fix <code>eslint</code> to version <code>0.23</code> (<code>&quot;eslint&quot;: &quot;0.23&quot;</code>) and everyone should be happy.</li>
 <li>Fork the package, fix the version range and point at your custom version. In this case you would have <code>&quot;&lt;package&gt;&quot;: &quot;&lt;github user&gt;/&lt;project&gt;#&lt;reference&gt;&quot;</code> kind of declaration at your dependencies.</li>
 </ol>
