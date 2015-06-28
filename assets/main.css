@@ -1477,6 +1477,9 @@ pre code {
 code {
   padding: 0.25em; }
 
+.frontpage, .post {
+  max-width: 100%; }
+
 .frontpage .front-header, .frontpage .front-motto {
   margin-bottom: 0.5em;
   color: #efefef; }
@@ -1486,7 +1489,7 @@ code {
   margin: 0 auto;
   margin-bottom: 0.5em;
   box-shadow: 0 0 1em 0.05em rgba(0, 0, 0, 0.5); }
-.frontpage .post__heading {
+.frontpage .front__heading {
   background: #323232;
   text-align: center; }
 .frontpage .author-photo {
@@ -1495,9 +1498,6 @@ code {
   width: 100px;
   height: 100px;
   float: right; }
-.frontpage .btn--buy {
-  border: 2px #fff solid;
-  background: #fff; }
 
 .nav {
   padding-bottom: 0.25em;
