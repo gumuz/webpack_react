@@ -5,7 +5,7 @@
 <ul>
 <li><code>index.js</code> - On small projects it&apos;s enough to have the code at the root. On larger ones you may want to start splitting it up further.</li>
 <li><code>package.json</code> - npm metadata in JSON format</li>
-<li><code>README.md</code> - README is the most important document of your project. It is written in Markdown format and provides an overview. On simple projects whole documentation can fit there. It will be shown at the package page at <code>npmjs.com</code>.</li>
+<li><code>README.md</code> - README is the most important document of your project. It is written in Markdown format and provides an overview. On simple projects the whole documentation can fit there. It will be shown at the package page at <code>npmjs.com</code>.</li>
 <li><code>LICENSE</code> - You should include licensing information within your project. You can refer to it from <code>package.json</code>.</li>
 </ul>
 <p>In bigger projects you may find the following:</p>
@@ -188,7 +188,7 @@ exports.distMin = mergeDist({
 <li>Install newest version of some specific dependency. Ie. <code>npm install lodash@* --save</code>. This is more controlled way to approach the problem.</li>
 <li>Patch version information by hand by modifying <code>package.json</code> directly.</li>
 </ul>
-<p>It is important to remember that your dependencies may introduce backwards incompatible changes. Therefore it can be useful to remember how SemVer works and study dependency release notes, if the exist, carefully. You should at least walk through version history to see what changes have been made and how they might affect you.</p>
+<p>It is important to remember that your dependencies may introduce backwards incompatible changes. Therefore it can be useful to remember how SemVer works and study dependency release notes, if they exist, carefully. You should at least walk through version history to see what changes have been made and how they might affect you.</p>
 <p>As keeping track of important changes can be a chore, there are a few services that can help you with that: <a href="https://david-dm.org/">David</a>, <a href="https://www.versioneye.com/">versioneye</a>, <a href="https://gemnasium.com">Gemnasium</a>. These services provide badges you can integrate into your project <code>README.md</code>. In addition they may email you about important changes and even point out possible security issues that have been fixed.</p>
 <p>For testing your projects you can consider solutions such as <a href="https://travis-ci.org/">Travis CI</a> or <a href="https://saucelabs.com/">SauceLabs</a>. Many others exist. The advantage of these is that they allow you to test your updates against a variety of platforms quickly. Something that might work on your system might not work in some specific configuration. You&apos;ll want to know about that as fast as possible to avoid introducing problems for your package consumers.</p>
 <h2 id="sharing-authorship">Sharing Authorship<a class="header-anchor" href="#sharing-authorship">#</a></h2>
