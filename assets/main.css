@@ -1452,16 +1452,33 @@ input[type="date"], .input {
   border: none; }
 /* https://eduardoboucas.com/blog/2015/06/18/viewport-sized-typography-with-minimum-and-maximum-sizes.html */
 h1, h2, h3, h4, h5, h6 {
-  font-size: 1.5vw; }
+  font-size: 1.5vw;
+  letter-spacing: 1px; }
   @media (max-width: 66.66667em) {
     h1, h2, h3, h4, h5, h6 {
       font-size: 1em; } }
+
+.prevnext-pages {
+  letter-spacing: 1px; }
+
+h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
+  background-color: inherit;
+  font-size: inherit; }
+
+.post__content h1, .post__content h2, .post__content h3, .post__content h4, .post__content h5, .post__content h6, .post__content p, .post__content ol, .post__content ul, .post__content pre {
+  width: auto; }
+
+.header-anchor {
+  display: block;
+  position: relative;
+  top: -5vh; }
 
 ul ul {
   margin-left: 1em; }
 
 li {
-  margin-bottom: 0.5em; }
+  margin-bottom: 0.5em;
+  padding-right: 2em; }
 
 ul ul li {
   margin-bottom: 0.25em; }
@@ -1483,11 +1500,15 @@ code {
 .frontpage .front-header, .frontpage .front-motto {
   margin-bottom: 0.5em;
   color: #efefef; }
+.frontpage .front-header {
+  margin-top: 2em;
+  margin-bottom: 0; }
 .frontpage .front-motto {
-  margin-top: 0; }
+  margin-top: 0;
+  margin-bottom: 2em; }
 .frontpage .front-cover {
   margin: 0 auto;
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
   box-shadow: 0 0 1em 0.05em rgba(0, 0, 0, 0.5); }
 .frontpage .front__heading {
   background: #323232;
@@ -1500,9 +1521,11 @@ code {
   float: right; }
 
 .nav {
-  padding-bottom: 0.25em;
-  background: -webkit-linear-gradient(bottom, #fff 0%, rgba(255, 255, 255, 0.9) 35%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0) 100%);
-  background: linear-gradient(to top, #fff 0%, rgba(255, 255, 255, 0.9) 35%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0) 100%); }
+  padding: 0;
+  top: 0;
+  bottom: auto;
+  position: fixed;
+  background: white; }
 
 .post__content img {
   position: inherit;
@@ -1561,19 +1584,18 @@ code {
 
 .prevnext-pages {
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
   height: 10vh;
-  background: -webkit-linear-gradient(bottom, rgba(255, 255, 255, 0) 0%, #fff 35%, #fff 100%);
-  background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, #fff 35%, #fff 100%); }
+  background: transparent; }
 
 .previous-page, .next-page {
   font-family: "Avenir Next", "Helvetica Neue", sans-serif;
   text-transform: uppercase;
   text-rendering: optimizeLegibility;
   position: fixed;
-  top: 20px; }
+  bottom: 20px; }
 
 .previous-page {
   left: 10px; }
@@ -1603,7 +1625,12 @@ code {
   .previous-page {
     bottom: 50px; }
   .next-page {
-    bottom: 10px; } }
+    bottom: 10px; }
+  .nav {
+    padding-top: 0.5em; }
+  .nav__wrapper {
+    z-index: 1000;
+    background: white; } }
 
 blockquote.tip {
   font-size: medium;

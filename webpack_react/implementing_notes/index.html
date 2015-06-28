@@ -1,5 +1,5 @@
 <html><head><title>SurviveJS - Webpack and React - Implementing a Basic Note App</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="../../assets/img/favicon.png"><link rel="stylesheet" href="../../assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><div class="nav__link"><a href="/">Home</a></div><div class="nav__link"><a href="/webpack_react/introduction">Read the book</a></div><div class="nav__link"><a href="https://leanpub.com/survivejs_webpack">Buy the ebook</a></div></nav></div><main role="main"><div class="post"><div class="docs-nav__wrapper docs-nav__wrapper--push-down"><h4 class="docs-nav--header">Table of Contents</h4><div class="docs-nav"><a href="/webpack_react/introduction" class="docs-nav__link">Introduction</a><a href="/webpack_react/webpack_compared" class="docs-nav__link">Webpack Compared</a><a href="/webpack_react/getting_started" class="docs-nav__link">Getting Started</a><a href="/webpack_react/developing_with_webpack" class="docs-nav__link">Developing with Webpack</a><a href="/webpack_react/linting_in_webpack" class="docs-nav__link">Linting in Webpack</a><a href="/webpack_react/webpack_and_react" class="docs-nav__link">Webpack and React</a><span class="docs-nav__link docs-nav__link--current">Implementing a Basic Note App</span><a href="/webpack_react/react_and_flux" class="docs-nav__link">React and Flux</a><a href="/webpack_react/from_notes_to_kanban" class="docs-nav__link">From Notes to Kanban</a><a href="/webpack_react/styling_react" class="docs-nav__link">Styling React</a><a href="/webpack_react/implementing_dnd" class="docs-nav__link">Implementing Drag and Drop</a><a href="/webpack_react/deploying_applications" class="docs-nav__link">Deploying Applications</a><a href="/webpack_react/authoring_libraries" class="docs-nav__link">Authoring Libraries</a><a href="/webpack_react/troubleshooting" class="docs-nav__link">Troubleshooting</a></div></div><div class="header-image" style="background-image:url(/images/notes.jpg);"></div><h1 class="post__heading">Implementing a Basic Note App</h1><div class="post__content"><div class="post__meta"><div class="post__start_source"><a href="https://github.com/survivejs/webpack_react/tree/master/project_source/05_webpack_and_react/kanban_app" target="_blank">Start source code</a></div><div class="post__end_source"><a href="https://github.com/survivejs/webpack_react/tree/master/project_source/06_implementing_notes/kanban_app" target="_blank">Finished source code</a></div><div class="post__demo"><a href="/demos/06_implementing_notes" target="_blank">Demo</a></div></div><div><p>Given we have a nice development setup now, we can actually get some work done. Our goal here is to end up with a crude Note List with basic manipulation operations. Hit <code>npm start</code>. It&apos;s time to start developing.</p>
-<h2 id="extending-note">Extending Note<a class="header-anchor" href="#extending-note">#</a></h2>
+<a class="header-anchor" href="#extending-note" id="extending-note"></a><h2>Extending Note<a class="header-anchor-select" href="#extending-note">#</a></h2>
 <p>A good first step would be to extend <code>Note</code> interface. We would probably want to render a list of these. Ideally we should be able to perform basic editing operations over the list and create new items as needed. We&apos;ll probably also want to mark items as done.</p>
 <p>This means <code>App</code> will have to coordinate the state. Let&apos;s start by rendering a list and then expand from there. Here&apos;s sample code for an enhanced <code>render</code> method:</p>
 <p><strong>app/components/App.jsx</strong></p>
@@ -32,7 +32,7 @@
 </code></pre>
 <p>As you can see the property we passed to our component gets mapped to <code>this.props</code>. After that it is just a matter of showing it wherever we like.</p>
 <p>We haven&apos;t achieved much yet but we&apos;re getting there. In order to get somewhere, we&apos;ll need to expand and refine our component hierarchy.</p>
-<h2 id="refining-component-hierarchy">Refining Component Hierarchy<a class="header-anchor" href="#refining-component-hierarchy">#</a></h2>
+<a class="header-anchor" href="#refining-component-hierarchy" id="refining-component-hierarchy"></a><h2>Refining Component Hierarchy<a class="header-anchor-select" href="#refining-component-hierarchy">#</a></h2>
 <p>It is nice to keep the implementation of <code>App</code> on a high level. Currently there are concerns that might not belong there. We can improve the situation by splitting <code>Notes</code> into a component of its own. It will be just a component that takes <em>items</em> as an input and renders them as above.</p>
 <p>We&apos;ll want to end up a hierarchy such as this: App -&gt; Notes -&gt; Note. Each of these components will map to a file within <code>components</code>. Our <code>Note</code> is fine as is. <code>Notes</code> needs to be extracted out of <code>App</code>. Here&apos;s a sample implementation:</p>
 <p><strong>app/components/Notes.jsx</strong></p>
@@ -71,7 +71,7 @@ render() {
 ...
 </code></pre>
 <p>Not only this change keeps <code>App</code> cleaner but it also gives us flexibility. If you wanted to have multiple <code>Notes</code> lists, it would be simple now. This is one of the key things to understand about React. You will need to learn to think in terms of components.</p>
-<h2 id="adding-new-items-to-notes-list">Adding New Items to Notes list<a class="header-anchor" href="#adding-new-items-to-notes-list">#</a></h2>
+<a class="header-anchor" href="#adding-new-items-to-notes-list" id="adding-new-items-to-notes-list"></a><h2>Adding New Items to Notes list<a class="header-anchor-select" href="#adding-new-items-to-notes-list">#</a></h2>
 <p>It would be useful if we could add new items to our Notes list. Let&apos;s just do a plus button that adds a new dummy item to our list.</p>
 <p>To get a button show up, change <code>render</code> method like this:</p>
 <p><strong>app/components/App.jsx</strong></p>
@@ -90,7 +90,7 @@ addItem() {
 }
 </code></pre>
 <p>Now when you click the button, you should see something at your browser console.</p>
-<h2 id="connecting-additem-with-data-model">Connecting <code>addItem</code> with Data Model<a class="header-anchor" href="#connecting-additem-with-data-model">#</a></h2>
+<a class="header-anchor" href="#connecting-additem-with-data-model" id="connecting-additem-with-data-model"></a><h2>Connecting <code>addItem</code> with Data Model<a class="header-anchor-select" href="#connecting-additem-with-data-model">#</a></h2>
 <p>Next we will need to connect this with our data model somehow. It is problematic that data is stored within our <code>render</code> method. React provides a concept known as state for this purpose. We can move our data there like this:</p>
 <pre><code class="undefinedjavascript">constructor(props) {
   <span class="hljs-keyword">super</span>(props);
@@ -120,7 +120,7 @@ render() {
 }
 </code></pre>
 <p>If you hit the button now, you should see new items. It might not be pretty yet but it works.</p>
-<h2 id="editing-notes">Editing Notes<a class="header-anchor" href="#editing-notes">#</a></h2>
+<a class="header-anchor" href="#editing-notes" id="editing-notes"></a><h2>Editing Notes<a class="header-anchor-select" href="#editing-notes">#</a></h2>
 <p>Our Notes list is almost useful now. It is a little unfortunate that even though we can add new items to the list, we cannot modify them. It is time to implement edit.</p>
 <p>A natural way to do this would be to allow the user to click an item. When an item is clicked, it would be replaced with an input control that would allow you to edit. After confirmed, the modification should remain there.</p>
 <p>This means we&apos;ll need to extend <code>Note</code> somehow and communicate possible changes to <code>App</code> so that it knows to update the data model. In addition <code>Note</code> needs to keep track of its edit state and show the correct element (div or input) based on that.</p>
@@ -197,7 +197,7 @@ itemEdited(i, task) {
 ...
 </code></pre>
 <p>As you can see the nested hierarchy is starting to cause some subtle problems. We&apos;ll fix these later. Now we just want to get something to work. You should be able to edit todos now.</p>
-<h2 id="removing-notes">Removing Notes<a class="header-anchor" href="#removing-notes">#</a></h2>
+<a class="header-anchor" href="#removing-notes" id="removing-notes"></a><h2>Removing Notes<a class="header-anchor-select" href="#removing-notes">#</a></h2>
 <p>We are still missing one vital functionality. It would be nice to be able to remove notes. We can achieve this easily by extending edit.</p>
 <p>In case we empty a task, it would make sense to remove it. You can give it a go yourself or follow the example below. It is just a matter of modifying state.</p>
 <pre><code class="undefinedjavascript">itemEdited(i, task) {
@@ -216,7 +216,7 @@ itemEdited(i, task) {
 }
 </code></pre>
 <p>An alternative way would have been to render some sort of button for removing an item. When pressed it would have triggered similar logic. If you feel like it, give it a go. Just have something like <code>&lt;button onClick={this.removeItem.bind(null, i)}&gt;-&lt;/button&gt;</code> there, delete based on index and update state.</p>
-<blockquote class="tip">We just introduced some interesting behavior to our system. Note that as we track edit state on <code>Note</code> level, this means if you remove an item before the edited <code>Note</code>, the same old element remains edited. If we want to edit specific data, our data model should change to take this in count. Can you see how?</blockquote><h2 id="adding-type-checking-with-flow">Adding Type Checking with Flow<a class="header-anchor" href="#adding-type-checking-with-flow">#</a></h2>
+<blockquote class="tip">We just introduced some interesting behavior to our system. Note that as we track edit state on <code>Note</code> level, this means if you remove an item before the edited <code>Note</code>, the same old element remains edited. If we want to edit specific data, our data model should change to take this in count. Can you see how?</blockquote><a class="header-anchor" href="#adding-type-checking-with-flow" id="adding-type-checking-with-flow"></a><h2>Adding Type Checking with Flow<a class="header-anchor-select" href="#adding-type-checking-with-flow">#</a></h2>
 <p><img src="/images/flow.png" alt="Flow"></p>
 <p>As we saw earlier with <code>onEdit</code>, it gave us a nasty error before we actually defined a handler for the case. Thanks to <a href="http://flowtype.org/">Flow</a> and <a href="https://gcanti.github.io/flowcheck/">Flowcheck</a> we can add typing information to our source. This is very useful in a situation where you are working with large project and many developers. Just like with linting earlier this is one way to make your work more boring. Boring is still good!</p>
 <p>We can set up Flow type checking to our Webpack easily by first doing <code>npm i flowcheck-loader --save-dev</code> and then extending our development configuration a little like this:</p>
@@ -250,6 +250,6 @@ itemEdited(i, task) {
 }) {...}
 </code></pre>
 <p>With Flow you can type the most vital parts of your source. You can think it as an executable form of documentation that helps you during development. As with linting it won&apos;t replace tests but it will make it easier to work with the source. See <a href="https://tryflow.org/">Try Flow</a> for more concrete examples.</p>
-<h2 id="conclusion">Conclusion<a class="header-anchor" href="#conclusion">#</a></h2>
+<a class="header-anchor" href="#conclusion" id="conclusion"></a><h2>Conclusion<a class="header-anchor-select" href="#conclusion">#</a></h2>
 <p>The approach we discussed works up to a point. It is a little ugly but it works. In the next chapter we will clean things up as we introduce Flux architecture and port our application to use it.</p>
 </div><div class="prevnext"><div class="prevnext__prev"><div class="prevnext__bg" style="background-image:url(/images/mainframe.jpg);"></div><span class="prevnext__info">Previous chapter</span><a class="prevnext__link" href="/webpack_react/webpack_and_react">Webpack and React</a></div><div class="prevnext__next"><div class="prevnext__bg" style="background-image:url(/images/delorean.jpg);"></div><span class="prevnext__info">Next chapter</span><a class="prevnext__link" href="/webpack_react/react_and_flux">React and Flux</a></div></div></div><div class="header-extra"><a href="https://www.flickr.com/photos/73635318@N00/2663422833">Angela (CC BY-NC-SA)</a></div></div><noscript></noscript><div class="prevnext-pages"><a href="../webpack_and_react" class="previous-page">Webpack and React</a><a href="../react_and_flux" class="next-page">React and Flux</a></div></main></div></body></html>
