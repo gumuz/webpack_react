@@ -1477,19 +1477,14 @@ pre code {
 code {
   padding: 0.25em; }
 
-.frontpage .front-header {
-  margin-top: 0;
-  margin-bottom: 0;
-  text-transform: none;
-  font-size: 54px;
-  line-height: 1.5; }
 .frontpage .front-header, .frontpage .front-motto {
+  margin-bottom: 0.5em;
   color: #efefef; }
 .frontpage .front-motto {
-  margin-top: 0;
-  margin-bottom: 2em; }
+  margin-top: 0; }
 .frontpage .front-cover {
   margin: 0 auto;
+  margin-bottom: 0.5em;
   box-shadow: 0 0 1em 0.05em rgba(0, 0, 0, 0.5); }
 .frontpage .post__heading {
   background: #323232;
