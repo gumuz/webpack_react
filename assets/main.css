@@ -1497,6 +1497,9 @@ code {
 .frontpage, .post, .prevnext {
   max-width: 100%; }
 
+.prevnext__next, .prevnext__prev {
+  width: 50; }
+
 .frontpage .front-cover-wrapper {
   vertical-align: middle; }
 .frontpage .front-text-wrapper {
@@ -1513,7 +1516,7 @@ code {
 .frontpage .front-cover {
   box-shadow: 0 0 1em 0.05em rgba(0, 0, 0, 0.5);
   margin-top: 1em;
-  margin-bottom: 1em; }
+  margin-bottom: 1 em; }
 .frontpage .front__heading {
   background: #323232;
   text-align: center; }
