@@ -1497,10 +1497,14 @@ code {
 .frontpage, .post, .prevnext {
   max-width: 100%; }
 
+.frontpage .front-cover-wrapper {
+  vertical-align: middle;
+  max-height: 50vh;
+  height: 100%; }
 .frontpage .front-text-wrapper {
   margin: 1em;
   max-width: 100%;
-  text-shadow: 0 2px rgba(0, 0, 0, 0.3); }
+  text-shadow: 0 0 0.4em rgba(0, 0, 0, 0.8); }
 .frontpage .front-header, .frontpage .front-motto {
   margin-bottom: 0.5em;
   color: #efefef; }
