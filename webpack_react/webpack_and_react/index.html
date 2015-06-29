@@ -220,8 +220,19 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
   });
 }
 </code></pre>
+<p><strong>lib/dev_server.js</strong></p>
+<pre><code class="undefinedjavascript">...
+
+<span class="hljs-keyword">new</span> WebpackDevServer(webpack(config), {
+  ...
+  hot: <span class="hljs-literal">true</span>,
+  ...
+}).listen(config.port, config.ip, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
+  ...
+});
+</code></pre>
 <p>Try hitting <code>npm start</code> again and modifying the component. Note what doesn&apos;t happen this time. There&apos;s no flash! It might take a while to sink in but in practice this is a powerful feature. Small things such as this add up and make you more effective.</p>
 <a class="header-anchor" href="#conclusion" id="conclusion"></a><h2>Conclusion<a class="header-anchor-select" href="#conclusion">#</a></h2>
 <p>You should understand how to set up React with Webpack now. In the process we saw how to develop Webpack configuration and learned a few new concepts. This is the way you work with Webpack. You&apos;ll find loaders as you require them and integrate them to your project.</p>
 <p>Now that we have a good development environment, we can focus on React development more fully. In the next chapter you will see how to implement a little Todo application. That will be improved in the subsequent chapters into a full blown Kanban table.</p>
-</div><div class="prevnext"><div class="prevnext__prev"><div class="prevnext__bg" style="background-image:url(/images/lint.jpg);"></div><span class="prevnext__info">Previous chapter</span><a class="prevnext__link" href="/webpack_react/linting_in_webpack">Linting in Webpack</a></div><div class="prevnext__next"><div class="prevnext__bg" style="background-image:url(/images/notes.jpg);"></div><span class="prevnext__info">Next chapter</span><a class="prevnext__link" href="/webpack_react/implementing_notes">Implementing a Basic Note App</a></div></div></div><div class="header-extra"><a href="https://www.flickr.com/photos/10282509@N00/4674249352">Jairus Khan (CC BY-NC-SA)</a></div></div><noscript></noscript><div class="prevnext-pages"><a href="../linting_in_webpack" class="previous-page">Linting in Webpack</a><a href="../implementing_notes" class="next-page">Implementing a Basic Note App</a></div></main></div></body></html>
+</div><div class="prevnext"><div class="prevnext__prev"><div class="prevnext__bg" style="background-image:url(/images/lint.jpg);"></div><span class="prevnext__info">Previous chapter</span><a class="prevnext__link" href="/webpack_react/linting_in_webpack">Linting in Webpack</a></div><div class="prevnext__next"><div class="prevnext__bg" style="background-image:url(/images/notes.jpg);"></div><span class="prevnext__info">Next chapter</span><a class="prevnext__link" href="/webpack_react/implementing_notes">Implementing a Basic Note App</a></div></div><a class="next-page" href="/webpack_react/implementing_notes">Implementing a Basic Note App</a><a class="previous-page" href="/webpack_react/linting_in_webpack">Linting in Webpack</a></div><div class="header-extra"><a href="https://www.flickr.com/photos/10282509@N00/4674249352">Jairus Khan (CC BY-NC-SA)</a></div></div><noscript></noscript></main></div></body></html>

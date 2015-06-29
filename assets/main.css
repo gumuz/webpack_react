@@ -1494,21 +1494,21 @@ pre code {
 code {
   padding: 0.25em; }
 
-.frontpage, .post {
+.frontpage, .post, .prevnext {
   max-width: 100%; }
 
+.frontpage .front-text-wrapper {
+  margin: 1em;
+  max-width: 100%;
+  text-shadow: 0 2px rgba(0, 0, 0, 0.3); }
 .frontpage .front-header, .frontpage .front-motto {
   margin-bottom: 0.5em;
   color: #efefef; }
 .frontpage .front-header {
-  margin-top: 2em;
   margin-bottom: 0; }
 .frontpage .front-motto {
-  margin-top: 0;
-  margin-bottom: 2em; }
+  margin-top: 0; }
 .frontpage .front-cover {
-  margin: 0 auto;
-  margin-bottom: 1em;
   box-shadow: 0 0 1em 0.05em rgba(0, 0, 0, 0.5); }
 .frontpage .front__heading {
   background: #323232;
@@ -1525,7 +1525,8 @@ code {
   top: 0;
   bottom: auto;
   position: fixed;
-  background: white; }
+  background: white;
+  z-index: 1000; }
 
 .post__content img {
   position: inherit;
@@ -1582,15 +1583,8 @@ code {
 .header-anchor-select {
   margin-left: 0.25em; }
 
-.prevnext-pages {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 10vh;
-  background: transparent; }
-
 .previous-page, .next-page {
+  background: white;
   font-family: "Avenir Next", "Helvetica Neue", sans-serif;
   text-transform: uppercase;
   text-rendering: optimizeLegibility;
