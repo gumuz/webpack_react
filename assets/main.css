@@ -1525,6 +1525,11 @@ code {
   width: 100px;
   height: 100px;
   float: right; }
+.frontpage .react-image {
+  margin-left: 1em;
+  width: 136px;
+  height: 121px;
+  float: right; }
 
 .nav {
   padding: 0;
