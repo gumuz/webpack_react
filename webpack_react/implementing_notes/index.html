@@ -80,7 +80,7 @@ render() {
 
   return (
     <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.addItem.bind(this)}</span>&gt;</span>+<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{()</span> =&gt;</span> addItem()}&gt;+<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">items</span>=<span class="hljs-value">{notes}</span> /&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
   );
@@ -143,9 +143,9 @@ render() {
         edited
         ? <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">&apos;text&apos;</span>
           <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">{value}</span>
-          <span class="hljs-attribute">onBlur</span>=<span class="hljs-value">{this.finishEdit.bind(this)}</span>
-          <span class="hljs-attribute">onKeyPress</span>=<span class="hljs-value">{this.checkEnter.bind(this)}</span>/&gt;</span>
-        : <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.edit.bind(this)}</span>&gt;</span>{value}<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+          <span class="hljs-attribute">onBlur</span>=<span class="hljs-value">{(e)</span> =&gt;</span> this.finishEdit(e)}
+          onKeyPress={(e) =&gt; this.checkEnter(e)}/&gt;
+        : <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{()</span> =&gt;</span> this.edit()}&gt;{value}<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
       }<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
   }
@@ -175,7 +175,7 @@ render() {
   ...
   &lt;Notes
     items={notes}
-    onEdit={<span class="hljs-keyword">this</span>.itemEdited.bind(<span class="hljs-keyword">this</span>)} /&gt;
+    onEdit={(i, task) =&gt; <span class="hljs-keyword">this</span>.itemEdited(i, task)} /&gt;
   ...
 }
 itemEdited(i, task) {
@@ -215,7 +215,7 @@ itemEdited(i, task) {
   });
 }
 </code></pre>
-<p>An alternative way would have been to render some sort of button for removing an item. When pressed it would have triggered similar logic. If you feel like it, give it a go. Just have something like <code>&lt;button onClick={this.removeItem.bind(null, i)}&gt;-&lt;/button&gt;</code> there, delete based on index and update state.</p>
+<p>An alternative way would have been to render some sort of button for removing an item. When pressed it would have triggered similar logic. If you feel like it, give it a go. Just have something like <code>&lt;button onClick={(i) =&gt; this.removeItem(i)}&gt;-&lt;/button&gt;</code> there, delete based on index and update state.</p>
 <blockquote class="tip">We just introduced some interesting behavior to our system. Note that as we track edit state on <code>Note</code> level, this means if you remove an item before the edited <code>Note</code>, the same old element remains edited. If we want to edit specific data, our data model should change to take this in count. Can you see how?</blockquote><a class="header-anchor" href="#adding-type-checking-with-flow" id="adding-type-checking-with-flow"></a><h2>Adding Type Checking with Flow<a class="header-anchor-select" href="#adding-type-checking-with-flow">#</a></h2>
 <p><img src="/images/flow.png" alt="Flow"></p>
 <p>As we saw earlier with <code>onEdit</code>, it gave us a nasty error before we actually defined a handler for the case. Thanks to <a href="http://flowtype.org/">Flow</a> and <a href="https://gcanti.github.io/flowcheck/">Flowcheck</a> we can add typing information to our source. This is very useful in a situation where you are working with large project and many developers. Just like with linting earlier this is one way to make your work more boring. Boring is still good!</p>
