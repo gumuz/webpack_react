@@ -306,7 +306,7 @@
 <p>As we&apos;ll be relying on decorators and still like to use Flowcheck, we&apos;ll need to tweak configuration a little bit:</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     <span class="hljs-built_in">module</span>: {
       loaders: [
         {
@@ -321,7 +321,7 @@
 }
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     ...
     <span class="hljs-built_in">module</span>: {
       ...

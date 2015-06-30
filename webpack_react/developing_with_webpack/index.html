@@ -6,7 +6,7 @@
 <pre><code class="undefinedjson">...
 <span class="hljs-string">&quot;scripts&quot;</span>: {
   <span class="hljs-string">&quot;build&quot;</span>: <span class="hljs-string">&quot;webpack&quot;</span>,
-  <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-string">&quot;webpack-dev-server --config webpack.development.js --devtool eval --progress --colors --hot --content-base build&quot;</span>
+  <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-string">&quot;webpack-dev-server --config webpack.development.js --devtool eval-source --progress --colors --hot --content-base build&quot;</span>
 },
 ...
 </code></pre>
@@ -16,6 +16,7 @@
 <span class="hljs-built_in">module</span>.exports = {
   entry: [
     <span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>,
+    <span class="hljs-string">&apos;webpack-dev-server/client?http://localhost:8080&apos;</span>,
     path.resolve(__dirname, <span class="hljs-string">&apos;app/main.js&apos;</span>),
   ],
   output: {
@@ -31,7 +32,6 @@
     <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">&quot;UTF-8&quot;</span>/&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">&quot;http://localhost:8080/webpack-dev-server.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">&quot;bundle.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
@@ -40,7 +40,7 @@
 <ol>
 <li><code>webpack-dev-server</code> - Starts a web service on <code>localhost:8080</code></li>
 <li><code>--config webpack.development.js</code> - Points at custom development configuration we&apos;ll set up later</li>
-<li><code>--devtool eval</code> - Creates source urls for your code. Making you able to pinpoint by filename and line number where any errors are thrown</li>
+<li><code>--devtool eval-source</code> - Creates source urls for your code. Making you able to pinpoint by filename and line number where any errors are thrown</li>
 <li><code>--progress</code> - Will show progress of bundling your application</li>
 <li><code>--colors</code> - Colors in the terminal!</li>
 <li><code>--hot</code> - Enable hot module loading</li>
@@ -120,14 +120,12 @@
   },
 };
 
-<span class="hljs-keyword">var</span> mergeConfig = merge.bind(<span class="hljs-literal">null</span>, common);
-
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({});
+  <span class="hljs-built_in">module</span>.exports = merge(common);
 }
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     entry: [<span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>]
   });
 }
@@ -156,7 +154,7 @@
 ...
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     plugins: [
       <span class="hljs-keyword">new</span> HtmlWebpackPlugin({
         title: <span class="hljs-string">&apos;Kanban app&apos;</span>
@@ -199,7 +197,7 @@
   <span class="hljs-keyword">var</span> IP = <span class="hljs-string">&apos;0.0.0.0&apos;</span>;
   <span class="hljs-keyword">var</span> PORT = <span class="hljs-number">8080</span>;
 
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     ip: IP,
     port: PORT,
     entry: [

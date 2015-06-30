@@ -221,7 +221,7 @@ itemEdited(i, task) {
 <p>As we saw earlier with <code>onEdit</code>, it gave us a nasty error before we actually defined a handler for the case. Thanks to <a href="http://flowtype.org/">Flow</a> and <a href="https://gcanti.github.io/flowcheck/">Flowcheck</a> we can add typing information to our source. This is very useful in a situation where you are working with large project and many developers. Just like with linting earlier this is one way to make your work more boring. Boring is still good!</p>
 <p>We can set up Flow type checking to our Webpack easily by first doing <code>npm i flowcheck-loader --save-dev</code> and then extending our development configuration a little like this:</p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     ...
     <span class="hljs-built_in">module</span>: {
       ...

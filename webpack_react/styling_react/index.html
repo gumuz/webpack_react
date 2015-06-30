@@ -115,10 +115,8 @@
   },
 };
 
-<span class="hljs-keyword">var</span> mergeConfig = merge.bind(<span class="hljs-literal">null</span>, common);
-
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     <span class="hljs-built_in">module</span>: {
       loaders: [
         {
@@ -136,7 +134,7 @@
 }
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     ...
     <span class="hljs-built_in">module</span>: {
       ...
@@ -160,7 +158,7 @@
 <pre><code class="undefinedjavascript">...
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     entry: [<span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>],
     <span class="hljs-built_in">module</span>: {
       preLoaders: [

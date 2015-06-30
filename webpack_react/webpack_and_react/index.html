@@ -108,7 +108,7 @@ index.html  204 bytes          [emitted]
 ...
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     ...
     plugins: [
       <span class="hljs-keyword">new</span> webpack.optimize.UglifyJsPlugin({
@@ -138,7 +138,7 @@ index.html  204 bytes          [emitted]
 <p>In Webpack terms you can add the following snippet to the <code>plugins</code> section of your configuration like this:</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     ...
     plugins: [
       <span class="hljs-keyword">new</span> webpack.DefinePlugin({
@@ -185,7 +185,7 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
 ...
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     <span class="hljs-built_in">module</span>: {
       loaders: [
         {
@@ -202,7 +202,7 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
 }
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = mergeConfig({
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
     entry: [
       <span class="hljs-string">&apos;webpack-dev-server/client?http://&apos;</span> + IP + <span class="hljs-string">&apos;:&apos;</span> + PORT,
       <span class="hljs-string">&apos;webpack/hot/only-dev-server&apos;</span>, <span class="hljs-comment">// only-dev-server!</span>
