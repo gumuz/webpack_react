@@ -1,4 +1,4 @@
-<html><head><title>SurviveJS - Webpack and React - Linting in Webpack</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="../../assets/img/favicon.png"><link rel="stylesheet" href="../../assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><div class="nav__link"><a href="/">Home</a></div><div class="nav__link"><a href="https://leanpub.com/survivejs_webpack">Buy the ebook</a></div><div class="nav__link"><a href=""></a></div><div class="nav__link"><a href="https://twitter.com/survivejs">@survivejs</a></div></nav></div><main role="main"><div class="post"><div class="docs-nav__wrapper docs-nav__wrapper--push-down"><h4 class="docs-nav--header">Table of Contents</h4><div class="docs-nav"><a href="/webpack_react/introduction" class="docs-nav__link">Introduction</a><a href="/webpack_react/webpack_compared" class="docs-nav__link">Webpack Compared</a><a href="/webpack_react/getting_started" class="docs-nav__link">Getting Started</a><a href="/webpack_react/developing_with_webpack" class="docs-nav__link">Developing with Webpack</a><span class="docs-nav__link docs-nav__link--current">Linting in Webpack</span><a href="/webpack_react/webpack_and_react" class="docs-nav__link">Webpack and React</a><a href="/webpack_react/implementing_notes" class="docs-nav__link">Implementing a Basic Note App</a><a href="/webpack_react/react_and_flux" class="docs-nav__link">React and Flux</a><a href="/webpack_react/from_notes_to_kanban" class="docs-nav__link">From Notes to Kanban</a><a href="/webpack_react/styling_react" class="docs-nav__link">Styling React</a><a href="/webpack_react/implementing_dnd" class="docs-nav__link">Implementing Drag and Drop</a><a href="/webpack_react/deploying_applications" class="docs-nav__link">Deploying Applications</a><a href="/webpack_react/authoring_libraries" class="docs-nav__link">Authoring Libraries</a><a href="/webpack_react/troubleshooting" class="docs-nav__link">Troubleshooting</a></div></div><div class="header-image" style="background-image:url(/images/lint.jpg);"></div><h1 class="post__heading">Linting in Webpack</h1><div class="post__content"><div class="post__meta"><div class="post__start_source"><a href="https://github.com/survivejs/webpack_react/tree/master/project_source/03_developing_with_webpack/kanban_app" target="_blank">Start source code</a></div><div class="post__end_source"><a href="https://github.com/survivejs/webpack_react/tree/master/project_source/04_linting_in_webpack/kanban_app" target="_blank">Finished source code</a></div><div class="post__demo"><a href="/demos/04_linting_in_webpack" target="_blank">Demo</a></div></div><div><p>Nothing is easier than making mistakes when coding in JavaScript. Linting is one of those techniques that can help you to make less mistakes and spot issues before they become actual problems.</p>
+<html><head><title>SurviveJS - Webpack and React - Linting in Webpack</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui"><link rel="icon" type="image/png" href="../../assets/img/favicon.png"><link rel="stylesheet" href="../../assets/main.css"></head><body><div><div class="nav__wrapper"><input type="checkbox" class="nav__toggle" id="nav__toggle"><label class="nav__toggle-label" for="nav__toggle"></label><nav class="nav"><div class="nav__link"><a href="/">Home</a></div><div class="nav__link"><a href="https://leanpub.com/survivejs_webpack">Buy the ebook</a></div><div class="nav__link"><a href=""></a></div><div class="nav__link"><a href="https://twitter.com/survivejs">@survivejs</a></div></nav></div><main role="main"><div class="post"><div class="docs-nav__wrapper docs-nav__wrapper--push-down"><h4 class="docs-nav--header">Table of Contents</h4><div class="docs-nav"><a href="/webpack_react/introduction" class="docs-nav__link">Introduction</a><a href="/webpack_react/webpack_compared" class="docs-nav__link">Webpack Compared</a><a href="/webpack_react/getting_started" class="docs-nav__link">Getting Started</a><a href="/webpack_react/developing_with_webpack" class="docs-nav__link">Developing with Webpack</a><a href="/webpack_react/webpack_and_react" class="docs-nav__link">Webpack and React</a><a href="/webpack_react/implementing_notes" class="docs-nav__link">Implementing a Basic Note App</a><a href="/webpack_react/react_and_flux" class="docs-nav__link">React and Flux</a><a href="/webpack_react/from_notes_to_kanban" class="docs-nav__link">From Notes to Kanban</a><a href="/webpack_react/styling_react" class="docs-nav__link">Styling React</a><a href="/webpack_react/implementing_dnd" class="docs-nav__link">Implementing Drag and Drop</a><span class="docs-nav__link docs-nav__link--current">Linting in Webpack</span><a href="/webpack_react/deploying_applications" class="docs-nav__link">Deploying Applications</a><a href="/webpack_react/authoring_libraries" class="docs-nav__link">Authoring Libraries</a><a href="/webpack_react/troubleshooting" class="docs-nav__link">Troubleshooting</a></div></div><div class="header-image" style="background-image:url(/images/dnd.jpg);"></div><h1 class="post__heading">Linting in Webpack</h1><div class="post__content"><div class="post__meta"><div class="post__start_source"><a href="https://github.com/survivejs/webpack_react/tree/master/project_source/09_styling_react/kanban_app" target="_blank">Start source code</a></div><div class="post__end_source"><a href="https://github.com/survivejs/webpack_react/tree/master/project_source/10_implementing_dnd/kanban_app" target="_blank">Finished source code</a></div><div class="post__demo"><a href="/demos/10_implementing_dnd" target="_blank">Demo</a></div></div><div><p>Nothing is easier than making mistakes when coding in JavaScript. Linting is one of those techniques that can help you to make less mistakes and spot issues before they become actual problems.</p>
 <p>Perhaps the most known linter that started it all for JavaScript is Douglas Crockford&apos;s <a href="http://www.jslint.com/">JSLint</a>. It is opinionated like the man himself. The next step in evolution was <a href="http://jshint.com/">JSHint</a>. It took the opinionated edge out of JSLint and allowed for more customization.</p>
 <p><a href="http://eslint.org/">ESLint</a> is the newest tool in vogue. It has learned from its predecessors and takes linting to the next level. Besides allowing you to implement custom rules, you can hook it with custom parsers and reporters. This means ESLint will work with Babel and JSX syntax. The project rules have been well documented and you will have control over their severity. These features alone make it a powerful tool.</p>
 <p>Besides linting for issues it can be useful to manage code style on some level. Nothing is more annoying than having to work with source that has mixed tabs or spaces and all kinds of shenanigans. Stylistically consistent code reads better and is easier to work with particularly in a team environment.</p>
@@ -12,7 +12,7 @@
     {
       test: <span class="hljs-regexp">/\.js$/</span>,
       <span class="hljs-comment">// define an include so we check just the files we need</span>
-      include: path.join(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
+      include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
       loader: <span class="hljs-string">&apos;jshint&apos;</span>,
     },
   ],
@@ -74,6 +74,7 @@
     &quot;<span class="hljs-attribute">modules</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span>
   </span>}</span>,
   &quot;<span class="hljs-attribute">rules</span>&quot;: <span class="hljs-value">{
+    &quot;<span class="hljs-attribute">new-cap</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span></span>,
     &quot;<span class="hljs-attribute">strict</span>&quot;: <span class="hljs-value">[<span class="hljs-number">2</span>, <span class="hljs-string">&quot;global&quot;</span>]</span>,
     &quot;<span class="hljs-attribute">no-underscore-dangle</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span></span>,
     &quot;<span class="hljs-attribute">no-use-before-define</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span></span>,
@@ -122,7 +123,7 @@
           <span class="hljs-comment">// we have ESLint module installed. This way we</span>
           <span class="hljs-comment">// can be certain that it uses the right loader</span>
           loader: <span class="hljs-string">&apos;eslint-loader&apos;</span>,
-          include: path.join(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
+          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
         },
       ],
     },
@@ -131,7 +132,7 @@
   });
 }
 </code></pre>
-<p>We are using <code>preLoaders</code> section here as we want to play it safe. This section is executed before possible <code>loaders</code> get triggered.</p>
+<p>We are using <code>preLoaders</code> section here as we want to play it safe. This section is executed before possible <code>loaders</code> get triggered. We won&apos;t even try to compile code if it doesn&apos;t pass our linting.</p>
 <p>If you execute <code>npm start</code> now and break some linting rule while developing, you should see that in terminal output.</p>
 <a class="header-anchor" href="#customizing-eslint" id="customizing-eslint"></a><h2>Customizing ESLint<a class="header-anchor-select" href="#customizing-eslint">#</a></h2>
 <p>Even though you can get very far with vanilla ESLint there are several techniques you should be aware of. For instance sometimes you might want to skip some particular rules per file or you might want to implement rules of your own. We&apos;ll cover these cases briefly next.</p>
@@ -199,6 +200,66 @@ alert(<span class="hljs-string">&apos;foo&apos;</span>); <span class="hljs-comme
 <li><a href="https://github.com/elijahmanor/eslint-plugin-smells">eslint-plugin-smells</a> - This plugin by Elijah Manor allows you to lint against various JavaScript smells. Recommended.</li>
 </ul>
 <p>If you just want some starting point quickly, you can pick one of <a href="https://www.npmjs.com/search?q=eslint-config">eslint-config- packages</a> or go with <a href="https://www.npmjs.com/package/standard">standard</a> style. By the looks of it <code>standard</code> has <a href="https://github.com/feross/standard/issues/138">some issues with JSX</a> so be careful with that.</p>
+<a class="header-anchor" href="#linting-css" id="linting-css"></a><h2>Linting CSS<a class="header-anchor-select" href="#linting-css">#</a></h2>
+<p><a href="https://www.npmjs.com/package/csslint">csslint</a> allows us to lint CSS. <a href="https://www.npmjs.com/package/csslint-loader">csslint-loader</a> makes it possible to integrate it into our project. To get started hit <code>npm i csslint csslint-loader --save-dev</code>.</p>
+<p>Next we&apos;ll need to integrate it with our configuration:</p>
+<p><strong>webpack.config.js</strong></p>
+<pre><code class="undefinedjavascript">...
+
+<span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
+  <span class="hljs-built_in">module</span>.exports = merge(common, {
+    entry: [<span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>],
+    <span class="hljs-built_in">module</span>: {
+      preLoaders: [
+        {
+          test: <span class="hljs-regexp">/\.css$/</span>,
+          loader: <span class="hljs-string">&apos;csslint&apos;</span>,
+        },
+        {
+          test: <span class="hljs-regexp">/\.jsx?$/</span>,
+          loader: <span class="hljs-string">&apos;eslint-loader&apos;</span>,
+          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
+        },
+      ],
+      ...
+    },
+    ...
+  });
+}
+</code></pre>
+<p>To keep things nice and tidy I put it into the <code>preLoaders</code> section of configuration.</p>
+<p><strong>.csslintrc</strong></p>
+<pre><code class="undefinedjson">{
+  &quot;<span class="hljs-attribute">adjoining-classes</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">box-sizing</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">box-model</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">compatible-vendor-prefixes</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">floats</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">font-sizes</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">gradients</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">important</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">known-properties</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">outline-none</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">qualified-headings</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">regex-selectors</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">shorthand</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">text-indent</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">unique-headings</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">universal-selector</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+  &quot;<span class="hljs-attribute">unqualified-attributes</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span>
+</span>}
+</code></pre>
+<p>I decided to use a set of rules from Twitter Bootstrap. These seem like a good starting point.</p>
+<p><strong>package.json</strong></p>
+<pre><code class="undefinedjson"><span class="hljs-string">&quot;scripts&quot;</span>: {
+  ...
+  <span class="hljs-string">&quot;lint&quot;</span>: <span class="hljs-string">&quot;npm run lint-js &amp;&amp; npm run lint-css&quot;</span>,
+  <span class="hljs-string">&quot;lint-js&quot;</span>: <span class="hljs-string">&quot;eslint . --ext .js --ext .jsx&quot;</span>,
+  <span class="hljs-string">&quot;lint-css&quot;</span>: <span class="hljs-string">&quot;csslint app/stylesheets --quiet&quot;</span>
+},
+</code></pre>
+<p>If you hit <code>npm run lint-css</code> now, you should see some output, hopefully without errors. That <code>--quiet</code> flag is there to keep the tool silent unless there are errors.</p>
+<p>Thanks to the Webpack configuration we did, you should get output during <code>npm start</code> process as well. In addition you should consider setting up csslint with your editor. That way you get more integrated development experience.</p>
 <a class="header-anchor" href="#checking-javascript-style-with-jscs" id="checking-javascript-style-with-jscs"></a><h2>Checking JavaScript Style with JSCS<a class="header-anchor-select" href="#checking-javascript-style-with-jscs">#</a></h2>
 <p><img src="/images/jscs.png" alt="JSCS"></p>
 <p>Especially in a team environment it can be annoying if one guy uses tabs and other spaces. There can also be discrepancies between space usage. Some like to use two, some like four for indentation. In short it can get pretty messy without any discipline. Fortunately there is a tool known as JSCS. It will allow you to define a style guide for your project. We won&apos;t use the tool in this project but it&apos;s good to be aware of it.</p>
@@ -208,7 +269,7 @@ alert(<span class="hljs-string">&apos;foo&apos;</span>); <span class="hljs-comme
     {
       test: /\.jsx?$/,
       loaders: [<span class="hljs-string">&apos;eslint&apos;</span>, <span class="hljs-string">&apos;jscs&apos;</span>],
-      include: path.<span class="hljs-function">join</span>(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
+      include: path.<span class="hljs-function">resolve</span>(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
     },
   ],
 },
@@ -241,5 +302,5 @@ alert(<span class="hljs-string">&apos;foo&apos;</span>); <span class="hljs-comme
 </span>}
 </code></pre>
 <blockquote class="tip">Note that like some other tools, such as ESLint and JSHint, JSCS supports <code>package.json</code> based configuration. Simply add a <code>jscsConfig</code> field to it and write the configuration there.</blockquote><a class="header-anchor" href="#conclusion" id="conclusion"></a><h2>Conclusion<a class="header-anchor-select" href="#conclusion">#</a></h2>
-<p>In this chapter you learned how to lint your code using Webpack in various ways. It is one of those techniques that yields benefits over longer term as you get to fix possible problems before they become actual issues. Next we&apos;ll delve deeper as we discuss hot module reloading and React in the next chapter.</p>
-</div><div class="prevnext"><div class="prevnext__prev"><div class="prevnext__bg" style="background-image:url(/images/oscillo.jpg);"></div><span class="prevnext__info">Previous chapter</span><a class="prevnext__link" href="/webpack_react/developing_with_webpack">Developing with Webpack</a></div><div class="prevnext__next"><div class="prevnext__bg" style="background-image:url(/images/mainframe.jpg);"></div><span class="prevnext__info">Next chapter</span><a class="prevnext__link" href="/webpack_react/webpack_and_react">Webpack and React</a></div></div><a class="next-page" href="/webpack_react/webpack_and_react">Webpack and React</a><a class="previous-page" href="/webpack_react/developing_with_webpack">Developing with Webpack</a></div><div class="header-extra"><a href="https://www.flickr.com/photos/16324044@N00/10833734686">Eva the Weaver (CC BY-NC-SA)</a></div></div><noscript></noscript></main></div></body></html>
+<p>In this chapter you learned how to lint your code using Webpack in various ways. It is one of those techniques that yields benefits over longer term as you get to fix possible problems before they become actual issues.</p>
+</div><div class="prevnext"><div class="prevnext__prev"><div class="prevnext__bg" style="background-image:url(/images/taxi.jpg);"></div><span class="prevnext__info">Previous chapter</span><a class="prevnext__link" href="/webpack_react/implementing_dnd">Implementing Drag and Drop</a></div><div class="prevnext__next"><div class="prevnext__bg" style="background-image:url(/images/boots.jpg);"></div><span class="prevnext__info">Next chapter</span><a class="prevnext__link" href="/webpack_react/deploying_applications">Deploying Applications</a></div></div><a class="next-page" href="/webpack_react/deploying_applications">Deploying Applications</a><a class="previous-page" href="/webpack_react/implementing_dnd">Implementing Drag and Drop</a></div><div class="header-extra"><a href="https://www.flickr.com/photos/15146367@N00/4083260446">Emma Story (CC BY-NC)</a></div></div><noscript></noscript></main></div></body></html>
