@@ -1377,15 +1377,19 @@ code {
   width: 50; }
 
 .frontpage .front-text-wrapper {
-  margin: 1em;
+  margin-top: 2em;
+  margin-bottom: 2em;
   max-width: 100%;
-  text-shadow: 0 0 0.4em rgba(0, 0, 0, 0.8); }
+  text-shadow: 0 0 0.1em black; }
+  .frontpage .front-text-wrapper .front__buttons .btn {
+    margin-bottom: 0.5em; }
   .frontpage .front-text-wrapper .front__buttons .btn--inverted:hover {
     text-shadow: initial; }
 .frontpage .front-header, .frontpage .front-motto {
-  margin-bottom: 0.5em;
-  color: #efefef; }
+  color: white;
+  margin-bottom: 0.5em; }
 .frontpage .front-header {
+  margin-top: 0;
   margin-bottom: 0; }
 .frontpage .front-motto {
   margin-top: 0; }
@@ -1466,6 +1470,13 @@ code {
 .header-image + .post__heading + .post__content {
   margin-top: 75vh;
   padding-top: 5vh; }
+
+.docs-nav {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
 
 .docs-nav__wrapper--push-down {
   margin-top: 75vh; }
