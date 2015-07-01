@@ -1380,6 +1380,8 @@ code {
   margin: 1em;
   max-width: 100%;
   text-shadow: 0 0 0.4em rgba(0, 0, 0, 0.8); }
+  .frontpage .front-text-wrapper .front__buttons .btn--inverted:hover {
+    text-shadow: initial; }
 .frontpage .front-header, .frontpage .front-motto {
   margin-bottom: 0.5em;
   color: #efefef; }
@@ -1393,8 +1395,8 @@ code {
 .frontpage .react-image {
   margin-left: 1em;
   margin-right: 1em;
-  width: 136px;
-  height: 121px;
+  width: 100px;
+  height: 100px;
   float: right; }
 .frontpage .front-cover {
   width: 255px;
