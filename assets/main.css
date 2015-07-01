@@ -1330,12 +1330,32 @@ input[type="date"], .input {
   height: 54px;
   border: none; }
 /* https://eduardoboucas.com/blog/2015/06/18/viewport-sized-typography-with-minimum-and-maximum-sizes.html */
-h1, h2, h3, h4, h5, h6 {
-  font-size: 1.5vw;
-  letter-spacing: 1px; }
+h1 {
+  font-size: 1.5vw; }
+  @media (max-width: 133.33333em) {
+    h1 {
+      font-size: 2em; } }
+
+h2 {
+  font-size: 1.5vw; }
+  @media (max-width: 86.66667em) {
+    h2 {
+      font-size: 1.3em; } }
+
+h3 {
+  font-size: 1.5vw; }
   @media (max-width: 66.66667em) {
-    h1, h2, h3, h4, h5, h6 {
+    h3 {
       font-size: 1em; } }
+
+h4 {
+  font-size: 1.5vw; }
+  @media (max-width: 46.66667em) {
+    h4 {
+      font-size: 0.7em; } }
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: 1px; }
 
 .prevnext-pages {
   letter-spacing: 1px; }
@@ -1420,9 +1440,10 @@ code {
         -ms-flex-wrap: nowrap;
             flex-wrap: nowrap; }
   .frontpage .post__content {
-    margin-right: 1.5em; }
+    margin-right: 2em; }
   .frontpage .post__sidebar {
-    min-width: 250px; } }
+    min-width: 250px;
+    font-size: 80%; } }
 .frontpage .front-cover-wrapper {
   vertical-align: middle; }
 .frontpage .author-photo {
