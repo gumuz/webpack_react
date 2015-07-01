@@ -1376,8 +1376,6 @@ code {
 .prevnext__next, .prevnext__prev {
   width: 50; }
 
-.frontpage .front-cover-wrapper {
-  vertical-align: middle; }
 .frontpage .front-text-wrapper {
   margin: 1em;
   max-width: 100%;
@@ -1389,24 +1387,45 @@ code {
   margin-bottom: 0; }
 .frontpage .front-motto {
   margin-top: 0; }
-.frontpage .front-cover {
-  box-shadow: 0 0 1em 0.05em rgba(0, 0, 0, 0.5);
-  margin-top: 1em;
-  margin-bottom: 1 em; }
 .frontpage .front__heading {
   background: #323232;
   text-align: center; }
-.frontpage .author-photo {
-  margin-left: 1em;
-  border-radius: 50px;
-  width: 100px;
-  height: 100px;
-  float: right; }
 .frontpage .react-image {
   margin-left: 1em;
+  margin-right: 1em;
   width: 136px;
   height: 121px;
   float: right; }
+.frontpage .front-cover {
+  width: 255px;
+  box-shadow: 0 0 1em 0.02em rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
+  margin-bottom: 1em; }
+@media screen and (min-width: 1150px) {
+  .frontpage .front-cover {
+    margin-top: 1em; }
+  .frontpage .post--front {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+        -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap; }
+  .frontpage .post__content {
+    margin-right: 1.5em; }
+  .frontpage .post__sidebar {
+    min-width: 250px; } }
+.frontpage .front-cover-wrapper {
+  vertical-align: middle; }
+.frontpage .author-photo {
+  clear: both;
+  float: right;
+  margin-left: 0.5em;
+  border-radius: 50px;
+  width: 100px;
+  height: 100px; }
 
 .nav {
   padding: 0;
