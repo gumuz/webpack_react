@@ -1443,7 +1443,9 @@ code {
     margin-right: 2em; }
   .frontpage .post__sidebar {
     min-width: 250px;
-    font-size: 80%; } }
+    font-size: 80%; }
+    .frontpage .post__sidebar ul > li:before {
+      content: ''; } }
 .frontpage .front-cover-wrapper {
   vertical-align: middle; }
 .frontpage .author-photo {
@@ -1526,7 +1528,15 @@ code {
   color: #ddd; }
 
 .header-anchor-select {
-  margin-left: 0.25em; }
+  opacity: 0;
+  margin-left: 0.25em;
+  -webkit-transition: opacity .25s ease-in-out;
+          transition: opacity .25s ease-in-out; }
+
+h1:hover .header-anchor-select, h2:hover .header-anchor-select, h3:hover .header-anchor-select, h4:hover .header-anchor-select {
+  opacity: 1;
+  -webkit-transition: opacity .25s ease-in-out;
+          transition: opacity .25s ease-in-out; }
 
 .previous-page, .next-page {
   background: white;
