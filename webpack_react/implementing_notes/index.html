@@ -169,7 +169,7 @@ render() {
 }
 </code></pre>
 <p><code>Note</code> keeps track of <em>edited</em> state. We will manipulate that to change the way it is rendered. If we hit <strong>edit</strong>, we&apos;ll trigger edit mode. Once input receives either <em>blur</em> event or Enter key, we&apos;ll finish editing and reset the value. When finishing we also trigger a callback so the app knows to react.</p>
-<p>In order to make that happen we&apos;ll need to define that callback for <code>App</code> like this:</p>
+<blockquote class="tip">It can be a good idea to name your callbacks using <code>on</code> prefix. This will allow you to distinguish them quickly from other props and keep your code a little tidier.</blockquote><p>In order to make that happen we&apos;ll need to define that callback for <code>App</code> like this:</p>
 <p><strong>app/components/App.jsx</strong></p>
 <pre><code class="undefinedjavascript">render() {
   ...
@@ -193,7 +193,7 @@ itemEdited(i, task) {
 <pre><code class="undefinedjavascript">...
 <span class="hljs-tag">&lt;<span class="hljs-title">Note</span>
   <span class="hljs-attribute">value</span>=<span class="hljs-value">{note.task}</span>
-  <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.props.onEdit.bind(this,</span> <span class="hljs-attribute">i</span>)} /&gt;</span>
+  <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.props.onEdit.bind(null,</span> <span class="hljs-attribute">i</span>)} /&gt;</span>
 ...
 </code></pre>
 <p>After these changes you should be able to edit notes.</p>
@@ -250,6 +250,48 @@ itemEdited(i, task) {
 }) {...}
 </code></pre>
 <p>With Flow you can type the most vital parts of your source. You can think it as an executable form of documentation that helps you during development. As with linting it won&apos;t replace tests but it will make it easier to work with the source. See <a href="https://tryflow.org/">Try Flow</a> for more concrete examples.</p>
+<a class="header-anchor" href="#react-component-styles" id="react-component-styles"></a><h2>React Component Styles<a class="header-anchor-select" href="#react-component-styles">#</a></h2>
+<p>Besides ES6 classes React allows you to construct components using <code>React.createClass()</code>. That was the original way to create components and is still in use. The approaches aren&apos;t equivalent by default.</p>
+<p>When you are using <code>React.createClass</code> it is possible to inject functionality to a component using mixins. This isn&apos;t possible in ES6 by default unless you are using a helper such as <a href="https://github.com/brigand/react-mixin">react-mixin</a>. In the next chapter we will go through various alternative approaches that allow you to reach roughly equivalent results as you can achieve with mixins. Often a decorator is all you need.</p>
+<p>In addition ES6 class based components won&apos;t bind their methods to <code>this</code> context by default. This is the reason you saw declarations such as <code>(e) =&gt; ...</code> above. As you may know <code>() =&gt; ...</code> binds the function context by default. It is equivalent to <code>.bind(this)</code>. In case you want automatic binding for ES6 classes you can use a solution such as <a href="https://github.com/andreypopp/autobind-decorator">autobind-decorator</a>.</p>
+<p>The biggest benefit of the class based approach is that it decreases the amount of concepts you have to worry about. Particularly <code>constructor</code> helps to keep things simpler than in <code>React.createClass</code> based approach where you need to define separate methods to achieve the same result.</p>
+<p>In the future it will be possible to use pure function based component definitions but that is not possible as of yet. This approach will likely get introduced with version 0.14 of React.</p>
+<a class="header-anchor" href="#understanding-react-components" id="understanding-react-components"></a><h2>Understanding React Components<a class="header-anchor-select" href="#understanding-react-components">#</a></h2>
+<p>Besides understanding how props and state work it is important to understand the concept of component lifecycle. We already touched it briefly above but it&apos;s a good idea to understand it in more detail. You can achieve most tasks in React by applying these three concepts throughout your application.</p>
+<p>To quote <a href="https://facebook.github.io/react/docs/component-specs.html">the official documentation</a> React provides the following <code>React.createClass</code> specific component specifications:</p>
+<ul>
+<li><code>displayName</code> - It is preferable to set <code>displayName</code> as that will improve debug information. For ES6 classes this is derived automatically based on the class name.</li>
+<li><code>getInitialState()</code> - In class based approach the same can be achieved through <code>constructor</code>.</li>
+<li><code>getDefaultProps()</code> - In classes you can set these in <code>constructor</code>.</li>
+<li><code>propTypes</code> - As seen above you can use Flow to deal with prop types. In <code>React.createClass</code> you would build a complex looking declaration as seen in <a href="https://facebook.github.io/react/docs/reusable-components.html">the propType documentation</a>.</li>
+<li><code>mixins</code> - <code>mixins</code> contains an array of mixins to apply to component.</li>
+<li><code>statics</code> - <code>statics</code> contains static properties and method for a component. In ES6 you would assign them to the class like below:</li>
+</ul>
+<pre><code class="undefinedjavascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Note</span> </span>{
+  render() {
+    ...
+  }
+}
+Note.willTransitionTo = () =&gt; {...};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Note;
+</code></pre>
+<p>Some libraries such as <code>react-dnd</code> rely on static methods to provide transition hooks that allow you to control what happens when a component is shown or hidden. By definition statics are available through class itself as you might guess from the code above.</p>
+<p>Both component types support <code>render()</code>. As seen above this is the workhorse of React. It describes what the component should look like. In case you don&apos;t want to render anything return either <code>null</code> or <code>false</code>.</p>
+<p>In addition React provides the following lifecycle hooks:</p>
+<ul>
+<li><code>componentWillMount()</code> gets triggered once before any rendering. One way to use it would be to load data asynchronously there and force rendering through <code>setState</code>.</li>
+<li><code>componentDidMount()</code> gets triggered after initial rendering. You have access to DOM here. You could use this hook to wrap a jQuery plugin within a component for instance.</li>
+<li><code>componentWillReceiveProps(object nextProps)</code> triggers when component receives new props. You could for instance modify your component state based on the received props.</li>
+<li><code>shouldComponentUpdate(object nextProps, object nextState)</code> allows you to optimize rendering. If you check the props and state and see that there&apos;s no need to update, return <code>false</code>.</li>
+<li><code>componentWillUpdate(object nextProps, object nextState)</code> gets triggered after <code>shouldComponentUpdate</code> and before <code>render()</code>. It is not possible to use <code>setState</code> here but you can set class properties for instance.</li>
+<li><code>componentDidUpdate</code> is triggered after rendering. You can modify DOM here. This can be useful for adapting other code to work with React.</li>
+<li><code>componentWillUnmount</code> is triggered just before a component is unmounted from DOM. This is the ideal place to perform cleanup (ie. remove running timers, custom DOM elements and so on).</li>
+</ul>
+<a class="header-anchor" href="#react-component-conventions" id="react-component-conventions"></a><h2>React Component Conventions<a class="header-anchor-select" href="#react-component-conventions">#</a></h2>
+<p>As seen in the above code I prefer to have <code>constructor</code> first, possible lifecycle hooks then, <code>render()</code> and finally methods used by <code>render()</code>. I like this top-down approach as it makes it straight-forward to follow code. Some prefer to put the methods used by <code>render()</code> before it. There are also various naming conventions. It is possible to use <code>_</code> prefix for event handlers for instance.</p>
+<p>In the end you will have to find conventions you like and that work the best for you. I go more detail in this topic at the linting chapter as I introduce various code quality related tools. It is possible to enforce coding style to some extent for instance.</p>
+<p>This can be useful in a team environment as it decreases the amount of friction when working on code written by others. Even on personal projects having some tools to check out things for you can be useful and lessen the amount and severity of mistakes.</p>
 <a class="header-anchor" href="#conclusion" id="conclusion"></a><h2>Conclusion<a class="header-anchor-select" href="#conclusion">#</a></h2>
 <p>The approach we discussed works up to a point. It is a little ugly but it works. In the next chapter we will clean things up as we introduce Flux architecture and port our application to use it.</p>
 </div><div class="prevnext"><div class="prevnext__prev"><div class="prevnext__bg" style="background-image:url(/images/mainframe.jpg);"></div><span class="prevnext__info">Previous chapter</span><a class="prevnext__link" href="/webpack_react/webpack_and_react">Webpack and React</a></div><div class="prevnext__next"><div class="prevnext__bg" style="background-image:url(/images/delorean.jpg);"></div><span class="prevnext__info">Next chapter</span><a class="prevnext__link" href="/webpack_react/react_and_flux">React and Flux</a></div></div><a class="next-page" href="/webpack_react/react_and_flux">React and Flux</a><a class="previous-page" href="/webpack_react/webpack_and_react">Webpack and React</a></div><div class="header-extra"><a href="https://www.flickr.com/photos/73635318@N00/2663422833">Angela (CC BY-NC-SA)</a></div></div><noscript></noscript></main></div></body></html>

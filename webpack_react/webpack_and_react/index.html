@@ -45,17 +45,13 @@ main();
     React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">App</span> /&gt;</span>, app);
 }
 </span></code></pre>
-<p>This change needs to be taken in count at configuration. Change entry path like this:</p>
-<p><strong>webpack.config.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> common = {
-  entry: [path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app/main.jsx&apos;</span>)]
-  ...
-}
-</code></pre>
-<blockquote class="warning">Avoid rendering directly to <code>document.body</code>. This can cause strange problems with relying on it. Instead give React a little sandbox of its own.</blockquote><a class="header-anchor" href="#setting-up-webpack-and-babel" id="setting-up-webpack-and-babel"></a><h2>Setting Up Webpack and Babel<a class="header-anchor-select" href="#setting-up-webpack-and-babel">#</a></h2>
+<blockquote class="warning">Avoid rendering directly to <code>document.body</code>. This can cause strange problems with relying on it. Instead give React a little sandbox of its own.</blockquote><a class="header-anchor" href="#babel" id="babel"></a><h2>Babel<a class="header-anchor-select" href="#babel">#</a></h2>
 <p><img src="/images/babel.png" alt="Babel"></p>
-<p>In order to make everything work again, we&apos;ll need to tweak our configuration a little. In order to deal with ES6 and JSX, we&apos;ll use <a href="https://www.npmjs.com/package/babel-loader">babel-loader</a>. Babel provides support for the newest JavaScript features and even includes some experimental ones. It is possible to develop custom features of your own against its API. It also works with JSX making it ideal for our purposes.</p>
-<p>Install it using <code>npm i babel-loader --save-dev</code>. In addition add the following loader declaration to the <em>loaders</em> section of your configuration:</p>
+<p><a href="https://babeljs.io/">Babel</a> is one of those projects that has made a big impact on the community. It allows us to use features from the future of JavaScript. It will transform your futuristic code to a format browsers understand. Besides providing functionality it allows you to develop your own language features. In addition it comes with JSX support. That will come in handy here.</p>
+<p>In addition to the standardized ES6 features Babel provides support for certain <a href="https://babeljs.io/docs/usage/experimental/">experimental features</a> from ES7. Some of these might make it to the core language while some might be dropped altogether. The language proposals have been categorized within stages. Stage 0 is a strawman, stage 1 a proposal, stage 2 draft and so on.</p>
+<p>I would be especially careful with stage 0 as if a stage 0 feature you are depending upon goes away you&apos;ll have to rewrite some of your code. But in smaller projects that may be worth the risk. Babel has stage 2 and higher features enabled by default. In our project we&apos;ll enable stage 1 to use decorators and property spreading as they will make our code a little tidier.</p>
+<blockquote class="tip">You can <a href="https://babeljs.io/repl/">try out Babel online</a> to see what kind of code it generates.</blockquote><a class="header-anchor" href="#configuring-babel-loader" id="configuring-babel-loader"></a><h3>Configuring babel-loader<a class="header-anchor-select" href="#configuring-babel-loader">#</a></h3>
+<p>In order to set up Babel for our project we can use <a href="https://www.npmjs.com/package/babel-loader">babel-loader</a>. Install it using <code>npm i babel-loader --save-dev</code>. In addition add the following loader declaration to the <em>loaders</em> section of your configuration:</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> common = {
   ...
@@ -81,7 +77,7 @@ main();
 <blockquote class="tip">We&apos;ll be using certain Stage 1 (proposal) features later on in this book so it&apos;s a good idea to have that set up. It is possible they will receive updates later on. Especially Stage 0 features are subject to change. You can find more information at <a href="https://babeljs.io/docs/usage/experimental/">Babel documentation</a>.</blockquote><p>Webpack traverses <code>[&apos;&apos;, &apos;.webpack.js&apos;, &apos;.web.js&apos;, &apos;.js&apos;]</code> files by default. This will get problematic with our <code>import Note from &apos;./Note&apos;;</code> statement. In order to make it find JSX, we&apos;ll need to add another piece of configuration like this:</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> common = {
-  entry: [path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app/main.jsx&apos;</span>)],
+  entry: [path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app/main&apos;</span>)],
   resolve: {
     extensions: [<span class="hljs-string">&apos;&apos;</span>, <span class="hljs-string">&apos;.js&apos;</span>, <span class="hljs-string">&apos;.jsx&apos;</span>],
   },
@@ -221,7 +217,7 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
   });
 }
 </code></pre>
-<p><strong>lib/dev_server.js</strong></p>
+<blockquote class="tip"><code>webpack/hot/only-dev-server</code> is useful because in case HMR fails for some reason, it allows you to examine the failure reason at browser console. If you want to just refresh the browser in this case use <code>webpack/hot/dev-server</code> instead.</blockquote><p><strong>lib/dev_server.js</strong></p>
 <pre><code class="undefinedjavascript">...
 
 <span class="hljs-keyword">new</span> WebpackDevServer(webpack(config), {

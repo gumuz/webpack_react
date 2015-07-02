@@ -174,7 +174,7 @@ import Lane from <span class="hljs-string">&apos;./Lane&apos;</span>;
             <span class="hljs-attribute">items:</span> () =&gt;</span> NoteStore.getState().notes || [],
           }}
         &gt;
-          <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.noteEdited.bind(this)}</span> /&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.noteEdited}</span> /&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">AltContainer</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
@@ -183,7 +183,7 @@ import Lane from <span class="hljs-string">&apos;./Lane&apos;</span>;
     NoteActions.create(<span class="hljs-string">&apos;New note&apos;</span>);
   }
   noteEdited(id, task) {
-    <span class="hljs-keyword">if</span>(note) {
+    <span class="hljs-keyword">if</span>(task) {
       NoteActions.update({id, task});
     }
     <span class="hljs-keyword">else</span> {
@@ -266,7 +266,7 @@ import Lane from <span class="hljs-string">&apos;./Lane&apos;</span>;
 ...
 
 &lt;Editable className=<span class="hljs-string">&apos;lane-name&apos;</span> value={name}
-  onEdit={<span class="hljs-keyword">this</span>.nameEdited.bind(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">this</span>.props.i)} /&gt;
+  onEdit={<span class="hljs-keyword">this</span>.nameEdited.bind(<span class="hljs-literal">null</span>, <span class="hljs-keyword">this</span>.props.i)} /&gt;
 
 ...
 
@@ -295,11 +295,11 @@ nameEdited(id, name) {
 <pre><code class="undefinedjavascript">...
 
 &lt;Editable className=<span class="hljs-string">&apos;lane-name&apos;</span> value={name}
-  onEdit={<span class="hljs-keyword">this</span>.edited.bind(<span class="hljs-keyword">this</span>, LaneActions, <span class="hljs-string">&apos;name&apos;</span>, <span class="hljs-keyword">this</span>.props.i)} /&gt;
+  onEdit={<span class="hljs-keyword">this</span>.edited.bind(<span class="hljs-literal">null</span>, LaneActions, <span class="hljs-string">&apos;name&apos;</span>, <span class="hljs-keyword">this</span>.props.i)} /&gt;
 
 ...
 
-&lt;Notes onEdit={<span class="hljs-keyword">this</span>.edited.bind(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">this</span>.actions, <span class="hljs-string">&apos;task&apos;</span>)} /&gt;
+&lt;Notes onEdit={<span class="hljs-keyword">this</span>.edited.bind(<span class="hljs-literal">null</span>, <span class="hljs-keyword">this</span>.actions, <span class="hljs-string">&apos;task&apos;</span>)} /&gt;
 
 ...
 

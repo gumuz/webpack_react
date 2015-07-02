@@ -33,7 +33,7 @@ npm init
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;path&apos;</span>);
 
 <span class="hljs-built_in">module</span>.exports = {
-  entry: path.resolve(__dirname, <span class="hljs-string">&apos;app/main.js&apos;</span>),
+  entry: path.resolve(__dirname, <span class="hljs-string">&apos;app/main&apos;</span>),
   output: {
     path: path.resolve(__dirname, <span class="hljs-string">&apos;build&apos;</span>),
     filename: <span class="hljs-string">&apos;bundle.js&apos;</span>,
@@ -51,7 +51,7 @@ npm init
 };
 </code></pre>
 <p><strong>app/main.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> component = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./component.js&apos;</span>);
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> component = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./component&apos;</span>);
 <span class="hljs-keyword">var</span> app = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&apos;div&apos;</span>);
 
 <span class="hljs-built_in">document</span>.body.appendChild(app);

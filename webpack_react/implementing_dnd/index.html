@@ -37,7 +37,7 @@ import Note from &apos;./Note&apos;;
   <span class="hljs-tag">&lt;<span class="hljs-title">Note</span> <span class="hljs-attribute">className</span>=<span class="hljs-value">&apos;note&apos;</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{&apos;note&apos;</span> + <span class="hljs-attribute">i</span>}&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">Editable</span>
       <span class="hljs-attribute">value</span>=<span class="hljs-value">{note.task}</span>
-      <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.props.onEdit.bind(this,</span> <span class="hljs-attribute">i</span>)} /&gt;</span>
+      <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.props.onEdit.bind(null,</span> <span class="hljs-attribute">i</span>)} /&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-title">Note</span>&gt;</span>
 )}<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
 </code></pre>
@@ -152,7 +152,7 @@ import Note from &apos;./Note&apos;;
           key={<span class="hljs-string">&apos;note-&apos;</span> + i} data={note}&gt;
           &lt;Editable
             value={note.task}
-            onEdit={this.props.onEdit.bind(this, i)} /&gt;
+            onEdit={this.props.onEdit.bind(null, i)} /&gt;
         &lt;/Note&gt;
       )}&lt;/ul&gt;
     );
@@ -228,7 +228,7 @@ export default class Notes extends React.Component {
           <span class="hljs-attribute">key</span>=<span class="hljs-value">{&apos;note-&apos;</span> + <span class="hljs-attribute">note.id</span>} <span class="hljs-attribute">data</span>=<span class="hljs-value">{note}</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">Editable</span>
             <span class="hljs-attribute">value</span>=<span class="hljs-value">{note.task}</span>
-            <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.props.onEdit.bind(this,</span> <span class="hljs-attribute">i</span>)} /&gt;</span>
+            <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.props.onEdit.bind(null,</span> <span class="hljs-attribute">i</span>)} /&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">Note</span>&gt;</span>
       )}<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
     );
