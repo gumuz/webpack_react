@@ -80,7 +80,7 @@ render() {
 
   return (
     <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{()</span> =&gt;</span> addItem()}&gt;+<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{()</span> =&gt;</span> this.addItem()}&gt;+<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">items</span>=<span class="hljs-value">{notes}</span> /&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
   );
@@ -90,7 +90,7 @@ addItem() {
 }
 </code></pre>
 <p>Now when you click the button, you should see something at your browser console.</p>
-<a class="header-anchor" href="#connecting-additem-with-data-model" id="connecting-additem-with-data-model"></a><h2>Connecting <code>addItem</code> with Data Model<a class="header-anchor-select" href="#connecting-additem-with-data-model">#</a></h2>
+<blockquote class="tip">Note that <code>() =&gt; ...</code> kind of syntax binds method context to parent. If we used <code>this</code> at <code>addItem</code> instead of being <code>undefined</code> it would point to the class itself.</blockquote><a class="header-anchor" href="#connecting-additem-with-data-model" id="connecting-additem-with-data-model"></a><h2>Connecting <code>addItem</code> with Data Model<a class="header-anchor-select" href="#connecting-additem-with-data-model">#</a></h2>
 <p>Next we will need to connect this with our data model somehow. It is problematic that data is stored within our <code>render</code> method. React provides a concept known as state for this purpose. We can move our data there like this:</p>
 <pre><code class="undefinedjavascript">constructor(props) {
   <span class="hljs-keyword">super</span>(props);
@@ -169,6 +169,8 @@ render() {
 }
 </code></pre>
 <p><code>Note</code> keeps track of <em>edited</em> state. We will manipulate that to change the way it is rendered. If we hit <strong>edit</strong>, we&apos;ll trigger edit mode. Once input receives either <em>blur</em> event or Enter key, we&apos;ll finish editing and reset the value. When finishing we also trigger a callback so the app knows to react.</p>
+<p>We are using <a href="https://github.com/sebmarkbage/ecmascript-rest-spread">ES7 rest spread operator</a> here to keep our props generic. In other words that <code>&lt;div {...props}&gt;</code> sets props as element attributes. In order to avoid injecting <code>value</code> and <code>onEdit</code> I extract them out before doing this. If you want to be explicit about it, you can extract specific props and set them directly (ie. <code>style={style} className={className}</code>).</p>
+<p>The good thing about this approach is that it gives your components some extra flexibility. On the other hand it takes some little extra effort to make sure you don&apos;t end up setting attributes you don&apos;t really need.</p>
 <blockquote class="tip">It can be a good idea to name your callbacks using <code>on</code> prefix. This will allow you to distinguish them quickly from other props and keep your code a little tidier.</blockquote><p>In order to make that happen we&apos;ll need to define that callback for <code>App</code> like this:</p>
 <p><strong>app/components/App.jsx</strong></p>
 <pre><code class="undefinedjavascript">render() {

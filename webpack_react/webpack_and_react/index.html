@@ -106,14 +106,12 @@ index.html  204 bytes          [emitted]
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = merge(common, {
-    ...
     plugins: [
       <span class="hljs-keyword">new</span> webpack.optimize.UglifyJsPlugin({
         compress: {
           warnings: <span class="hljs-literal">false</span>
         },
       }),
-      ...
     ],
   });
 }
@@ -131,12 +129,11 @@ index.html  204 bytes          [emitted]
     + 163 hidden modules
 </code></pre>
 <p>Given it needs to do more work, it took longer. But on the plus side the build is much smaller now.</p>
-<p>We can perform one more step to decrease build size further. React relies on <code>process.env.NODE_ENV</code> based optimizations. If we force it to <code>production</code>, React will get in an optimized manner. This will disable some checks (ie. property type checks) but it will give you a smaller build and improved performance.</p>
+<blockquote class="tip">It is possible to push minification further by enabling variable name mangling. It comes with some extra complexity to worry about but may be worth it when you are pushing for minimal size. See <a href="https://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin">the official documentation</a> for details.</blockquote><p>We can perform one more step to decrease build size further. React relies on <code>process.env.NODE_ENV</code> based optimizations. If we force it to <code>production</code>, React will get in an optimized manner. This will disable some checks (ie. property type checks) but it will give you a smaller build and improved performance.</p>
 <p>In Webpack terms you can add the following snippet to the <code>plugins</code> section of your configuration like this:</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = merge(common, {
-    ...
     plugins: [
       <span class="hljs-keyword">new</span> webpack.DefinePlugin({
         <span class="hljs-string">&apos;process.env&apos;</span>: {
@@ -177,6 +174,7 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
       },
     ],
   },
+  ...
 };
 
 ...
@@ -201,11 +199,10 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = merge(common, {
     entry: [
-      <span class="hljs-string">&apos;webpack-dev-server/client?http://&apos;</span> + IP + <span class="hljs-string">&apos;:&apos;</span> + PORT,
-      <span class="hljs-string">&apos;webpack/hot/only-dev-server&apos;</span>, <span class="hljs-comment">// only-dev-server!</span>
+      <span class="hljs-string">&apos;webpack-dev-server/client?http://0.0.0.0:8080&apos;</span>,
+      <span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>
     ],
     <span class="hljs-built_in">module</span>: {
-      ...
       loaders: [
         {
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
@@ -216,17 +213,6 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
     },
   });
 }
-</code></pre>
-<blockquote class="tip"><code>webpack/hot/only-dev-server</code> is useful because in case HMR fails for some reason, it allows you to examine the failure reason at browser console. If you want to just refresh the browser in this case use <code>webpack/hot/dev-server</code> instead.</blockquote><p><strong>lib/dev_server.js</strong></p>
-<pre><code class="undefinedjavascript">...
-
-<span class="hljs-keyword">new</span> WebpackDevServer(webpack(config), {
-  ...
-  hot: <span class="hljs-literal">true</span>,
-  ...
-}).listen(config.port, config.ip, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
-  ...
-});
 </code></pre>
 <p>Try hitting <code>npm start</code> again and modifying the component. Note what doesn&apos;t happen this time. There&apos;s no flash! It might take a while to sink in but in practice this is a powerful feature. Small things such as this add up and make you more effective.</p>
 <a class="header-anchor" href="#conclusion" id="conclusion"></a><h2>Conclusion<a class="header-anchor-select" href="#conclusion">#</a></h2>
