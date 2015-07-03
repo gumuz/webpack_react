@@ -15,3 +15,8 @@
 
   background-color: #fdfdfd;
 }
+
+.note-dragging {
+  background: #eeaaaa;
+  color: transparent;
+}

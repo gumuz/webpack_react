@@ -382,6 +382,34 @@ In this case we splice an item out of source index and move source to target as 
 
 T> This probably isn't the most effective solution as we'll be performing the check for each lane. But given we'll have likely only a couple of lanes in our system it seems like an acceptable compromise. A more optimized solution would operate using minimal amount of lanes (maximum of two) per operation but that would get more complex to handle.
 
+## Adding a Placeholder for Notes
+
+Normally drag and drop implementations display a placeholder in the place where you would drag. Implementing that is fairly straight-forward. We can rely on `isDragging` prop and then set a CSS class based on that. After that it is a matter of writing a CSS rule. In this case we'll be relying on [classnames](https://www.npmjs.com/package/classnames). It makes operations based on CSS class names easy as we'll see. To get started attach it to the project using `npm i classnames -i`. Below you can find a sample implementation:
+
+
+**app/components/Note.jsx**
+
+```javascript
+...
+import classNames from 'classnames';
+
+...
+
+export default class Note extends React.Component {
+  ...
+  render() {
+    const { isDragging, connectDragSource, connectDropTarget,
+      onMove, data, ...props } = this.props;
+
+    props.className = classNames(props.className, isDragging && 'note-dragging');
+
+    return connectDragSource(connectDropTarget(
+      <li {...props}>{props.children}</li>
+    ));
+  }
+}
+```
+
 ## Conclusion
 
 In this chapter you saw how to implement drag and drop for our little application. You can model sorting for lanes using the same technique. First you mark the lanes to be draggable and droppable, then you sort out their ids and finally you'll add some logic to make it all work together.

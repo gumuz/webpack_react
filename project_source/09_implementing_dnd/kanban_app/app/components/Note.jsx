@@ -1,5 +1,6 @@
 import React from 'react';
 import { DragSource, DropTarget } from 'react-dnd';
+import classNames from 'classnames';
 
 import ItemTypes from './ItemTypes';
 
@@ -16,6 +17,8 @@ const noteTarget = {
     const targetData = props.data || {};
     const sourceProps = monitor.getItem();
     const sourceData = sourceProps.data || {};
+
+    console.log(props.isDragging, Object.keys(monitor));
 
     if(sourceData.id !== targetData.id) {
       props.onMove({
@@ -43,6 +46,10 @@ export default class Note extends React.Component {
   render() {
     const { isDragging, connectDragSource, connectDropTarget,
       onMove, data, ...props } = this.props;
+
+    props.className = classNames(props.className, isDragging && 'note-dragging');
+
+    console.log('is dragging', isDragging);
 
     return connectDragSource(connectDropTarget(
       <li {...props}>{props.children}</li>
