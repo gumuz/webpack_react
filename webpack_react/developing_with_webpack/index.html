@@ -164,8 +164,8 @@
 <p><strong>package.json</strong></p>
 <pre><code class="undefinedjson">...
 <span class="hljs-string">&quot;scripts&quot;</span>: {
-  <span class="hljs-string">&quot;build&quot;</span>: <span class="hljs-string">&quot;webpack&quot;</span>,
-  <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-string">&quot;webpack-dev-server --config webpack.development.js --devtool eval-source --progress --colors --hot&quot;</span>
+  <span class="hljs-string">&quot;build&quot;</span>: <span class="hljs-string">&quot;TARGET=build webpack&quot;</span>,
+  <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-string">&quot;TARGET=dev webpack-dev-server --config webpack.development.js --devtool eval-source --progress --colors --hot&quot;</span>
 },
 ...
 </code></pre>
