@@ -3,31 +3,39 @@
 <p>A good first step would be to extend <code>Note</code> interface. We would probably want to render a list of these. Ideally we should be able to perform basic editing operations over the list and create new items as needed. We&apos;ll probably also want to mark items as done.</p>
 <p>This means <code>App</code> will have to coordinate the state. Let&apos;s start by rendering a list and then expand from there. Here&apos;s sample code for an enhanced <code>render</code> method:</p>
 <p><strong>app/components/App.jsx</strong></p>
-<pre><code class="undefinedjavascript">render() {
-  var notes = [{
-    task: &apos;Learn Webpack&apos;,
-  }, {
-    task: &apos;Learn React&apos;,
-  }, {
-    task: &apos;Do laundry&apos;,
-  }];
+<pre><code class="undefinedjavascript">...
 
-  return (
-    <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>{notes.map((note, i) =&gt;
-        <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{&apos;note&apos;</span> + <span class="hljs-attribute">i</span>}&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">Note</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{note.task}</span> /&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
-      )}<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  );
+export default class App extends React.Component {
+  render() {
+    var notes = [{
+      task: &apos;Learn Webpack&apos;,
+    }, {
+      task: &apos;Learn React&apos;,
+    }, {
+      task: &apos;Do laundry&apos;,
+    }];
+
+    return (
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>{notes.map((note, i) =&gt;
+          <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{&apos;note&apos;</span> + <span class="hljs-attribute">i</span>}&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">Note</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{note.task}</span> /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+        )}<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    );
+  }
 }
 </code></pre>
 <p>We will use a special feature of JSX in form of <code>{}</code>. Within these braces we can mix JavaScript with JSX. In this case we will render a bunch of <code>li</code> elements. Each contains a <code>Note</code>. In order to tell React in which order to render the elements, we&apos;ll set <code>key</code> property for each. It is important that this is unique or otherwise it won&apos;t be able to figure out the correct order.</p>
 <blockquote class="tip">If you want to attach comments to your JSX, just use <code>{/* no comments */}</code>.</blockquote><p>If everything went correctly, you should see a list with three <code>Learn Webpack</code> items on it. That&apos;s almost nice. The problem is that we haven&apos;t taken <code>value</code> property in count at <code>Note</code>. We&apos;ll need to tweak its implementation like this:</p>
 <p><strong>app/components/Note.jsx</strong></p>
-<pre><code class="undefinedjavascript">render() {
-  return <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>{this.props.value}<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>;
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Note</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>Learn Webpack<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>;</span>
+  }
 }
 </code></pre>
 <p>As you can see the property we passed to our component gets mapped to <code>this.props</code>. After that it is just a matter of showing it wherever we like.</p>
@@ -59,64 +67,82 @@ export default class Notes extends React.Component {
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> Notes <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./Notes&apos;</span>;
 
 ...
-render() {
-  ...
 
-  <span class="hljs-keyword">return</span> (
-    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">items</span>=<span class="hljs-value">{notes}</span> /&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  )</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  render() {
+    ...
+
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">items</span>=<span class="hljs-value">{notes}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    )</span>;
+  }
+  ...
 }
-...
 </code></pre>
 <p>Not only this change keeps <code>App</code> cleaner but it also gives us flexibility. If you wanted to have multiple <code>Notes</code> lists, it would be simple now. This is one of the key things to understand about React. You will need to learn to think in terms of components.</p>
 <a class="header-anchor" href="#adding-new-items-to-notes-list" id="adding-new-items-to-notes-list"></a><h2>Adding New Items to Notes list<a class="header-anchor-select" href="#adding-new-items-to-notes-list">#</a></h2>
 <p>It would be useful if we could add new items to our Notes list. Let&apos;s just do a plus button that adds a new dummy item to our list.</p>
 <p>To implement the button, change <code>render</code> method like this:</p>
 <p><strong>app/components/App.jsx</strong></p>
-<pre><code class="undefinedjavascript">render() {
-  ...
+<pre><code class="undefinedjavascript">...
 
-  return (
-    <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{()</span> =&gt;</span> this.addItem()}&gt;+<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">items</span>=<span class="hljs-value">{notes}</span> /&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  );
-}
-addItem() {
-  console.log(&apos;add item&apos;);
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  render() {
+    ...
+
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{()</span> =&gt;</span> this.addItem()}&gt;+<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">items</span>=<span class="hljs-value">{notes}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    )</span>;
+  }
+  addItem() {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;add item&apos;</span>);
+  }
 }
 </code></pre>
 <p>Now when you click the button, you should see something at your browser console.</p>
 <blockquote class="tip">Note that <code>() =&gt; ...</code> kind of syntax binds method context to parent. If we used <code>this</code> at <code>addItem</code> instead of being <code>undefined</code> it would point to the class itself.</blockquote><a class="header-anchor" href="#connecting-additem-with-data-model" id="connecting-additem-with-data-model"></a><h2>Connecting <code>addItem</code> with Data Model<a class="header-anchor-select" href="#connecting-additem-with-data-model">#</a></h2>
 <p>Next we will need to connect this with our data model somehow. It is problematic that data is stored within our <code>render</code> method. React provides a concept known as state for this purpose. We can move our data there like this:</p>
-<pre><code class="undefinedjavascript">constructor(props) {
-  <span class="hljs-keyword">super</span>(props);
+<p><strong>app/components/App.jsx</strong></p>
+<pre><code class="undefinedjavascript">...
 
-  <span class="hljs-keyword">this</span>.state = {
-    notes: [{
-      task: <span class="hljs-string">&apos;Learn Webpack&apos;</span>,
-    }, {
-      task: <span class="hljs-string">&apos;Learn React&apos;</span>,
-    }, {
-      task: <span class="hljs-string">&apos;Do laundry&apos;</span>,
-    }],
-  };
-}
-render() {
-  <span class="hljs-keyword">var</span> notes = <span class="hljs-keyword">this</span>.state.notes;
-  ...
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  constructor(props) {
+    <span class="hljs-keyword">super</span>(props);
+
+    <span class="hljs-keyword">this</span>.state = {
+      notes: [{
+        task: <span class="hljs-string">&apos;Learn Webpack&apos;</span>,
+      }, {
+        task: <span class="hljs-string">&apos;Learn React&apos;</span>,
+      }, {
+        task: <span class="hljs-string">&apos;Do laundry&apos;</span>,
+      }],
+    };
+  }
+  render() {
+    <span class="hljs-keyword">var</span> notes = <span class="hljs-keyword">this</span>.state.notes;
+    ...
+  }
 }
 </code></pre>
 <p>Now our <code>render</code> method points at <code>state</code>. As a result we can implement <code>addItem</code> that actually does something useful:</p>
-<pre><code class="undefinedjavascript">addItem() {
-  <span class="hljs-keyword">this</span>.setState({
-    notes: <span class="hljs-keyword">this</span>.state.notes.concat([{
-      task: <span class="hljs-string">&apos;New task&apos;</span>,
-    }])
-  });
+<p><strong>app/components/App.jsx</strong></p>
+<pre><code class="undefinedjavascript">...
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  ...
+  addItem() {
+    <span class="hljs-keyword">this</span>.setState({
+      notes: <span class="hljs-keyword">this</span>.state.notes.concat([{
+        task: <span class="hljs-string">&apos;New task&apos;</span>,
+      }])
+    });
+  }
 }
 </code></pre>
 <p>If you hit the button now, you should see new items. It might not be pretty yet but it works.</p>
@@ -173,48 +199,70 @@ render() {
 <p>The good thing about this approach is that it gives your components some extra flexibility. On the other hand it takes some little extra effort to make sure you don&apos;t end up setting attributes you don&apos;t really need.</p>
 <blockquote class="tip">It can be a good idea to name your callbacks using <code>on</code> prefix. This will allow you to distinguish them quickly from other props and keep your code a little tidier.</blockquote><p>In order to make that happen we&apos;ll need to define that callback for <code>App</code> like this:</p>
 <p><strong>app/components/App.jsx</strong></p>
-<pre><code class="undefinedjavascript">render() {
-  ...
-  &lt;Notes
-    items={notes}
-    onEdit={(i, task) =&gt; <span class="hljs-keyword">this</span>.itemEdited(i, task)} /&gt;
-  ...
-}
-itemEdited(i, task) {
-  <span class="hljs-keyword">var</span> notes = <span class="hljs-keyword">this</span>.state.notes;
+<pre><code class="undefinedjavascript">...
 
-  notes[i].task = task;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  render() {
+    ...
+    &lt;Notes
+      items={notes}
+      onEdit={(i, task) =&gt; <span class="hljs-keyword">this</span>.itemEdited(i, task)} /&gt;
+    ...
+  }
+  itemEdited(i, task) {
+    <span class="hljs-keyword">var</span> notes = <span class="hljs-keyword">this</span>.state.notes;
 
-  <span class="hljs-keyword">this</span>.setState({
-    notes: notes,
-  });
+    notes[i].task = task;
+
+    <span class="hljs-keyword">this</span>.setState({
+      notes: notes,
+    });
+  }
 }
 </code></pre>
 <p>We also need to tweak <code>Notes</code> like this:</p>
 <p><strong>app/components/Notes.jsx</strong></p>
 <pre><code class="undefinedjavascript">...
-<span class="hljs-tag">&lt;<span class="hljs-title">Note</span>
-  <span class="hljs-attribute">value</span>=<span class="hljs-value">{note.task}</span>
-  <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.props.onEdit.bind(null,</span> <span class="hljs-attribute">i</span>)} /&gt;</span>
-...
+
+export default class Notes extends React.Component {
+render() {
+  var notes = this.props.items;
+
+  return (
+    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">className</span>=<span class="hljs-value">&apos;notes&apos;</span>&gt;</span>{notes.map((note, i) =&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">className</span>=<span class="hljs-value">&apos;note&apos;</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{&apos;note&apos;</span> + <span class="hljs-attribute">i</span>}&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Note</span>
+          <span class="hljs-attribute">value</span>=<span class="hljs-value">{note.task}</span>
+          <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.props.onEdit.bind(null,</span> <span class="hljs-attribute">i</span>)} /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+    )}<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+  );
+}
+}
 </code></pre>
 <p>After these changes you should be able to edit notes.</p>
 <a class="header-anchor" href="#removing-notes" id="removing-notes"></a><h2>Removing Notes<a class="header-anchor-select" href="#removing-notes">#</a></h2>
 <p>We are still missing one vital functionality. It would be nice to be able to remove notes. We can achieve this easily by extending edit.</p>
 <p>In case we empty a task, it would make sense to remove it. You can give it a go yourself or follow the example below. It is just a matter of modifying state.</p>
-<pre><code class="undefinedjavascript">itemEdited(i, task) {
-  <span class="hljs-keyword">var</span> notes = <span class="hljs-keyword">this</span>.state.notes;
+<p><strong>app/components/App.jsx</strong></p>
+<pre><code class="undefinedjavascript">...
 
-  <span class="hljs-keyword">if</span>(task) {
-    notes[i].task = task;
-  }
-  <span class="hljs-keyword">else</span> {
-    notes = notes.slice(<span class="hljs-number">0</span>, i).concat(notes.slice(i + <span class="hljs-number">1</span>));
-  }
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  ...
+  itemEdited(i, task) {
+    <span class="hljs-keyword">var</span> notes = <span class="hljs-keyword">this</span>.state.notes;
 
-  <span class="hljs-keyword">this</span>.setState({
-    notes: notes,
-  });
+    <span class="hljs-keyword">if</span>(task) {
+      notes[i].task = task;
+    }
+    <span class="hljs-keyword">else</span> {
+      notes = notes.slice(<span class="hljs-number">0</span>, i).concat(notes.slice(i + <span class="hljs-number">1</span>));
+    }
+
+    <span class="hljs-keyword">this</span>.setState({
+      notes: notes,
+    });
+  }
 }
 </code></pre>
 <p>An alternative way would have been to render some sort of button for removing an item. When pressed it would have triggered similar logic. If you feel like it, give it a go. Just have something like <code>&lt;button onClick={(i) =&gt; this.removeItem(i)}&gt;-&lt;/button&gt;</code> there, delete based on index and update state.</p>

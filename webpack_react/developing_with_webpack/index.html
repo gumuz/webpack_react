@@ -53,7 +53,7 @@
 
 <span class="hljs-built_in">module</span>.exports = {
   entry: [
-    <span class="hljs-string">&apos;webpack-dev-server/client?http://0.0.0.0:8080&apos;</span>,
+    <span class="hljs-string">&apos;webpack-dev-server/client?http://localhost:8080&apos;</span>,
     <span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>,
     path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app/main&apos;</span>),
   ],
@@ -121,7 +121,7 @@
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = merge(common, {
     entry: [
-      <span class="hljs-string">&apos;webpack-dev-server/client?http://0.0.0.0:8080&apos;</span>,
+      <span class="hljs-string">&apos;webpack-dev-server/client?http://localhost:8080&apos;</span>,
       <span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>
     ]
   });
@@ -165,7 +165,7 @@
 <pre><code class="undefinedjson">...
 <span class="hljs-string">&quot;scripts&quot;</span>: {
   <span class="hljs-string">&quot;build&quot;</span>: <span class="hljs-string">&quot;TARGET=build webpack&quot;</span>,
-  <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-string">&quot;TARGET=dev webpack-dev-server --config webpack.development.js --devtool eval-source --progress --colors --hot&quot;</span>
+  <span class="hljs-string">&quot;start&quot;</span>: <span class="hljs-string">&quot;TARGET=dev webpack-dev-server --devtool eval-source --progress --colors --hot&quot;</span>
 },
 ...
 </code></pre>
