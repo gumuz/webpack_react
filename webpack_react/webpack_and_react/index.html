@@ -6,46 +6,6 @@
 <p>Even if React isn&apos;t the smallest library out there it does manage to solve some serious problems. It is a pleasure to develop with thanks to its relative simplicity and powerful API. You will need to complement with a set of tools but you can pick these based on actual need. It&apos;s far from a &quot;one size fits all&quot; type of solution which frameworks tend to be.</p>
 <p>The approach used by React allowed Facebook to develop React Native on top of the same ideas. This time instead of DOM, we are operating on mobile platform rendering. React Native provides abstraction over components and layout system while providing you the setup you already know from the web. It can be seen as a gateway for web developers wanting to develop performant mobile applications.</p>
 <p>Webpack and React work well together. By now we understand how to set up a simple project. We can extend it to work with React easily. Before we get to implement anything serious, it&apos;s a good idea to make sure we have a decent development environment. That will make everything so much easier.</p>
-<a class="header-anchor" href="#installing-react" id="installing-react"></a><h2>Installing React<a class="header-anchor-select" href="#installing-react">#</a></h2>
-<p>To get started install React to your project. Just hit <code>npm i react --save</code> and you should be set. As a next step we could port our <strong>app/component.js</strong> to React. Provided we use ES6 module and class syntax and JSX, we can go with a solution like this:</p>
-<p><strong>app/components/App.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
-<span class="hljs-keyword">import</span> Note <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./Note&apos;</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-  render() {
-    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Note</span> /&gt;</span>;</span>
-  }
-}
-</code></pre>
-<p><code>App</code> will work as an entry point to our application. Later on it will orchestrate logic etc.</p>
-<p>We also need to define that <code>Note</code> component:</p>
-<p><strong>app/components/Note.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Note</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
-  render() {
-    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>Learn Webpack<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>;</span>
-  }
-}
-</code></pre>
-<blockquote class="tip">Note that we&apos;re using <em>jsx</em> extension here to tell modules using JSX syntax apart from regular ones. This is a good convention to have.</blockquote><p>In addition we&apos;ll need to adjust our <code>main.js</code> to render the component correctly. Note that I&apos;ve renamed it as <code>main.jsx</code> given we have JSX content there. Here&apos;s one solution:</p>
-<p><strong>app/main.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> <span class="hljs-string">&apos;./stylesheets/main.css&apos;</span>;
-
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
-<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./components/App&apos;</span>;
-
-main();
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">var</span> app = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&apos;div&apos;</span>);
-    <span class="hljs-built_in">document</span>.body.appendChild(app);
-
-    React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">App</span> /&gt;</span>, app);
-}
-</span></code></pre>
-<blockquote class="warning">Avoid rendering directly to <code>document.body</code>. This can cause strange problems with relying on it. Instead give React a little sandbox of its own.</blockquote><p>Given our code is relying on JSX our project won&apos;t build yet. We&apos;ll need to do some extra configuration work. For this purpose we&apos;ll be setting up Babel.</p>
 <a class="header-anchor" href="#babel" id="babel"></a><h2>Babel<a class="header-anchor-select" href="#babel">#</a></h2>
 <p><img src="/images/babel.png" alt="Babel"></p>
 <p><a href="https://babeljs.io/">Babel</a> is one of those projects that has made a big impact on the community. It allows us to use features from the future of JavaScript. It will transform your futuristic code to a format browsers understand. Besides providing functionality it allows you to develop your own language features. In addition it comes with JSX support. That will come in handy here.</p>
@@ -85,7 +45,46 @@ main();
   ...
 };
 </code></pre>
-<p>If you hit <code>npm run build</code> now, you should get some output after a while. Here&apos;s a sample:</p>
+<a class="header-anchor" href="#installing-react" id="installing-react"></a><h2>Installing React<a class="header-anchor-select" href="#installing-react">#</a></h2>
+<p>To get started install React to your project. Just hit <code>npm i react --save</code> and you should be set. As a next step we could port our <strong>app/component.js</strong> to React. Provided we use ES6 module and class syntax and JSX, we can go with a solution like this:</p>
+<p><strong>app/components/App.jsx</strong></p>
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
+<span class="hljs-keyword">import</span> Note <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./Note&apos;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Note</span> /&gt;</span>;</span>
+  }
+}
+</code></pre>
+<p><code>App</code> will work as an entry point to our application. Later on it will orchestrate logic etc.</p>
+<p>We also need to define that <code>Note</code> component:</p>
+<p><strong>app/components/Note.jsx</strong></p>
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Note</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>Learn Webpack<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>;</span>
+  }
+}
+</code></pre>
+<blockquote class="tip">Note that we&apos;re using <em>jsx</em> extension here to tell modules using JSX syntax apart from regular ones. This is a good convention to have.</blockquote><p>In addition we&apos;ll need to adjust our <code>main.js</code> to render the component correctly. Note that I&apos;ve renamed it as <code>main.jsx</code> given we have JSX content there. Here&apos;s one solution:</p>
+<p><strong>app/main.jsx</strong></p>
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> <span class="hljs-string">&apos;./stylesheets/main.css&apos;</span>;
+
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
+<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./components/App&apos;</span>;
+
+main();
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> app = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&apos;div&apos;</span>);
+    <span class="hljs-built_in">document</span>.body.appendChild(app);
+
+    React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">App</span> /&gt;</span>, app);
+}
+</span></code></pre>
+<blockquote class="warning">Avoid rendering directly to <code>document.body</code>. This can cause strange problems with relying on it. Instead give React a little sandbox of its own.</blockquote><p>If you hit <code>npm run build</code> now, you should get some output after a while. Here&apos;s a sample:</p>
 <pre><code class="undefinedbash">&gt; TARGET=build webpack
 
 Hash: e528fefc32654263da5f
