@@ -157,6 +157,8 @@
   constructor(props) {
     <span class="hljs-keyword">super</span>(props);
 
+    <span class="hljs-keyword">this</span>.storeChanged = <span class="hljs-keyword">this</span>.storeChanged.bind(<span class="hljs-keyword">this</span>);
+
     NoteActions.init(storage.get(<span class="hljs-string">&apos;notes&apos;</span>));
     <span class="hljs-keyword">this</span>.state = NoteStore.getState();
   }
