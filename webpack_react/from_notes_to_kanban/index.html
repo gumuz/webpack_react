@@ -197,7 +197,9 @@ import Lane from <span class="hljs-string">&apos;./Lane&apos;</span>;
 <a class="header-anchor" href="#going-from-note-singletons-to-instances" id="going-from-note-singletons-to-instances"></a><h2>Going from Note Singletons to Instances<a class="header-anchor-select" href="#going-from-note-singletons-to-instances">#</a></h2>
 <p>A good first step towards getting rid of our Note singletons is to make our <code>NoteStore</code> more generic. We simply need to remove its direct dependency on Alt. Consider the code below:</p>
 <p><strong>app/stores/NoteStore.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NoteStore</span> </span>{
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> _ <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;lodash&apos;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NoteStore</span> </span>{
   constructor(actions: <span class="hljs-built_in">Object</span>) {
     <span class="hljs-keyword">this</span>.bindActions(actions);
   }

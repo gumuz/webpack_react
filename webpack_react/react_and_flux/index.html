@@ -163,8 +163,8 @@
     <span class="hljs-keyword">this</span>.state = NoteStore.getState();
   }
   ...
-  storeChanged(d) {
-    storage.set(<span class="hljs-string">&apos;notes&apos;</span>, d);
+  storeChanged(state) {
+    storage.set(<span class="hljs-string">&apos;notes&apos;</span>, state);
 
     <span class="hljs-keyword">this</span>.setState(NoteStore.getState());
   }
@@ -172,20 +172,26 @@
 }
 </code></pre>
 <p>The idea is that when the application is initialized, we&apos;ll read <code>localStorage</code> and initialize Store state using it. If the Store gets changed, we&apos;ll write the changes to <code>localStorage</code>. For this to work we&apos;ll need to tweak Actions and Store slightly.</p>
+<p>As we&apos;ll be relying on <code>lodash</code> for certain utilities here, hit <code>npm lodash --save</code> to add it to the project.</p>
 <p><strong>app/actions/NoteActions.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> alt <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../libs/alt&apos;</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> alt.generateActions(<span class="hljs-string">&apos;init&apos;</span>, <span class="hljs-string">&apos;create&apos;</span>, <span class="hljs-string">&apos;update&apos;</span>, <span class="hljs-string">&apos;remove&apos;</span>);
 </code></pre>
 <p><strong>app/stores/NoteStore.js</strong></p>
-<pre><code class="undefinedjavascript">...
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> _ <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;lodash&apos;</span>;
+...
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NoteStore</span> </span>{
   constructor() {
     <span class="hljs-keyword">this</span>.bindActions(NoteActions);
+
+    <span class="hljs-keyword">this</span>.notes = [];
   }
   init(data) {
-    <span class="hljs-keyword">this</span>.setState(data || {notes: []});
+    <span class="hljs-keyword">var</span> d = _.isArray(_.get(data, <span class="hljs-string">&apos;notes&apos;</span>)) ? data : {notes: []};
+
+    <span class="hljs-keyword">this</span>.setState(d);
   }
   ...
 }
@@ -245,7 +251,7 @@
 <p>As you can see it is a component that triggers the decorator and renders the component we pass to it. We have more code than earlier but we have factored it better. If you want to persist some other component, it is simple now.</p>
 <p>Given it can be useful to be able to disable the behavior temporarily, I built an escape hatch. In case you hit <code>localStorage.setItem(&apos;debug&apos;, true)</code> at browser console, the behavior gets disabled. Set it back to <code>false</code> in order to enable it again. If you want to clear whole <code>localStorage</code> for some reason, you can just hit <code>localStorage.clear()</code>.</p>
 <blockquote class="tip">The implementation of <code>persist</code> could be pushed further using <code>alt.takeSnapshot</code> and <code>alt.bootstrap</code> functions. That would allow us to implement a generic version for the whole application should we want to.</blockquote><blockquote class="warning">Our <code>persist</code> implementation isn&apos;t without its flaws. It is easy to end up in a situation where <code>localStorage</code> contains invalid data due to changes made to the data model. This brings you to the world of database schemas and migrations. There are no easy solutions. Regardless this is something to keep in mind when developing something more sophisticated. The lesson here is that the more you inject state to your application, the more complicated it gets.</blockquote><blockquote class="warning">Another to keep in mind is that <code>beforeunload</code> doesn&apos;t get triggered in case something catastrophic happens (ie. browser crashes). Therefore it could be justified to trigger <code>storage.set</code> on each change.</blockquote><a class="header-anchor" href="#pushing-connection-to-a-hoc" id="pushing-connection-to-a-hoc"></a><h3>Pushing Connection to a HOC<a class="header-anchor-select" href="#pushing-connection-to-a-hoc">#</a></h3>
-<p>We can implement a decorator for connecting a component to a Store as well. Here&apos;s a example:</p>
+<p>We can implement a decorator for connecting a component to a Store as well. Here&apos;s an example:</p>
 <p><strong>app/decorators/connect.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
 
@@ -256,8 +262,7 @@
 
       <span class="hljs-keyword">this</span>.storeChanged = <span class="hljs-keyword">this</span>.storeChanged.bind(<span class="hljs-keyword">this</span>);
       <span class="hljs-keyword">this</span>.state = store.getState();
-    }
-    componentDidMount() {
+
       store.listen(<span class="hljs-keyword">this</span>.storeChanged);
     }
     componentWillUnmount() {
@@ -274,7 +279,8 @@
 </code></pre>
 <p>You can connect it with <code>App</code> like this:</p>
 <p><strong>app/components/App.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> connect <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../decorators/connect&apos;</span>;
+<pre><code class="undefinedjavascript">...
+<span class="hljs-keyword">import</span> connect <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../decorators/connect&apos;</span>;
 
 ...
 
@@ -283,7 +289,22 @@
     notes: <span class="hljs-built_in">Array</span>;
   }) {
     <span class="hljs-keyword">super</span>(props);
+
+    NoteActions.init(storage.get(noteStorageName));
   }
+  <span class="hljs-comment">/*
+  These lines can be eliminated now!
+
+  componentDidMount() {
+    NoteStore.listen(this.storeChanged);
+  }
+  componentWillUnmount() {
+    NoteStore.unlisten(this.storeChanged);
+  }
+  storeChanged() {
+    this.setState(NoteStore.getState());
+  }
+  */</span>
   render() {
     <span class="hljs-keyword">var</span> notes = <span class="hljs-keyword">this</span>.props.notes;
 
@@ -303,27 +324,12 @@
 <a class="header-anchor" href="#converting-hocs-to-decorators" id="converting-hocs-to-decorators"></a><h2>Converting HOCs to Decorators<a class="header-anchor-select" href="#converting-hocs-to-decorators">#</a></h2>
 <p>If you have used languages such as Java or Python before you might be familiar with the concept of decorators. They are syntactical sugar that allow us to wrap classes and functions. They just provide a nicer syntax for HOCs essentially.</p>
 <p>There is a <a href="https://github.com/wycats/javascript-decorators">Stage 1 decorator proposal</a> for JavaScript. We&apos;ll be using that. There are a couple of tooling related gotchas we should patch before moving further.</p>
-<p>By definition a decorator is simply a function that returns a function. For instance invocation of our <code>persist</code> decorator could look like <code>persist(NoteActions.init, NoteStore, storage, &apos;notes&apos;)(App)</code> without using the decorator syntax (<code>@persist(NoteActions.init, ...)</code>).</p>
+<p>By definition a decorator is simply a function that returns a function. For instance invocation of our <code>persist</code> decorator could look like <code>persist(storage, noteStorageName, () =&gt; NoteStore.getState())(App)</code> without using the decorator syntax (<code>@persist(storage, ...)</code>).</p>
 <a class="header-anchor" href="#patching-tools-to-work-with-decorators" id="patching-tools-to-work-with-decorators"></a><h3>Patching Tools to Work with Decorators<a class="header-anchor-select" href="#patching-tools-to-work-with-decorators">#</a></h3>
 <p><img src="/images/flowcheck.png" alt="Flowcheck"></p>
 <p>As we&apos;ll be relying on decorators and still like to use Flowcheck, we&apos;ll need to tweak configuration a little bit:</p>
 <p><strong>webpack.config.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = merge(common, {
-    <span class="hljs-built_in">module</span>: {
-      loaders: [
-        {
-          test: <span class="hljs-regexp">/\.jsx?$/</span>,
-          loader: <span class="hljs-string">&apos;babel?stage=1&apos;</span>,
-          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
-        }
-      ]
-    },
-    ...
-  });
-}
-
-<span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = merge(common, {
     ...
     <span class="hljs-built_in">module</span>: {
@@ -333,16 +339,16 @@
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
           loaders: [<span class="hljs-string">&apos;react-hot&apos;</span>, <span class="hljs-string">&apos;babel&apos;</span>, <span class="hljs-string">&apos;flowcheck&apos;</span>, <span class="hljs-string">&apos;babel?stage=1&amp;blacklist=flow&apos;</span>],
           include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
-        }
-      ]
+        },
+      ],
       ...
-    }
+    },
     ...
   });
 }
 </code></pre>
 <p>In effect we&apos;re letting Babel process everything except Flow parts before passing the output to Flowcheck. After the check has completed, we&apos;ll deal with the rest. This is bit of a hack that will hopefully go away sometime in the future as technology becomes more robust.</p>
-<blockquote class="tip">Another way to deal with Babel configuration would be to define a <a href="https://babeljs.io/docs/usage/babelrc/">.babelrc</a> file in the project root. It would contain default settings used by Babel. It&apos;s the same idea as for ESLint and many other tools.</blockquote><a class="header-anchor" href="#adding-decorator-wrappers" id="adding-decorator-wrappers"></a><h3>Adding Decorator Wrappers<a class="header-anchor-select" href="#adding-decorator-wrappers">#</a></h3>
+<a class="header-anchor" href="#adding-decorator-wrappers" id="adding-decorator-wrappers"></a><h3>Adding Decorator Wrappers<a class="header-anchor-select" href="#adding-decorator-wrappers">#</a></h3>
 <p>In order to port our HOCs to be able to use decorator syntax, we&apos;ll need to tweak our current implementation a little bit.</p>
 <p><strong>app/decorators/connect.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
@@ -370,7 +376,7 @@
 <p><strong>app/components/App.jsx</strong></p>
 <pre><code class="undefinedjavascript">...
 
-@persist(noteStorageName, () =&gt; NoteStore.getState())
+@persist(storage, noteStorageName, () =&gt; NoteStore.getState())
 @connect(NoteStore)
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   ...
@@ -419,5 +425,4 @@
 <p>As you can see an <code>AltContainer</code> provides us even more control. It can connect multiple stores at once. We also have control over how their contents are mapped to the props of the components the wrapper contains.</p>
 <a class="header-anchor" href="#conclusion" id="conclusion"></a><h2>Conclusion<a class="header-anchor-select" href="#conclusion">#</a></h2>
 <p>In this chapter you saw how to port our simple application to use Flux architecture. Initially it might seem like a lot of extra code. Flux isn&apos;t about minimizing the amount of code written. It is about making it understandable. Now that we have a clear separation between Actions, Stores and Views, it is much easier to navigate around and see what triggers what behavior.</p>
-<p>Next we will expand our application into a Kanban board. In the process you will learn something about functional lenses and a library known as baobab.</p>
 </div><div class="prevnext"><div class="prevnext__prev"><div class="prevnext__bg" style="background-image:url(/images/notes.jpg);"></div><span class="prevnext__info">Previous chapter</span><a class="prevnext__link" href="/webpack_react/implementing_notes">Implementing a Basic Note App</a></div><div class="prevnext__next"><div class="prevnext__bg" style="background-image:url(/images/kanban_photo.jpg);"></div><span class="prevnext__info">Next chapter</span><a class="prevnext__link" href="/webpack_react/from_notes_to_kanban">From Notes to Kanban</a></div></div><a class="next-page" href="/webpack_react/from_notes_to_kanban">From Notes to Kanban</a><a class="previous-page" href="/webpack_react/implementing_notes">Implementing a Basic Note App</a></div><div class="header-extra"><a href="https://www.flickr.com/photos/126433814@N04/16298563416">jeremyg3030 (CC BY)</a></div></div><noscript></noscript></main></div></body></html>

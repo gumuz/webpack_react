@@ -167,7 +167,8 @@ import Note from &apos;./Note&apos;;
 <p>One of the simplest ways to generate unique ids is simply to use an UUID generator. Hit <code>npm i node-uuid --save</code> to add one to our project. There are more possible approaches listed at <a href="https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript">a Stackoverflow question about the topic</a> but this will do fine for our purposes.</p>
 <p>Next we&apos;ll need to tweak our <code>Notes</code> to contain these ids. This is logic that should go to <code>NoteStore</code> as follows.</p>
 <p><strong>app/stores/NoteStore.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> uuid <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;node-uuid&apos;</span>;
+<pre><code class="undefinedjavascript">...
+<span class="hljs-keyword">import</span> uuid <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;node-uuid&apos;</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NoteStore</span> </span>{
   ...
@@ -188,7 +189,9 @@ import Note from &apos;./Note&apos;;
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NoteStore</span> </span>{
   ...
   init(data) {
-    <span class="hljs-keyword">this</span>.setState(data ? migrate(data) : {notes: []});
+    <span class="hljs-keyword">var</span> d = _.isArray(_.get(data, <span class="hljs-string">&apos;notes&apos;</span>)) ? migrate(data) : {notes: []};
+
+    <span class="hljs-keyword">this</span>.setState(d);
   }
   ...
 }
@@ -257,7 +260,8 @@ export default class Notes extends React.Component {
 </code></pre>
 <p>If you drag and drop a <code>Note</code> now, you should see each <code>NoteStore</code> trigger. Next we&apos;ll need to add some logic to make this work.</p>
 <p><strong>app/stores/NoteStore.jsx</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> update <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react/lib/update&apos;</span>;
+<pre><code class="undefinedjavascript">...
+<span class="hljs-keyword">import</span> update <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react/lib/update&apos;</span>;
 
 ...
 
