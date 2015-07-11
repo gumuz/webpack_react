@@ -2,7 +2,7 @@
 <p>So far we have managed to set up a nice little development environment and develop an application for keeping track of notes in <code>localStorage</code>. We still have work to do in order to turn this into a real Kanban as pictured above.</p>
 <p>Most importantly our system is missing the concept of Lane. A Lane is something that should be able to contain multiple Notes within itself. In the current system that is implicit. We&apos;ll need to extract that into a component of its own.</p>
 <a class="header-anchor" href="#extracting-lanes-" id="extracting-lanes-"></a><h2>Extracting <code>Lanes</code><a class="header-anchor-select" href="#extracting-lanes-">#</a></h2>
-<p>As earlier we can use the same idea of two components here. There will be a component for higher level (ie. <code>Lanes</code>) and for lower level (ie. <code>Lane</code>). The higher level component will deal with aspects such as persistency and lane ordering. An individual <code>Lane</code> will just render its contents (ie. name and <code>Notes</code>) and provide basic manipulation operations as needed.</p>
+<p>As earlier we can use the same idea of two components here. There will be a component for higher level (i.e. <code>Lanes</code>) and for lower level (i.e. <code>Lane</code>). The higher level component will deal with aspects such as persistency and lane ordering. An individual <code>Lane</code> will just render its contents (i.e. name and <code>Notes</code>) and provide basic manipulation operations as needed.</p>
 <p>As a first step we will need to make some room for <code>Lanes</code> at our <code>App</code> level. Consider the example below:</p>
 <p><strong>app/components/App.jsx</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> AltContainer <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;alt/AltContainer&apos;</span>;
@@ -257,7 +257,7 @@ import Lane from <span class="hljs-string">&apos;./Lane&apos;</span>;
 </code></pre>
 <p>Now we have something that mostly works. We have separate lanes, you can add new notes to them and modify/remote them. There are still a few bits we&apos;re missing. Namely lane name editing and lane removal. Let&apos;s get those done next.</p>
 <a class="header-anchor" href="#implementing-edit-remove-for-lane-" id="implementing-edit-remove-for-lane-"></a><h2>Implementing Edit/Remove for <code>Lane</code><a class="header-anchor-select" href="#implementing-edit-remove-for-lane-">#</a></h2>
-<p>We can follow the same idea as for <code>Note</code> here. Ie. if you click <code>Lane</code> name, it should become editable. In case the new name is empty, we&apos;ll simply remove it. Given it&apos;s the same behavior we can extract it from <code>Note</code> and then reuse at <code>Lane</code>.</p>
+<p>We can follow the same idea as for <code>Note</code> here. I.e. if you click <code>Lane</code> name, it should become editable. In case the new name is empty, we&apos;ll simply remove it. Given it&apos;s the same behavior we can extract it from <code>Note</code> and then reuse at <code>Lane</code>.</p>
 <p>Given <code>Note</code> already contains some of the logic we need, we can generalize the component. Simply rename <code>Note.jsx</code> as <code>Editable.jsx</code>. Make <code>Notes.jsx</code> point at <code>Editable</code> instead of <code>Note</code>.</p>
 <p>Next we should replace <code>Lane</code> name to be rendered through <code>Editable</code>:</p>
 <p><strong>app/components/Lane.jsx</strong></p>
@@ -276,7 +276,7 @@ nameEdited(id, name) {
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;edited lane name&apos;</span>, id, name);
 }
 </code></pre>
-<p>If you try to edit a lane name now, you should see a console print. We still need some logic (ie. actions and store tweaks) to make this work. A good starting point is to sketch out the component level logic:</p>
+<p>If you try to edit a lane name now, you should see a console print. We still need some logic (i.e. actions and store tweaks) to make this work. A good starting point is to sketch out the component level logic:</p>
 <p><strong>app/components/Lane.jsx</strong></p>
 <pre><code class="undefinedjavascript">...
 <span class="hljs-keyword">import</span> LaneActions <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../actions/LaneActions&apos;</span>;
