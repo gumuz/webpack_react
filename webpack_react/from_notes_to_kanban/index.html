@@ -29,7 +29,7 @@
         <span class="hljs-tag">&lt;<span class="hljs-title">AltContainer</span>
           <span class="hljs-attribute">stores</span>=<span class="hljs-value">{[LaneStore]}</span>
           <span class="hljs-attribute">inject</span>=<span class="hljs-value">{</span> {
-            <span class="hljs-attribute">items:</span> () =&gt;</span> LaneStore.getState().lanes || [],
+            <span class="hljs-attribute">items:</span> () =&gt;</span> LaneStore.getState().lanes || []
           } }
         &gt;
           <span class="hljs-tag">&lt;<span class="hljs-title">Lanes</span> /&gt;</span>
@@ -61,9 +61,9 @@
 };
 
 <span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getInitialData</span>(<span class="hljs-params">storeName</span>) </span>{
-  <span class="hljs-keyword">var</span> o = storage.get(storageName);
+  <span class="hljs-keyword">var</span> data = storage.get(storageName);
 
-  <span class="hljs-keyword">return</span> o &amp;&amp; o[storeName];
+  <span class="hljs-keyword">return</span> data &amp;&amp; data[storeName];
 }
 </code></pre>
 <p>Just to get the code to compile here are the initial implementations for some new actions and a store.</p>
@@ -88,7 +88,7 @@
 
     <span class="hljs-keyword">this</span>.setState({
       lanes: lanes.concat({
-        name: name,
+        name: name
       })
     });
   }
@@ -96,7 +96,8 @@
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> alt.createStore(LaneStore, <span class="hljs-string">&apos;LaneStore&apos;</span>);
 </code></pre>
-<p>The idea is the same as before with lanes. We are also going to need that <code>Lanes</code> container.</p>
+<p>The second parameter in <code>createStore</code> is a string that is used as a unique identifier for serializing/deserializing your store. The name of the store comes from the class name but on production due to heavy minification it is a good idea to provide your own name to avoid collisions.</p>
+<p>The idea is the same as before with notes. We are also going to need that <code>Lanes</code> container.</p>
 <p><strong>app/components/Lanes.jsx</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;react&apos;</span>;
 
@@ -171,10 +172,10 @@ import Lane from <span class="hljs-string">&apos;./Lane&apos;</span>;
         <span class="hljs-tag">&lt;<span class="hljs-title">AltContainer</span>
           <span class="hljs-attribute">stores</span>=<span class="hljs-value">{[NoteStore]}</span>
           <span class="hljs-attribute">inject</span>=<span class="hljs-value">{</span> {
-            <span class="hljs-attribute">items:</span> () =&gt;</span> NoteStore.getState().notes || [],
+            <span class="hljs-attribute">items:</span> () =&gt;</span> NoteStore.getState().notes || []
           } }
         &gt;
-          <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.noteEdited}</span> /&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">Notes</span> <span class="hljs-attribute">onEdit</span>=<span class="hljs-value">{this.noteEdited.bind(this)}</span> /&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">AltContainer</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
@@ -197,9 +198,7 @@ import Lane from <span class="hljs-string">&apos;./Lane&apos;</span>;
 <a class="header-anchor" href="#going-from-note-singletons-to-instances" id="going-from-note-singletons-to-instances"></a><h2>Going from Note Singletons to Instances<a class="header-anchor-select" href="#going-from-note-singletons-to-instances">#</a></h2>
 <p>A good first step towards getting rid of our Note singletons is to make our <code>NoteStore</code> more generic. We simply need to remove its direct dependency on Alt. Consider the code below:</p>
 <p><strong>app/stores/NoteStore.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> _ <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;lodash&apos;</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NoteStore</span> </span>{
+<pre><code class="undefinedjavascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NoteStore</span> </span>{
   constructor(actions: <span class="hljs-built_in">Object</span>) {
     <span class="hljs-keyword">this</span>.bindActions(actions);
   }
@@ -239,6 +238,8 @@ import Lane from <span class="hljs-string">&apos;./Lane&apos;</span>;
 
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> {<span class="hljs-attribute">...props</span>}&gt;</span>
+      ...
+        <span class="hljs-tag">&lt;<span class="hljs-title">AltContainer</span> <span class="hljs-attribute">stores</span>=<span class="hljs-value">{[this.store]}</span> <span class="hljs-attribute">...</span> /&gt;</span>
       ...
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
@@ -285,10 +286,10 @@ nameEdited(id, name) {
 
 nameEdited(id, name) {
   <span class="hljs-keyword">if</span>(name) {
-    LaneActions.update({i, name});
+    LaneActions.update({id, name});
   }
   <span class="hljs-keyword">else</span> {
-    LaneActions.remove(i);
+    LaneActions.remove(id);
   }
 }
 </code></pre>
@@ -339,7 +340,7 @@ edited(actions, field, id, value) {
     <span class="hljs-keyword">const</span> lanes = <span class="hljs-keyword">this</span>.lanes;
 
     <span class="hljs-keyword">this</span>.setState({
-      lanes: lanes.slice(<span class="hljs-number">0</span>, id).concat(lanes.slice(id + <span class="hljs-number">1</span>)),
+      lanes: lanes.slice(<span class="hljs-number">0</span>, id).concat(lanes.slice(id + <span class="hljs-number">1</span>))
     });
   }
 }

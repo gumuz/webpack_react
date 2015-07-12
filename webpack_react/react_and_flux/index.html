@@ -35,7 +35,7 @@
     <span class="hljs-keyword">const</span> notes = <span class="hljs-keyword">this</span>.notes;
 
     <span class="hljs-keyword">this</span>.setState({
-      notes: notes.concat({task}),
+      notes: notes.concat({task})
     });
   }
   update({id, task}) {
@@ -49,7 +49,7 @@
     <span class="hljs-keyword">const</span> notes = <span class="hljs-keyword">this</span>.notes;
 
     <span class="hljs-keyword">this</span>.setState({
-      notes: notes.slice(<span class="hljs-number">0</span>, id).concat(notes.slice(id + <span class="hljs-number">1</span>)),
+      notes: notes.slice(<span class="hljs-number">0</span>, id).concat(notes.slice(id + <span class="hljs-number">1</span>))
     });
   }
 }
@@ -172,26 +172,22 @@
 }
 </code></pre>
 <p>The idea is that when the application is initialized, we&apos;ll read <code>localStorage</code> and initialize Store state using it. If the Store gets changed, we&apos;ll write the changes to <code>localStorage</code>. For this to work we&apos;ll need to tweak Actions and Store slightly.</p>
-<p>As we&apos;ll be relying on <code>lodash</code> for certain utilities here, hit <code>npm lodash --save</code> to add it to the project.</p>
 <p><strong>app/actions/NoteActions.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> alt <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../libs/alt&apos;</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> alt.generateActions(<span class="hljs-string">&apos;init&apos;</span>, <span class="hljs-string">&apos;create&apos;</span>, <span class="hljs-string">&apos;update&apos;</span>, <span class="hljs-string">&apos;remove&apos;</span>);
 </code></pre>
 <p><strong>app/stores/NoteStore.js</strong></p>
-<pre><code class="undefinedjavascript"><span class="hljs-keyword">import</span> _ <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;lodash&apos;</span>;
-...
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NoteStore</span> </span>{
+<pre><code class="undefinedjavascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NoteStore</span> </span>{
   constructor() {
     <span class="hljs-keyword">this</span>.bindActions(NoteActions);
 
     <span class="hljs-keyword">this</span>.notes = [];
   }
   init(data) {
-    <span class="hljs-keyword">var</span> d = _.isArray(_.get(data, <span class="hljs-string">&apos;notes&apos;</span>)) ? data : {notes: []};
-
-    <span class="hljs-keyword">this</span>.setState(d);
+    <span class="hljs-keyword">this</span>.setState(<span class="hljs-built_in">Array</span>.isArray(data &amp;&amp; data.notes) ? data : {
+      notes: []
+    });
   }
   ...
 }
@@ -331,19 +327,15 @@
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = merge(common, {
-    ...
     <span class="hljs-built_in">module</span>: {
-      ...
       loaders: [
         {
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
           loaders: [<span class="hljs-string">&apos;react-hot&apos;</span>, <span class="hljs-string">&apos;babel&apos;</span>, <span class="hljs-string">&apos;flowcheck&apos;</span>, <span class="hljs-string">&apos;babel?stage=1&amp;blacklist=flow&apos;</span>],
-          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
-        },
-      ],
-      ...
-    },
-    ...
+          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>)
+        }
+      ]
+    }
   });
 }
 </code></pre>

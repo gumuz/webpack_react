@@ -17,12 +17,11 @@
 
 <span class="hljs-built_in">module</span>.exports = {
   entry: [
-    <span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>,
-    path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app/main.js&apos;</span>),
+    path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app/main.js&apos;</span>)
   ],
   output: {
     path: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;build&apos;</span>),
-    filename: <span class="hljs-string">&apos;bundle.js&apos;</span>,
+    filename: <span class="hljs-string">&apos;bundle.js&apos;</span>
   },
 };
 </code></pre>
@@ -54,20 +53,19 @@
 
 <span class="hljs-built_in">module</span>.exports = {
   entry: [
-    <span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>,
-    path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app/main&apos;</span>),
+    path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app/main&apos;</span>)
   ],
   output: {
     path: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;build&apos;</span>),
-    filename: <span class="hljs-string">&apos;bundle.js&apos;</span>,
+    filename: <span class="hljs-string">&apos;bundle.js&apos;</span>
   },
   <span class="hljs-built_in">module</span>: {
     loaders: [
       {
         test: <span class="hljs-regexp">/\.css$/</span>,
-        loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>],
-      },
-    ],
+        loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>]
+      }
+    ]
   }
 };
 </code></pre>
@@ -102,29 +100,25 @@
   entry: [path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app/main&apos;</span>)],
   output: {
     path: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;build&apos;</span>),
-    filename: <span class="hljs-string">&apos;bundle.js&apos;</span>,
+    filename: <span class="hljs-string">&apos;bundle.js&apos;</span>
   },
   <span class="hljs-built_in">module</span>: {
     loaders: [
       {
         test: <span class="hljs-regexp">/\.css$/</span>,
-        loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>],
-      },
-    ],
-  },
+        loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>]
+      }
+    ]
+  }
 };
 
+<span class="hljs-comment">// we&apos;ll extend these later and use merge then</span>
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;build&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = common;
 }
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
-  <span class="hljs-built_in">module</span>.exports = merge(common, {
-    entry: [
-      <span class="hljs-string">&apos;webpack-dev-server/client?http://localhost:8080&apos;</span>,
-      <span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>
-    ]
-  });
+  <span class="hljs-built_in">module</span>.exports = common;
 }
 </code></pre>
 <p>The common configuration has been separated to a section of its own. In this case <code>build</code> configuration is actually the same as <code>common</code> configuration. We do a little tweak for <code>develop</code> case. As you can see the configuration is quite easy to follow this way.</p>
@@ -153,9 +147,9 @@
   ...
   plugins: [
     <span class="hljs-keyword">new</span> HtmlwebpackPlugin({
-      title: <span class="hljs-string">&apos;Kanban app&apos;</span>,
-    }),
-  ],
+      title: <span class="hljs-string">&apos;Kanban app&apos;</span>
+    })
+  ]
 };
 
 ...

@@ -13,10 +13,10 @@
       test: <span class="hljs-regexp">/\.js$/</span>,
       <span class="hljs-comment">// define an include so we check just the files we need</span>
       include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
-      loader: <span class="hljs-string">&apos;jshint&apos;</span>,
-    },
-  ],
-},
+      loader: <span class="hljs-string">&apos;jshint&apos;</span>
+    }
+  ]
+}
 </code></pre>
 <p>You can also define custom settings using a <code>jshint</code> object. The project README covers that in detail. The tool will look into specific rules to apply from <code>.jshintrc</code>. Those have been covered at JSHint documentation in detail. An example configuration could look like this:</p>
 <p><strong>.jshintrc</strong></p>
@@ -80,7 +80,6 @@
     &quot;<span class="hljs-attribute">no-use-before-define</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span></span>,
     &quot;<span class="hljs-attribute">eol-last</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span></span>,
     &quot;<span class="hljs-attribute">quotes</span>&quot;: <span class="hljs-value">[<span class="hljs-number">2</span>, <span class="hljs-string">&quot;single&quot;</span>]</span>,
-    &quot;<span class="hljs-attribute">comma-dangle</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span></span>,
     &quot;<span class="hljs-attribute">react/jsx-boolean-value</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
     &quot;<span class="hljs-attribute">react/jsx-quotes</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
     &quot;<span class="hljs-attribute">react/jsx-no-undef</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span></span>,
@@ -123,9 +122,9 @@
           <span class="hljs-comment">// we have ESLint module installed. This way we</span>
           <span class="hljs-comment">// can be certain that it uses the right loader</span>
           loader: <span class="hljs-string">&apos;eslint-loader&apos;</span>,
-          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
-        },
-      ],
+          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>)
+        }
+      ]
     },
     output: {...},
     ...
@@ -171,10 +170,10 @@ alert(<span class="hljs-string">&apos;foo&apos;</span>); <span class="hljs-comme
       <span class="hljs-keyword">return</span> {
         Identifier: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node</span>) </span>{
           context.report(node, <span class="hljs-string">&apos;This is unexpected!&apos;</span>);
-        },
+        }
       };
-    },
-  },
+    }
+  }
 };
 </code></pre>
 <p>In this case we just report for every identifier found. In practice you&apos;ll likely want to do something more complex than this but this is a good starting point.</p>
@@ -208,22 +207,20 @@ alert(<span class="hljs-string">&apos;foo&apos;</span>); <span class="hljs-comme
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = merge(common, {
-    entry: [<span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>],
     <span class="hljs-built_in">module</span>: {
       preLoaders: [
         {
           test: <span class="hljs-regexp">/\.css$/</span>,
-          loader: <span class="hljs-string">&apos;csslint&apos;</span>,
+          loader: <span class="hljs-string">&apos;csslint&apos;</span>
         },
         {
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
           loader: <span class="hljs-string">&apos;eslint-loader&apos;</span>,
-          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
-        },
+          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>)
+        }
       ],
       ...
-    },
-    ...
+    }
   });
 }
 </code></pre>
@@ -256,7 +253,7 @@ alert(<span class="hljs-string">&apos;foo&apos;</span>); <span class="hljs-comme
   <span class="hljs-string">&quot;lint&quot;</span>: <span class="hljs-string">&quot;npm run lint-js &amp;&amp; npm run lint-css&quot;</span>,
   <span class="hljs-string">&quot;lint-js&quot;</span>: <span class="hljs-string">&quot;eslint . --ext .js --ext .jsx&quot;</span>,
   <span class="hljs-string">&quot;lint-css&quot;</span>: <span class="hljs-string">&quot;csslint app/stylesheets --quiet&quot;</span>
-},
+}
 </code></pre>
 <p>If you hit <code>npm run lint-css</code> now, you should see some output, hopefully without errors. That <code>--quiet</code> flag is there to keep the tool silent unless there are errors.</p>
 <p>Thanks to the webpack configuration we did, you should get output during <code>npm start</code> process as well. In addition you should consider setting up csslint with your editor. That way you get more integrated development experience.</p>
@@ -269,10 +266,10 @@ alert(<span class="hljs-string">&apos;foo&apos;</span>); <span class="hljs-comme
     {
       test: /\.jsx?$/,
       loaders: [<span class="hljs-string">&apos;eslint&apos;</span>, <span class="hljs-string">&apos;jscs&apos;</span>],
-      include: path.<span class="hljs-function">resolve</span>(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
-    },
-  ],
-},
+      include: path.<span class="hljs-function">resolve</span>(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>)
+    }
+  ]
+}
 </span></span></code></pre>
 <p>To make it work with JSX, you&apos;ll need to point it to <code>esprima-fb</code> parser through <code>.jscsrc</code>. There are also various other options and even some presets. Consider the example below:</p>
 <p><strong>.jscsrc</strong></p>

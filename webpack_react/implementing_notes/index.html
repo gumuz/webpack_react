@@ -8,11 +8,11 @@
 export default class App extends React.Component {
   render() {
     var notes = [{
-      task: &apos;Learn webpack&apos;,
+      task: &apos;Learn webpack&apos;
     }, {
-      task: &apos;Learn React&apos;,
+      task: &apos;Learn React&apos;
     }, {
-      task: &apos;Do laundry&apos;,
+      task: &apos;Do laundry&apos;
     }];
 
     return (
@@ -116,12 +116,12 @@ export default class Notes extends React.Component {
 
     <span class="hljs-keyword">this</span>.state = {
       notes: [{
-        task: <span class="hljs-string">&apos;Learn webpack&apos;</span>,
+        task: <span class="hljs-string">&apos;Learn webpack&apos;</span>
       }, {
-        task: <span class="hljs-string">&apos;Learn React&apos;</span>,
+        task: <span class="hljs-string">&apos;Learn React&apos;</span>
       }, {
-        task: <span class="hljs-string">&apos;Do laundry&apos;</span>,
-      }],
+        task: <span class="hljs-string">&apos;Do laundry&apos;</span>
+      }]
     };
   }
   render() {
@@ -139,7 +139,7 @@ export default class Notes extends React.Component {
   addItem() {
     <span class="hljs-keyword">this</span>.setState({
       notes: <span class="hljs-keyword">this</span>.state.notes.concat([{
-        task: <span class="hljs-string">&apos;New task&apos;</span>,
+        task: <span class="hljs-string">&apos;New task&apos;</span>
       }])
     });
   }
@@ -157,7 +157,7 @@ export default class Notes extends React.Component {
     <span class="hljs-keyword">super</span>(props);
 
     <span class="hljs-keyword">this</span>.state = {
-      edited: <span class="hljs-literal">false</span>,
+      edited: <span class="hljs-literal">false</span>
     };
   }
   render() {
@@ -177,7 +177,7 @@ export default class Notes extends React.Component {
   }
   edit() {
     <span class="hljs-keyword">this</span>.setState({
-        edited: <span class="hljs-literal">true</span>,
+        edited: <span class="hljs-literal">true</span>
     });
   }
   checkEnter(e) {
@@ -189,14 +189,13 @@ export default class Notes extends React.Component {
     <span class="hljs-keyword">this</span>.props.onEdit(e.target.value);
 
     <span class="hljs-keyword">this</span>.setState({
-      edited: <span class="hljs-literal">false</span>,
+      edited: <span class="hljs-literal">false</span>
     });
   }
 }
 </code></pre>
 <p><code>Note</code> keeps track of <em>edited</em> state. We will manipulate that to change the way it is rendered. If we hit <strong>edit</strong>, we&apos;ll trigger edit mode. Once input receives either <em>blur</em> event or Enter key, we&apos;ll finish editing and reset the value. When finishing we also trigger a callback so the app knows to react.</p>
-<p>We are using <a href="https://github.com/sebmarkbage/ecmascript-rest-spread">ES7 rest spread operator</a> here to keep our props generic. In other words that <code>&lt;div {...props}&gt;</code> sets props as element attributes. In order to avoid injecting <code>value</code> and <code>onEdit</code> I extract them out before doing this. If you want to be explicit about it, you can extract specific props and set them directly (e.g. <code>style={style} className={className}</code>).</p>
-<p>The good thing about this approach is that it gives your components some extra flexibility. On the other hand it takes some little extra effort to make sure you don&apos;t end up setting attributes you don&apos;t really need.</p>
+<p>We are using <a href="https://github.com/sebmarkbage/ecmascript-rest-spread">ES7 rest spread operator</a> here to keep our props generic. In other words that <code>&lt;div {...props}&gt;</code> sets props as element attributes. This gives an additional extension point with little effort. You could for instance attach custom event handlers there or set some standard HTML attributes (e.g. <code>&lt;Note title=&apos;Demo title&apos; value={note.task} /&gt;</code>). I extract <code>value</code> and <code>onEdit</code> out of <code>props</code> as I <strong>don&apos;t</strong> want to set these at <code>div</code>.</p>
 <blockquote class="tip">It can be a good idea to name your callbacks using <code>on</code> prefix. This will allow you to distinguish them quickly from other props and keep your code a little tidier.</blockquote><p>In order to make that happen we&apos;ll need to define that callback for <code>App</code> like this:</p>
 <p><strong>app/components/App.jsx</strong></p>
 <pre><code class="undefinedjavascript">...
@@ -215,7 +214,7 @@ export default class Notes extends React.Component {
     notes[i].task = task;
 
     <span class="hljs-keyword">this</span>.setState({
-      notes: notes,
+      notes: notes
     });
   }
 }
@@ -260,7 +259,7 @@ render() {
     }
 
     <span class="hljs-keyword">this</span>.setState({
-      notes: notes,
+      notes: notes
     });
   }
 }
@@ -279,9 +278,9 @@ render() {
         {
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
           loaders: [<span class="hljs-string">&apos;react-hot&apos;</span>, <span class="hljs-string">&apos;babel?stage=1&apos;</span>, <span class="hljs-string">&apos;flowcheck&apos;</span>],
-          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
-        },
-      },
+          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>)
+        }
+      }
     },
     ...
   });

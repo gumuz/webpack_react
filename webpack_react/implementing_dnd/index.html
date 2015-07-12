@@ -57,7 +57,7 @@ import Note from &apos;./Note&apos;;
 <p>React DnD uses constants to tell different draggables apart. Set up a file for tracking <code>Note</code> as follows:</p>
 <p><strong>app/components/ItemTypes.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-tag">export</span> <span class="hljs-tag">default</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">NOTE</span>:<span class="hljs-value"> <span class="hljs-string">&apos;note&apos;</span>,
+  <span class="hljs-rule"><span class="hljs-attribute">NOTE</span>:<span class="hljs-value"> <span class="hljs-string">&apos;note&apos;</span>
 }</span></span>;
 </span></code></pre>
 <p>We&apos;ll expand this later as we add new types to the system but this is enough for now. Next we need to tell our <code>Note</code> that it&apos;s possible to drag and drop it.</p>
@@ -81,11 +81,11 @@ import Note from &apos;./Note&apos;;
 };
 
 @DropTarget(ItemTypes.NOTE, noteTarget, connect =&gt; ({
-  connectDropTarget: connect.dropTarget(),
+  connectDropTarget: connect.dropTarget()
 }))
 @DragSource(ItemTypes.NOTE, noteSource, (connect, monitor) =&gt; ({
   connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging(),
+  isDragging: monitor.isDragging()
 }))
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Note</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   render() {
@@ -107,7 +107,7 @@ import Note from &apos;./Note&apos;;
 <span class="hljs-keyword">const</span> noteSource = {
   beginDrag(props) {
     <span class="hljs-keyword">return</span> {
-      data: props.data,
+      data: props.data
     };
   }
 };
@@ -121,7 +121,7 @@ import Note from &apos;./Note&apos;;
   <span class="hljs-keyword">if</span>(sourceData.id !== targetData.id) {
     props.onMove({
       source: sourceProps.data,
-      target: props.data,
+      target: props.data
     });
   }
   }
@@ -176,7 +176,7 @@ import Note from &apos;./Note&apos;;
     <span class="hljs-keyword">const</span> notes = <span class="hljs-keyword">this</span>.notes;
 
     <span class="hljs-keyword">this</span>.setState({
-      notes: notes.concat({task, id: uuid.v4()}),
+      notes: notes.concat({task, id: uuid.v4()})
     });
   }
   ...
@@ -189,9 +189,9 @@ import Note from &apos;./Note&apos;;
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NoteStore</span> </span>{
   ...
   init(data) {
-    <span class="hljs-keyword">var</span> d = _.isArray(_.get(data, <span class="hljs-string">&apos;notes&apos;</span>)) ? migrate(data) : {notes: []};
-
-    <span class="hljs-keyword">this</span>.setState(d);
+    <span class="hljs-keyword">this</span>.setState(<span class="hljs-built_in">Array</span>.isArray(data &amp;&amp; data.notes) ? migrate(data) : {
+      notes: []
+    });
   }
   ...
 }
@@ -269,10 +269,10 @@ export default class Notes extends React.Component {
   move({source, target}) {
     <span class="hljs-keyword">const</span> notes = <span class="hljs-keyword">this</span>.notes;
     <span class="hljs-keyword">const</span> sourceIndex = findIndex(notes, {
-      id: source.id,
+      id: source.id
     });
     <span class="hljs-keyword">const</span> targetIndex = findIndex(notes, {
-      id: target.id,
+      id: target.id
     });
 
     <span class="hljs-keyword">if</span>(sourceIndex &gt;= <span class="hljs-number">0</span> &amp;&amp; targetIndex &gt;= <span class="hljs-number">0</span>) {
@@ -280,18 +280,18 @@ export default class Notes extends React.Component {
         notes: update(notes, {
           $splice: [
             [sourceIndex, <span class="hljs-number">1</span>],
-            [targetIndex, <span class="hljs-number">0</span>, source],
-          ],
-        }),
+            [targetIndex, <span class="hljs-number">0</span>, source]
+          ]
+        })
       });
     }
     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(targetIndex &gt;= <span class="hljs-number">0</span>) {
       <span class="hljs-keyword">this</span>.setState({
         notes: update(notes, {
           $splice: [
-            [targetIndex, <span class="hljs-number">0</span>, source],
-          ],
-        }),
+            [targetIndex, <span class="hljs-number">0</span>, source]
+          ]
+        })
       });
     }
     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(sourceIndex &gt;= <span class="hljs-number">0</span>) {

@@ -122,7 +122,7 @@
     output: {
         path: config.paths.dist,
         libraryTarget: <span class="hljs-string">&apos;umd&apos;</span>,
-        library: config.library,
+        library: config.library
     },
     entry: config.paths.lib,
     externals: {
@@ -134,7 +134,7 @@
             {
                 test: <span class="hljs-regexp">/\.jsx?$/</span>,
                 loaders: [<span class="hljs-string">&apos;babel&apos;</span>],
-                include: config.paths.lib,
+                include: config.paths.lib
             }
         ]
     }
@@ -142,21 +142,21 @@
 
 exports.dist = mergeDist({
     output: {
-        filename: config.filename + <span class="hljs-string">&apos;.js&apos;</span>,
+        filename: config.filename + <span class="hljs-string">&apos;.js&apos;</span>
     },
 });
 
 exports.distMin = mergeDist({
     output: {
-        filename: config.filename + <span class="hljs-string">&apos;.min.js&apos;</span>,
+        filename: config.filename + <span class="hljs-string">&apos;.min.js&apos;</span>
     },
     plugins: [
         <span class="hljs-keyword">new</span> webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: <span class="hljs-literal">false</span>
-            },
-        }),
-    ],
+            }
+        })
+    ]
 });
 </code></pre>
 <blockquote class="tip">The example uses the same <code>merge</code> utility we defined earlier on. You should check <a href="https://github.com/bebraw/react-component-boilerplate">the boilerplate</a> itself for exact configuration.</blockquote><p>Most of the magic happens thanks to <code>devtool</code> and <code>output</code> declarations. In addition I have set up <code>externals</code> as I want to avoid bundling React into my library. Instead if will be loaded as an external dependency using the naming defined in the mapping.</p>

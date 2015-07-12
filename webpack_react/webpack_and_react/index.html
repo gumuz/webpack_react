@@ -12,7 +12,7 @@
 <p>In addition to the standardized ES6 features Babel provides support for certain <a href="https://babeljs.io/docs/usage/experimental/">experimental features</a> from ES7. Some of these might make it to the core language while some might be dropped altogether. The language proposals have been categorized within stages. Stage 0 is a strawman, stage 1 a proposal, stage 2 draft and so on.</p>
 <p>I would be especially careful with stage 0 as if a stage 0 feature you are depending upon goes away you&apos;ll have to rewrite some of your code. But in smaller projects that may be worth the risk. Babel has stage 2 and higher features enabled by default. In our project we&apos;ll enable stage 1 to use decorators and property spreading as they will make our code a little tidier.</p>
 <blockquote class="tip">You can <a href="https://babeljs.io/repl/">try out Babel online</a> to see what kind of code it generates.</blockquote><a class="header-anchor" href="#configuring-babel-loader" id="configuring-babel-loader"></a><h3>Configuring babel-loader<a class="header-anchor-select" href="#configuring-babel-loader">#</a></h3>
-<p>In order to set up Babel for our project we can use <a href="https://www.npmjs.com/package/babel-loader">babel-loader</a>. Install it using <code>npm i babel-loader --save-dev</code>. In addition add the following loader declaration to the <em>loaders</em> section of your configuration:</p>
+<p>In order to set up Babel for our project we can use <a href="https://www.npmjs.com/package/babel-loader">babel-loader</a>. Install it using <code>npm i babel-core babel-loader --save-dev</code>. <code>babel-core</code> is a peer dependency of <code>babel-loader</code> so that needs to be installed explicitly to make the project work with npm 3. In addition add the following loader declaration to the <em>loaders</em> section of your configuration:</p>
 <p><strong>webpack.config.js</strong></p>
 <pre><code class="undefinedjavascript"><span class="hljs-keyword">var</span> common = {
   ...
@@ -26,7 +26,7 @@
         loader: <span class="hljs-string">&apos;babel?stage=1&apos;</span>,
 
         <span class="hljs-comment">// operate only on our app directory</span>
-        include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
+        include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>)
       },
       ...
     ]
@@ -110,9 +110,9 @@ index.html  204 bytes          [emitted]
       <span class="hljs-keyword">new</span> webpack.optimize.UglifyJsPlugin({
         compress: {
           warnings: <span class="hljs-literal">false</span>
-        },
-      }),
-    ],
+        }
+      })
+    ]
   });
 }
 </code></pre>
@@ -138,11 +138,11 @@ index.html  204 bytes          [emitted]
       <span class="hljs-keyword">new</span> webpack.DefinePlugin({
         <span class="hljs-string">&apos;process.env&apos;</span>: {
           <span class="hljs-comment">// This has effect on the react lib size</span>
-          <span class="hljs-string">&apos;NODE_ENV&apos;</span>: <span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-string">&apos;production&apos;</span>),
+          <span class="hljs-string">&apos;NODE_ENV&apos;</span>: <span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-string">&apos;production&apos;</span>)
         }
       }),
       ...
-    ],
+    ]
   });
 }
 </code></pre>
@@ -170,9 +170,9 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
     loaders: [
       {
         test: <span class="hljs-regexp">/\.css$/</span>,
-        loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>],
-      },
-    ],
+        loaders: [<span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-string">&apos;css&apos;</span>]
+      }
+    ]
   },
   ...
 };
@@ -186,30 +186,27 @@ index.html  <span class="hljs-number">204</span> bytes          [emitted]
         {
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
           loader: <span class="hljs-string">&apos;babel?stage=1&apos;</span>,
-          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
-        },
-      ],
+          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>)
+        }
+      ]
     },
     plugins: [
       ...
-    ],
+    ]
   });
 }
 
 <span class="hljs-keyword">if</span>(TARGET === <span class="hljs-string">&apos;dev&apos;</span>) {
   <span class="hljs-built_in">module</span>.exports = merge(common, {
-    entry: [
-      <span class="hljs-string">&apos;webpack/hot/dev-server&apos;</span>
-    ],
     <span class="hljs-built_in">module</span>: {
       loaders: [
         {
           test: <span class="hljs-regexp">/\.jsx?$/</span>,
           loaders: [<span class="hljs-string">&apos;react-hot&apos;</span>, <span class="hljs-string">&apos;babel?stage=1&apos;</span>],
-          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>),
-        },
-      ],
-    },
+          include: path.resolve(ROOT_PATH, <span class="hljs-string">&apos;app&apos;</span>)
+        }
+      ]
+    }
   });
 }
 </code></pre>
